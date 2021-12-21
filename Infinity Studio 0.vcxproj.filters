@@ -1,0 +1,490 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="CJsonObject\cJSON.c">
+      <Filter>CJsonObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CJsonObject\CJsonObject.cpp">
+      <Filter>CJsonObject</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CloseButton.cpp">
+      <Filter>Source Files\editor\buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="FloatButton.cpp">
+      <Filter>Source Files\editor\buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuButton.cpp">
+      <Filter>Source Files\editor\buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="MaxiumButton.cpp">
+      <Filter>Source Files\editor\buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniumButton.cpp">
+      <Filter>Source Files\editor\buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="PermanentToolButton.cpp">
+      <Filter>Source Files\editor\buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleButton.cpp">
+      <Filter>Source Files\editor\buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolButton.cpp">
+      <Filter>Source Files\editor\buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuBar.cpp">
+      <Filter>Source Files\editor\bars</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolBar.cpp">
+      <Filter>Source Files\editor\bars</Filter>
+    </ClCompile>
+    <ClCompile Include="GetConfig.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="GetStyle.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="GetTrans.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Infinity_global.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Infinity_Events.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="StyleContainer.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiToolButton.cpp">
+      <Filter>Source Files\editor\buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="StatusBar.cpp">
+      <Filter>Source Files\editor\bars</Filter>
+    </ClCompile>
+    <ClCompile Include="ClickButton.cpp">
+      <Filter>Source Files\editor\buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleButton.cpp">
+      <Filter>Source Files\editor\buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="CentralWidget.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="InfinityStudio0.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="NoteWidget.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ParamWidget.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="RefreshableWidget.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Title.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="TrackWidget.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleWidget.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="VScollBar.cpp">
+      <Filter>Source Files\editor\bars</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleScollBar.cpp">
+      <Filter>Source Files\editor\bars</Filter>
+    </ClCompile>
+    <ClCompile Include="ILVM.cpp">
+      <Filter>Source Files\vm</Filter>
+    </ClCompile>
+    <ClCompile Include="LThread.cpp">
+      <Filter>Source Files\vm</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lapi.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lauxlib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lbaselib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lcode.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lcorolib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lctype.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\ldblib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\ldebug.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\ldo.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\ldump.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lfunc.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lgc.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\linit.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\liolib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\llex.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lmathlib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lmem.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\loadlib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lobject.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lopcodes.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\loslib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lparser.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lstate.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lstring.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lstrlib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\ltable.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\ltablib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\ltm.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lua.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\luac.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lundump.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lutf8lib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lvm.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lzio.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\Infinity\IIO.c">
+      <Filter>Lua\Infinity</Filter>
+    </ClCompile>
+    <ClCompile Include="StatusButton.cpp">
+      <Filter>Source Files\editor\buttons</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="InfinityStudio0.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CJsonObject">
+      <UniqueIdentifier>{1f6c0d26-a9ab-4d74-aac5-67afb504cfb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="Header Files\utils">
+      <UniqueIdentifier>{dcfe7fb0-75de-4467-bc85-408adf96ef5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{fe2804b6-2bc7-44ae-8485-17a30f3cbdf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\editor">
+      <UniqueIdentifier>{2d32391e-43ad-4d0b-ada0-a340b2d6076d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\editor\bars">
+      <UniqueIdentifier>{97cf51e3-d1fc-42a8-bbfa-4d84060f0a7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\editor\buttons">
+      <UniqueIdentifier>{ceacb5a2-b98c-466b-bc71-ba0b9a907354}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\editor">
+      <UniqueIdentifier>{07afa350-b54b-4486-b2ad-ebbdd9d53a23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\editor\bars">
+      <UniqueIdentifier>{764b65d2-ec0c-4a06-8435-7eb54e5fb2a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\editor\buttons">
+      <UniqueIdentifier>{e3c4cff6-678b-4b96-a4ea-92715d1cd2b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lua">
+      <UniqueIdentifier>{2bb7dc9a-6b42-4208-9ebc-66adb43c9f81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\vm">
+      <UniqueIdentifier>{5dd12503-0855-4f84-bae2-453ca6093491}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\vm">
+      <UniqueIdentifier>{3d0aed57-279a-43e1-80b4-e94fa27a2cd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lua\Infinity">
+      <UniqueIdentifier>{8d8769ce-cf00-44e4-a053-db6bdbd9bbb6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CJsonObject\cJSON.h">
+      <Filter>CJsonObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CJsonObject\CJsonObject.hpp">
+      <Filter>CJsonObject</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GetConfig.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="GetStyle.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="GetTrans.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Infinity_global.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lapi.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lauxlib.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lcode.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lctype.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\ldebug.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\ldo.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lfunc.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lgc.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\ljumptab.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\llex.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\llimits.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lmem.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lobject.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lopcodes.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lopnames.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lparser.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lprefix.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lstate.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lstring.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\ltable.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\ltm.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lua.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lua.hpp">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\luaconf.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lualib.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lundump.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lvm.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lzio.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\Infinity\IIO.h">
+      <Filter>Lua\Infinity</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="CloseButton.h">
+      <Filter>Header Files\editor\buttons</Filter>
+    </QtMoc>
+    <QtMoc Include="FloatButton.h">
+      <Filter>Header Files\editor\buttons</Filter>
+    </QtMoc>
+    <QtMoc Include="MainMenuButton.h">
+      <Filter>Header Files\editor\buttons</Filter>
+    </QtMoc>
+    <QtMoc Include="MaxiumButton.h">
+      <Filter>Header Files\editor\buttons</Filter>
+    </QtMoc>
+    <QtMoc Include="MiniumButton.h">
+      <Filter>Header Files\editor\buttons</Filter>
+    </QtMoc>
+    <QtMoc Include="PermanentToolButton.h">
+      <Filter>Header Files\editor\buttons</Filter>
+    </QtMoc>
+    <QtMoc Include="TitleButton.h">
+      <Filter>Header Files\editor\buttons</Filter>
+    </QtMoc>
+    <QtMoc Include="ToolButton.h">
+      <Filter>Header Files\editor\buttons</Filter>
+    </QtMoc>
+    <QtMoc Include="MainMenuBar.h">
+      <Filter>Header Files\editor\bars</Filter>
+    </QtMoc>
+    <QtMoc Include="ToolBar.h">
+      <Filter>Header Files\editor\bars</Filter>
+    </QtMoc>
+    <QtMoc Include="Infinity_Events.h">
+      <Filter>Header Files\utils</Filter>
+    </QtMoc>
+    <QtMoc Include="StyleContainer.h">
+      <Filter>Header Files\utils</Filter>
+    </QtMoc>
+    <QtMoc Include="MultiToolButton.h">
+      <Filter>Header Files\editor\buttons</Filter>
+    </QtMoc>
+    <QtMoc Include="StatusBar.h">
+      <Filter>Header Files\editor\bars</Filter>
+    </QtMoc>
+    <QtMoc Include="ClickButton.h">
+      <Filter>Header Files\editor\buttons</Filter>
+    </QtMoc>
+    <QtMoc Include="ConsoleButton.h">
+      <Filter>Header Files\editor\buttons</Filter>
+    </QtMoc>
+    <QtMoc Include="CentralWidget.h">
+      <Filter>Header Files\editor</Filter>
+    </QtMoc>
+    <QtMoc Include="InfinityStudio0.h">
+      <Filter>Header Files\editor</Filter>
+    </QtMoc>
+    <QtMoc Include="NoteWidget.h">
+      <Filter>Header Files\editor</Filter>
+    </QtMoc>
+    <QtMoc Include="ParamWidget.h">
+      <Filter>Header Files\editor</Filter>
+    </QtMoc>
+    <QtMoc Include="RefreshableWidget.h">
+      <Filter>Header Files\editor</Filter>
+    </QtMoc>
+    <QtMoc Include="Title.h">
+      <Filter>Header Files\editor</Filter>
+    </QtMoc>
+    <QtMoc Include="TrackWidget.h">
+      <Filter>Header Files\editor</Filter>
+    </QtMoc>
+    <QtMoc Include="ConsoleWidget.h">
+      <Filter>Header Files\editor</Filter>
+    </QtMoc>
+    <QtMoc Include="VScollBar.h">
+      <Filter>Header Files\editor\bars</Filter>
+    </QtMoc>
+    <QtMoc Include="ConsoleScollBar.h">
+      <Filter>Header Files\editor\bars</Filter>
+    </QtMoc>
+    <QtMoc Include="ILVM.h">
+      <Filter>Header Files\vm</Filter>
+    </QtMoc>
+    <QtMoc Include="LThread.h">
+      <Filter>Header Files\vm</Filter>
+    </QtMoc>
+    <QtMoc Include="StatusButton.h">
+      <Filter>Header Files\editor\buttons</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="LOGO.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="StatusButton.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+</Project>
