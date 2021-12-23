@@ -123,6 +123,7 @@
     <ClCompile Include="ConsoleWidget.cpp" />
     <ClCompile Include="FloatButton.cpp" />
     <ClCompile Include="GetTrans.cpp" />
+    <ClCompile Include="ILLibs.cpp" />
     <ClCompile Include="ILVM.cpp" />
     <ClCompile Include="Infinity_Events.cpp" />
     <ClCompile Include="Infinity_global.cpp" />
@@ -212,6 +213,7 @@
     <QtMoc Include="StyleContainer.h" />
     <QtMoc Include="Infinity_Events.h" />
     <QtMoc Include="ILVM.h" />
+    <ClInclude Include="ILLibs.h" />
     <ClInclude Include="Infinity_global.h" />
     <QtMoc Include="ToolButton.h" />
     <QtMoc Include="ToolBar.h" />

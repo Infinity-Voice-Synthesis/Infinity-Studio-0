@@ -6,6 +6,7 @@
 #include "Infinity_global.h"
 #include "Infinity_Events.h"
 #include <QMessageBox>
+#include "ILLibs.h"
 
 class ILVM : public QObject
 {
@@ -21,8 +22,14 @@ class ILVM : public QObject
 	LThread* mainThread = nullptr;
 
 	const QString mainId = "_main";
+	static quint64 t_count;
 
 	static QString outStrTemp;
+
+	bool isSafeMode = false;
+
+	void VMPushOptionalFunctions(LThread* thread);
+	void VMPushAllFunctions(LThread* thread);
 
 public:
 	static ILVM& getVM();

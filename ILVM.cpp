@@ -2,6 +2,7 @@
 
 ILVM ILVM::vm = ILVM(nullptr);
 QString ILVM::outStrTemp;
+quint64 ILVM::t_count = 0;
 
 void ILVM::lStdOut(const char* data, size_t size)
 {
@@ -28,6 +29,12 @@ ILVM::ILVM(QObject *parent)
 	set_LUA_InfOChar(ILVM::lStdOut);
 	set_LUA_InfOLine(ILVM::lStdOutLine);
 	set_LUA_InfOError(ILVM::lStdOutErr);
+
+	ILLibs::reg_mesFunctions(
+		[this](QString message) {emit this->normalMessage(message); },
+		[this](QString message) {emit this->errorMessage(message); },
+		[this] {emit this->clearMessage(); }
+	);
 }
 
 ILVM::~ILVM()
@@ -77,12 +84,20 @@ void ILVM::on_commandsIn(QString command)
 		}
 		this->threads.append(this->mainThread);
 
+		if (this->isSafeMode) {
+			this->VMPushOptionalFunctions(this->mainThread);
+		}
+		else {
+			this->VMPushAllFunctions(this->mainThread);
+		}
+
 		connect(this->mainThread, &LThread::errorMessage, this, &ILVM::errorMessage, Qt::ConnectionType::QueuedConnection);
 		connect(this->mainThread, &LThread::normalMessage, this, &ILVM::normalMessage, Qt::ConnectionType::QueuedConnection);
 		connect(this->mainThread, &LThread::tStarted, this, &ILVM::on_threadStart, Qt::ConnectionType::QueuedConnection);
 		connect(this->mainThread, &LThread::tEnded, this, &ILVM::on_threadStop, Qt::ConnectionType::QueuedConnection);
 
-		this->mainThread->setId(this->mainId);
+		this->mainThread->setId(this->mainId + "_" + QString::number(ILVM::t_count));
+		ILVM::t_count++;
 
 		emit this->normalMessage(QString("VM initialized: "  LUA_VERSION));
 	}
@@ -126,6 +141,10 @@ void ILVM::mainCritical()
 
 				thread->quit();
 
+				ILLibs::add_destory(thread->getId());
+
+				this->isSafeMode = true;
+
 				emit this->mainStop();
 				emit this->clearMessage();
 				emit this->errorMessage("Warning!!!!! The blocked Lua thread has been put into the background. Please save the data immediately and restart the editor!");
@@ -133,4 +152,30 @@ void ILVM::mainCritical()
 			break;
 		}
 	}
+}
+
+void ILVM::VMPushOptionalFunctions(LThread* thread)
+{
+
+}
+
+void ILVM::VMPushAllFunctions(LThread* thread)
+{
+	thread->beginGlobalTable();
+
+	thread->beginTable("Console");
+	thread->addFunction("println", ILLibs::infinity_console_println);
+	thread->addFunction("assert", ILLibs::infinity_console_assert);
+	thread->addFunction("cls", ILLibs::infinity_console_cls);
+	thread->endTable();//Console
+
+	thread->beginTable("Thread");
+
+	thread->endTable();//Thread
+
+	thread->beginTable("Synth");
+
+	thread->endTable();//Synth
+
+	thread->endGlobalTable("Infinity");
 }

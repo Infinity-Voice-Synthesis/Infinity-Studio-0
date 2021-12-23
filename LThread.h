@@ -21,6 +21,14 @@ public:
 	bool setId(QString id);
 	QString getId();
 
+	void beginGlobalTable();
+	void endGlobalTable(QString name);
+
+	void beginTable(QString name);
+	void endTable();
+
+	void addFunction(QString name, lua_CFunction function);
+
 private:
 	lua_State* lstate = nullptr;
 

@@ -79,6 +79,9 @@ bool LThread::setId(QString id)
 	if (!id.isEmpty()) {
 		if (this->Id.isEmpty()) {
 			this->Id = id;
+			lua_pushstring(this->lstate, "_ITHREADID");
+			lua_pushstring(this->lstate, id.toStdString().c_str());
+			lua_settable(this->lstate, LUA_REGISTRYINDEX);
 			return true;
 		}
 	}
@@ -88,4 +91,32 @@ bool LThread::setId(QString id)
 QString LThread::getId()
 {
 	return this->Id;
+}
+
+void LThread::beginGlobalTable()
+{
+	lua_newtable(this->lstate);
+}
+
+void LThread::endGlobalTable(QString name)
+{
+	lua_setglobal(this->lstate, name.toStdString().c_str());
+}
+
+void LThread::beginTable(QString name)
+{
+	lua_pushstring(this->lstate, name.toStdString().c_str());
+	lua_newtable(this->lstate);
+}
+
+void LThread::endTable()
+{
+	lua_settable(this->lstate, -3);
+}
+
+void LThread::addFunction(QString name, lua_CFunction function)
+{
+	lua_pushstring(this->lstate, name.toStdString().c_str());
+	lua_pushcfunction(this->lstate, function);
+	lua_settable(this->lstate, -3);
 }

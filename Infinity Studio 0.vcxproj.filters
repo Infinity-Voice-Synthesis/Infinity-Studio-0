@@ -220,6 +220,9 @@
     <ClCompile Include="StringQueueThread.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
+    <ClCompile Include="ILLibs.cpp">
+      <Filter>Source Files\llibs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="InfinityStudio0.qrc" />
@@ -278,6 +281,12 @@
     </Filter>
     <Filter Include="Lua\Infinity">
       <UniqueIdentifier>{8d8769ce-cf00-44e4-a053-db6bdbd9bbb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\llibs">
+      <UniqueIdentifier>{f222a447-104e-44dd-b241-1ba80906499e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\llibs">
+      <UniqueIdentifier>{4521b804-ebb0-4eb8-b0b6-71eb68f29d1b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -388,6 +397,9 @@
     </ClInclude>
     <ClInclude Include="Lua\Infinity\IIO.h">
       <Filter>Lua\Infinity</Filter>
+    </ClInclude>
+    <ClInclude Include="ILLibs.h">
+      <Filter>Header Files\llibs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
