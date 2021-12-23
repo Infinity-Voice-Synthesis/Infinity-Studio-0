@@ -95,8 +95,6 @@ void VScollBar::mousePressEvent(QMouseEvent* event)
 					this->pressY = event->pos().y();
 				}
 				else {
-					this->setCursor(Qt::CursorShape::ArrowCursor);
-					this->state = State::Normal;
 					int spi = event->pos().y() - ((this->ep - this->sp) / 2) * this->height();
 					if (spi < 0) {
 						spi = 0;
@@ -109,6 +107,12 @@ void VScollBar::mousePressEvent(QMouseEvent* event)
 					this->sp = spn;
 					this->ep = epn;
 					emit this->valueChanged(this->sp, this->ep);
+
+					this->setCursor(Qt::CursorShape::ClosedHandCursor);
+					this->state = State::CPressed;
+					this->spt = this->sp;
+					this->ept = this->ep;
+					this->pressY = event->pos().y();
 				}
 			}
 			else {
@@ -123,8 +127,6 @@ void VScollBar::mousePressEvent(QMouseEvent* event)
 					this->pressY = event->pos().y();
 				}
 				else {
-					this->setCursor(Qt::CursorShape::ArrowCursor);
-					this->state = State::Normal;
 					int spi = event->pos().y() - ((this->ep - this->sp) / 2) * this->height();
 					if (spi < 0) {
 						spi = 0;
@@ -137,6 +139,12 @@ void VScollBar::mousePressEvent(QMouseEvent* event)
 					this->sp = spn;
 					this->ep = epn;
 					emit this->valueChanged(this->sp, this->ep);
+
+					this->setCursor(Qt::CursorShape::ClosedHandCursor);
+					this->state = State::CPressed;
+					this->spt = this->sp;
+					this->ept = this->ep;
+					this->pressY = event->pos().y();
 				}
 			}
 
@@ -150,6 +158,8 @@ void VScollBar::mouseMoveEvent(QMouseEvent* event)
 {
 	double resize_distance = 0.02;
 	StyleContainer::getContainer().getStyleObject()["scoller"].Get("resize-distance", resize_distance);
+
+	this->mousePos = event->pos();
 
 	if (this->state == State::Normal || this->state == State::Hover) {
 		if (this->scaleAble) {
@@ -327,6 +337,9 @@ void VScollBar::leaveEvent(QEvent* event)
 
 QPair<double,double> VScollBar::setValue(double sp, double ep)
 {
+	double resize_distance = 0.02;
+	StyleContainer::getContainer().getStyleObject()["scoller"].Get("resize-distance", resize_distance);
+
 	if (ep - sp < this->minPer) {
 		double cent = (sp + ep) / 2;
 		sp = cent - (this->minPer / 2);
@@ -347,8 +360,48 @@ QPair<double,double> VScollBar::setValue(double sp, double ep)
 		ep = 1;
 		sp = ep - delta;
 	}
-	this->setCursor(Qt::CursorShape::ArrowCursor);
-	this->state = State::Normal;
+
+	if (this->scaleAble) {
+		if (
+			this->mousePos.x() >= 0 && this->mousePos.x() <= this->width() &&
+			this->mousePos.y() >= (this->sp - resize_distance) * this->height() && this->mousePos.y() <= (this->sp + resize_distance) * this->height()
+			) {
+			this->setCursor(Qt::CursorShape::SplitVCursor);
+			this->state = State::Hover;
+		}
+		else if (
+			this->mousePos.x() >= 0 && this->mousePos.x() <= this->width() &&
+			this->mousePos.y() >= (this->ep - resize_distance) * this->height() && this->mousePos.y() <= (this->ep + resize_distance) * this->height()
+			) {
+			this->setCursor(Qt::CursorShape::SplitVCursor);
+			this->state = State::Hover;
+		}
+		else if (
+			this->mousePos.x() >= 0 && this->mousePos.x() <= this->width() &&
+			this->mousePos.y() >= this->sp * this->height() && this->mousePos.y() <= this->ep * this->height()
+			) {
+			this->setCursor(Qt::CursorShape::OpenHandCursor);
+			this->state = State::Hover;
+		}
+		else {
+			this->setCursor(Qt::CursorShape::ArrowCursor);
+			this->state = State::Normal;
+		}
+	}
+	else {
+		if (
+			this->mousePos.x() >= 0 && this->mousePos.x() <= this->width() &&
+			this->mousePos.y() >= this->sp * this->height() && this->mousePos.y() <= this->ep * this->height()
+			) {
+			this->setCursor(Qt::CursorShape::OpenHandCursor);
+			this->state = State::Hover;
+		}
+		else {
+			this->setCursor(Qt::CursorShape::ArrowCursor);
+			this->state = State::Normal;
+		}
+	}
+	
 	this->spt = 0;
 	this->ept = 1;
 	this->pressY = 0;

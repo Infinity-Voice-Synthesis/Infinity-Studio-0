@@ -33,7 +33,7 @@ Title::~Title()
 void Title::RAII_alloc()
 {
 	while (closeB == nullptr) {
-		closeB = new CloseButton(this);
+		closeB = new(std::nothrow) CloseButton(this);
 		if (closeB == nullptr) {
 			QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"closeB\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 			if (result != QMessageBox::Retry) {
@@ -47,7 +47,7 @@ void Title::RAII_alloc()
 		}
 	}
 	while (maxiumB == nullptr) {
-		maxiumB = new MaxiumButton(this);
+		maxiumB = new(std::nothrow) MaxiumButton(this);
 		if (maxiumB == nullptr) {
 			QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"maxiumB\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 			if (result != QMessageBox::Retry) {
@@ -61,7 +61,7 @@ void Title::RAII_alloc()
 		}
 	}
 	while (floatB == nullptr) {
-		floatB = new FloatButton(this);
+		floatB = new(std::nothrow) FloatButton(this);
 		if (floatB == nullptr) {
 			QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"floatB\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 			if (result != QMessageBox::Retry) {
@@ -75,7 +75,7 @@ void Title::RAII_alloc()
 		}
 	}
 	while (miniumB == nullptr) {
-		miniumB = new MiniumButton(this);
+		miniumB = new(std::nothrow) MiniumButton(this);
 		if (miniumB == nullptr) {
 			QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"miniumB\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 			if (result != QMessageBox::Retry) {
@@ -89,7 +89,7 @@ void Title::RAII_alloc()
 		}
 	}
 	while (menuBar == nullptr) {
-		menuBar = new MainMenuBar(this);
+		menuBar = new(std::nothrow) MainMenuBar(this);
 		if (menuBar == nullptr) {
 			QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"menuBar\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 			if (result != QMessageBox::Retry) {
@@ -168,18 +168,11 @@ void Title::resizeAll()
 	StyleContainer::getContainer().getStyleObject()["title"].Get("icon-px", icon_px);
 	StyleContainer::getContainer().getStyleObject()["title"].Get("icon-py", icon_py);
 
-	QPainter painter(this);
 	QFont font;
 	font.setPixelSize(font_pixel_size_i);
-	painter.setFont(font);
-	QPen pen;
-	pen.setWidth(1);
-	pen.setStyle(Qt::SolidLine);
-	pen.setCapStyle(Qt::RoundCap);
-	pen.setJoinStyle(Qt::RoundJoin);
-	painter.setPen(pen);
+	QFontMetrics fontM(font);
 
-	int head_div_width = painter.fontMetrics().horizontalAdvance(this->titleHead) + (font_border_width_i * 2);
+	int head_div_width = fontM.horizontalAdvance(this->titleHead) + (font_border_width_i * 2);
 
 	int button_area_width = button_width * 3;
 
@@ -198,7 +191,7 @@ void Title::resizeAll()
 		this->menuBar->raise();
 	}
 	else {
-		int title_paint_width = painter.fontMetrics().horizontalAdvance(this->titleHead);
+		int title_paint_width = fontM.horizontalAdvance(this->titleHead);
 		this->menuBar->move((double)((double)screenSize.width() * icon_rWidth), 0);
 		this->menuBar->resize((this->width() / 2) - (head_div_width / 2) - (double)((double)screenSize.width() * icon_rWidth), this->height());
 		this->menuBar->show();

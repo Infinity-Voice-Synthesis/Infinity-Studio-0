@@ -26,10 +26,10 @@ InfinityStudio0::InfinityStudio0(QWidget* parent)
 	this->resize(screenSize.width() * win_width, screenSize.height() * win_height);
 	this->showMaximized();
 
-	connect(title, &Title::closeB_clicked, this, &InfinityStudio0::on_title_close);
-	connect(title, &Title::maxiumB_clicked, this, &InfinityStudio0::on_title_maxium);
-	connect(title, &Title::floatB_clicked, this, &InfinityStudio0::on_title_float);
-	connect(title, &Title::miniumB_clicked, this, &InfinityStudio0::on_title_minium);
+	connect(title, &Title::closeB_clicked, this, &InfinityStudio0::on_titleClose);
+	connect(title, &Title::maxiumB_clicked, this, &InfinityStudio0::on_titleMaximum);
+	connect(title, &Title::floatB_clicked, this, &InfinityStudio0::on_titleFloat);
+	connect(title, &Title::miniumB_clicked, this, &InfinityStudio0::on_titleMinimum);
 
 	connect(title, &Title::windowMove, this, &InfinityStudio0::on_windowMove);
 
@@ -39,6 +39,9 @@ InfinityStudio0::InfinityStudio0(QWidget* parent)
 	connect(&(Infinity_Events::getClass()), &Infinity_Events::background_fast, this, &InfinityStudio0::on_fastModeChanged);
 
 	connect(this, &InfinityStudio0::consoleFastReady, &(Infinity_Events::getClass()), &Infinity_Events::on_console_ready);
+
+	connect(status, &StatusBar::VMBClicked, this, &InfinityStudio0::on_VMSBClicked);
+	connect(status, &StatusBar::VMBActiveCritical, this, &InfinityStudio0::on_VMSBActivedCritial);
 
 	StyleContainer::getContainer().loadPix("pic-background-select", QString::fromStdString(StyleContainer::getContainer().getStyleObject()("pic-background-select")));
 	StyleContainer::getContainer().loadPix("pic-background", QString::fromStdString(StyleContainer::getContainer().getStyleObject()("pic-background")));
@@ -59,7 +62,7 @@ InfinityStudio0::~InfinityStudio0()
 void InfinityStudio0::RAII_alloc()
 {
 	while (title == nullptr) {
-		title = new Title(this);
+		title = new(std::nothrow) Title(this);
 		if (title == nullptr) {
 			QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"title\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 			if (result != QMessageBox::Retry) {
@@ -74,7 +77,7 @@ void InfinityStudio0::RAII_alloc()
 	}
 
 	while (tools == nullptr) {
-		tools = new ToolBar(this);
+		tools = new(std::nothrow) ToolBar(this);
 		if (tools == nullptr) {
 			QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"tools\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 			if (result != QMessageBox::Retry) {
@@ -89,7 +92,7 @@ void InfinityStudio0::RAII_alloc()
 	}
 
 	while (status == nullptr) {
-		status = new StatusBar(this);
+		status = new(std::nothrow) StatusBar(this);
 		if (status == nullptr) {
 			QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"status\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 			if (result != QMessageBox::Retry) {
@@ -104,7 +107,7 @@ void InfinityStudio0::RAII_alloc()
 	}
 
 	while (central == nullptr) {
-		central = new CentralWidget(this);
+		central = new(std::nothrow) CentralWidget(this);
 		if (central == nullptr) {
 			QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"central\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 			if (result != QMessageBox::Retry) {
@@ -119,7 +122,7 @@ void InfinityStudio0::RAII_alloc()
 	}
 
 	while (console == nullptr) {
-		console = new ConsoleWidget(this);
+		console = new(std::nothrow) ConsoleWidget(this);
 		if (console == nullptr) {
 			QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"console\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 			if (result != QMessageBox::Retry) {
@@ -220,8 +223,8 @@ void InfinityStudio0::paintEvent(QPaintEvent* event)
 
 		int pb_wtrue = pic_background.width();
 		int pb_htrue = pic_background.height();
-		int pb_xpos = pb_centx - pb_wtrue / 2;
-		int pb_ypos = pb_centy - pb_htrue / 2;
+		int pb_xpos = pb_centx - pb_wtrue / static_cast<double>(2);
+		int pb_ypos = pb_centy - pb_htrue / static_cast<double>(2);
 
 		painter.drawPixmap(pb_xpos, pb_ypos, pb_wtrue, pb_htrue, pic_background);
 
@@ -265,8 +268,8 @@ void InfinityStudio0::paintEvent(QPaintEvent* event)
 
 		int pb_wtrue = pic_background.width();
 		int pb_htrue = pic_background.height();
-		int pb_xpos = pb_centx - pb_wtrue / 2;
-		int pb_ypos = pb_centy - pb_htrue / 2;
+		int pb_xpos = pb_centx - pb_wtrue / static_cast<double>(2);
+		int pb_ypos = pb_centy - pb_htrue / static_cast<double>(2);
 
 		painter.drawPixmap(pb_xpos, pb_ypos, pb_wtrue, pb_htrue, pic_background);
 	}
@@ -351,22 +354,22 @@ void InfinityStudio0::resizeAll()
 	console->raise();
 }
 
-void InfinityStudio0::on_title_close()
+void InfinityStudio0::on_titleClose()
 {
 	this->close();
 }
 
-void InfinityStudio0::on_title_maxium()
+void InfinityStudio0::on_titleMaximum()
 {
 	this->showMaximized();
 }
 
-void InfinityStudio0::on_title_float()
+void InfinityStudio0::on_titleFloat()
 {
 	this->showNormal();
 }
 
-void InfinityStudio0::on_title_minium()
+void InfinityStudio0::on_titleMinimum()
 {
 	this->showMinimized();
 }
@@ -395,4 +398,39 @@ void InfinityStudio0::on_fastModeChanged(bool fast)
 {
 	this->fastMode = fast;
 	this->update();
+}
+
+void InfinityStudio0::on_VMSBClicked()
+{
+	if (this->status->VMIsFree()) {
+		this->consoleOn = true;
+		this->central->hide();
+		this->console->show();
+		this->console->setFocus();
+		emit this->consoleFastReady(this->consoleOn);
+	}
+	else {
+		QString strtitle = QString::fromStdString(StyleContainer::getContainer().getTransObject()("VMC_Title"));
+		QString strmessage = QString::fromStdString(StyleContainer::getContainer().getTransObject()("VMC_Message"));
+		QMessageBox::StandardButton result = QMessageBox::warning(this, strtitle, strmessage, QMessageBox::StandardButton::Yes | QMessageBox::StandardButton::No, QMessageBox::StandardButton::No);
+		if (result == QMessageBox::StandardButton::Yes) {
+			ILVM::getVM().mainCritical();
+		}
+	}
+}
+
+void InfinityStudio0::on_VMSBActivedCritial()
+{
+	if (this->status->VMIsFree()) {
+		if (!this->consoleOn) {
+			this->consoleOn = true;
+			this->central->hide();
+			this->console->show();
+			this->console->setFocus();
+			emit this->consoleFastReady(this->consoleOn);
+		}
+	}
+	else {
+		ILVM::getVM().mainCritical();
+	}
 }

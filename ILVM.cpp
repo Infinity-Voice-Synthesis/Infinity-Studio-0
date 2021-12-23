@@ -7,6 +7,7 @@ void ILVM::lStdOut(const char* data, size_t size)
 {
 	for (int i = 0; i < size; i++) {
 		ILVM::outStrTemp.append(data[i]);
+		QApplication::processEvents();
 	}
 }
 
@@ -31,14 +32,8 @@ ILVM::ILVM(QObject *parent)
 
 ILVM::~ILVM()
 {
-	if (this->mainThread != nullptr) {
-		if (this->mainThread->isRunning()) {
-			this->mainThread->terminate();
-			this->mainThread->wait();
-		}
-		this->mainThread->deleteLater();
-		this->mainThread = nullptr;
-	}
+	this->mainThread = nullptr;
+
 	for (auto thread : this->threads) {
 		if (thread->isRunning()) {
 			thread->terminate();
@@ -47,6 +42,15 @@ ILVM::~ILVM()
 		thread->deleteLater();
 	}
 	this->threads.clear();
+
+	for (auto thread : this->threads_bin) {
+		if (thread->isRunning()) {
+			thread->terminate();
+			thread->wait();
+		}
+		thread->deleteLater();
+	}
+	this->threads_bin.clear();
 }
 
 ILVM& ILVM::getVM()
@@ -58,7 +62,7 @@ void ILVM::on_commandsIn(QString command)
 {
 	if (this->mainThread == nullptr) {
 		while (this->mainThread == nullptr) {
-			this->mainThread = new LThread(this);
+			this->mainThread = new(std::nothrow) LThread(this);
 			if (this->mainThread == nullptr) {
 				QMessageBox::Button result = QMessageBox::critical(nullptr, "Infinity Studio 0", "Application can't alloc memory for object \"mainThread\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 				if (result != QMessageBox::Retry) {
@@ -71,6 +75,8 @@ void ILVM::on_commandsIn(QString command)
 				}
 			}
 		}
+		this->threads.append(this->mainThread);
+
 		connect(this->mainThread, &LThread::errorMessage, this, &ILVM::errorMessage, Qt::ConnectionType::QueuedConnection);
 		connect(this->mainThread, &LThread::normalMessage, this, &ILVM::normalMessage, Qt::ConnectionType::QueuedConnection);
 		connect(this->mainThread, &LThread::tStarted, this, &ILVM::on_threadStart, Qt::ConnectionType::QueuedConnection);
@@ -99,5 +105,32 @@ void ILVM::on_threadStop(QString id)
 {
 	if (id == this->mainId) {
 		emit this->mainStop();
+	}
+}
+
+void ILVM::mainCritical()
+{
+	for (int i = 0; i < this->threads.size(); i++) {
+		LThread* thread = this->threads.at(i);
+		if (thread->getId() == this->mainId) {
+			if (thread->isRunning()) {
+				this->mainThread = nullptr;
+
+				disconnect(thread, &LThread::errorMessage, this, &ILVM::errorMessage);
+				disconnect(thread, &LThread::normalMessage, this, &ILVM::normalMessage);
+				disconnect(thread, &LThread::tStarted, this, &ILVM::on_threadStart);
+				disconnect(thread, &LThread::tEnded, this, &ILVM::on_threadStop);
+
+				this->threads.removeAt(i);
+				this->threads_bin.append(thread);
+
+				thread->quit();
+
+				emit this->mainStop();
+				emit this->clearMessage();
+				emit this->errorMessage("Warning!!!!! The blocked Lua thread has been put into the background. Please save the data immediately and restart the editor!");
+			}
+			break;
+		}
 	}
 }

@@ -261,8 +261,7 @@ typedef struct luaL_Stream {
 
 /* print an error message */
 #if !defined(lua_writestringerror)
-#define lua_writestringerror(s,p) if(get_LUA_InfOError()!=NULL)(get_LUA_InfOError())((s),(p))//\
-        (fprintf(stderr, (s), (p)), fflush(stderr))
+#define lua_writestringerror(s,p) if(get_LUA_InfOError()!=NULL)(get_LUA_InfOError())((s),(p))//(fprintf(stderr, (s), (p)), fflush(stderr))
 #endif
 
 /* }================================================================== */

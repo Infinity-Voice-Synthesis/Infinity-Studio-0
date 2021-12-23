@@ -103,3 +103,8 @@ void Infinity_Events::on_console_command(QString command)
 {
 	emit this->lua_command(command);
 }
+
+void Infinity_Events::on_luaClearMessage()
+{
+	emit this->console_clear();
+}

@@ -34,16 +34,26 @@ int main(int argc, char* argv[])
 	Infinity_global::getGlobal().set_App_init_OK(true);
 
 	if (Infinity_global::getGlobal().get_RAII_memory_OK()) {
+		QThread eventsThread;
+		Infinity_Events::getClass().moveToThread(&eventsThread);
+		eventsThread.start();
+
 		QObject::connect(&(StyleContainer::getContainer()), &StyleContainer::resource_refresh, &(Infinity_Events::getClass()), &Infinity_Events::on_resource_refresh);
 
 		QObject::connect(&(Infinity_Events::getClass()), &Infinity_Events::lua_command, &(ILVM::getVM()), &ILVM::on_commandsIn, Qt::ConnectionType::QueuedConnection);
 		QObject::connect(&(ILVM::getVM()), &ILVM::errorMessage, &(Infinity_Events::getClass()), &Infinity_Events::on_luaErrorMessage, Qt::ConnectionType::QueuedConnection);
 		QObject::connect(&(ILVM::getVM()), &ILVM::normalMessage, &(Infinity_Events::getClass()), &Infinity_Events::on_luaNormalMessage, Qt::ConnectionType::QueuedConnection);
+		QObject::connect(&(ILVM::getVM()), &ILVM::clearMessage, &(Infinity_Events::getClass()), &Infinity_Events::on_luaClearMessage, Qt::ConnectionType::QueuedConnection);
 		QObject::connect(&(ILVM::getVM()), &ILVM::mainStart, &(Infinity_Events::getClass()), &Infinity_Events::on_luaMainStarted, Qt::ConnectionType::QueuedConnection);
 		QObject::connect(&(ILVM::getVM()), &ILVM::mainStop, &(Infinity_Events::getClass()), &Infinity_Events::on_luaMainEnded, Qt::ConnectionType::QueuedConnection);
 
 		w.show();
-		return a.exec();
+		int retId = a.exec();
+
+		eventsThread.quit();
+		eventsThread.wait();
+
+		return retId;
 	}
 	else {
 		return -1;

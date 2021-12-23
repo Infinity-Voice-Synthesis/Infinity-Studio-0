@@ -214,6 +214,12 @@
     <ClCompile Include="StatusButton.cpp">
       <Filter>Source Files\editor\buttons</Filter>
     </ClCompile>
+    <ClCompile Include="VMStateButton.cpp">
+      <Filter>Source Files\editor\buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="StringQueueThread.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="InfinityStudio0.qrc" />
@@ -472,6 +478,12 @@
     <QtMoc Include="StatusButton.h">
       <Filter>Header Files\editor\buttons</Filter>
     </QtMoc>
+    <QtMoc Include="VMStateButton.h">
+      <Filter>Header Files\editor\buttons</Filter>
+    </QtMoc>
+    <QtMoc Include="StringQueueThread.h">
+      <Filter>Header Files\utils</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -481,10 +493,5 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="LOGO.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtUic Include="StatusButton.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
   </ItemGroup>
 </Project>

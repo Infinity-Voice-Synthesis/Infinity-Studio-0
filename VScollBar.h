@@ -25,6 +25,8 @@ protected:
 	double spt = 0, ept = 1;
 	int pressY = 0;
 
+	QPoint mousePos;
+
 	virtual void paintFlags();
 	void paintEvent(QPaintEvent* event)override;
 	void mousePressEvent(QMouseEvent* event)override;

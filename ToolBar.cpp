@@ -8,7 +8,7 @@ ToolBar::ToolBar(QWidget* parent)
 			ToolButton* button = nullptr;
 			while (button == nullptr) {
 				if (this->buttonMultiList.contains(s)) {
-					button = reinterpret_cast<ToolButton*>(new MultiToolButton(this));
+					button = reinterpret_cast<ToolButton*>(new(std::nothrow) MultiToolButton(this));
 				}
 				else {
 					button = new ToolButton(this);
@@ -44,7 +44,7 @@ ToolBar::ToolBar(QWidget* parent)
 	for (auto s : this->buttonListBottom) {
 		ToolButton* button = nullptr;
 		while (button == nullptr) {
-			button = new ToolButton(this);
+			button = new(std::nothrow) ToolButton(this);
 			if (button == nullptr) {
 				QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"button\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 				if (result != QMessageBox::Retry) {
@@ -69,7 +69,7 @@ ToolBar::ToolBar(QWidget* parent)
 	for (auto s : this->buttonListPermanent) {
 		PermanentToolButton* button = nullptr;
 		while (button == nullptr) {
-			button = new PermanentToolButton(this);
+			button = new(std::nothrow) PermanentToolButton(this);
 			if (button == nullptr) {
 				QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"button\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 				if (result != QMessageBox::Retry) {

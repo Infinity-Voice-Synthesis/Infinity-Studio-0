@@ -4,7 +4,7 @@ ConsoleWidget::ConsoleWidget(QWidget *parent)
 	: RefreshableWidget(parent)
 {
 	while (scoller == nullptr) {
-		scoller = new ConsoleScollBar(this);
+		scoller = new(std::nothrow) ConsoleScollBar(this);
 		if (scoller == nullptr) {
 			QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"scoller\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 			if (result != QMessageBox::Retry) {
@@ -17,24 +17,60 @@ ConsoleWidget::ConsoleWidget(QWidget *parent)
 			}
 		}
 	}
+
+	while (sThread == nullptr) {
+		sThread = new(std::nothrow) StringQueueThread(this);
+		if (sThread == nullptr) {
+			QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"sThread\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
+			if (result != QMessageBox::Retry) {
+				if (Infinity_global::getGlobal().get_App_init_OK()) {
+					Infinity_global::getGlobal().set_RAII_memory_OK(false);
+					QApplication::exit(-1);
+				}
+				Infinity_global::getGlobal().set_RAII_memory_OK(false);
+				return;
+			}
+		}
+	}
+
+	sThread->strConnect([this](QStringList& lines)->void {
+		for (auto& s : lines) {
+			this->linesMutex.lock();
+			this->lines.append(qMakePair(s, LineState::Output));
+			this->linesMutex.unlock();
+			this->haveChange = true;
+		}
+		});
 	
 	connect(this, &ConsoleWidget::command, &(Infinity_Events::getClass()), &Infinity_Events::on_console_command);
-	connect(&(Infinity_Events::getClass()), &Infinity_Events::console_normal, this, &ConsoleWidget::on_luaMessage);
+	connect(&(Infinity_Events::getClass()), &Infinity_Events::console_normal, sThread, &StringQueueThread::addMessage);
+	//connect(&(Infinity_Events::getClass()), &Infinity_Events::console_normal, this, &ConsoleWidget::on_luaMessage);
 	connect(&(Infinity_Events::getClass()), &Infinity_Events::console_error, this, &ConsoleWidget::on_luaError);
+	connect(&(Infinity_Events::getClass()), &Infinity_Events::console_clear, this, &ConsoleWidget::on_luaClear);
 
 	connect(scoller, &ConsoleScollBar::valueChanged, this, &ConsoleWidget::on_ScollValueChanged);
 	connect(scoller, &ConsoleScollBar::wheelChanged, this, &ConsoleWidget::on_WheelChanged);
+
+	sThread->start();
+
 	scoller->show();
 	this->setFocusPolicy(Qt::FocusPolicy::StrongFocus);
 	this->setCursor(Qt::CursorShape::BitmapCursor);
 	this->setMouseTracking(true);
 
 	connect(&curTimer, &QTimer::timeout, this, &ConsoleWidget::on_timerTimeOut);
-	curTimer.start(curWait);
+	connect(&refreshTimer, &QTimer::timeout, this, &ConsoleWidget::on_refreshTimeOut);
 }
 
 ConsoleWidget::~ConsoleWidget()
 {
+	if (sThread->isRunning()) {
+		sThread->requestInterruption();
+		sThread->wait();
+	}
+	sThread->deleteLater();
+	sThread = nullptr;
+
 	scoller->deleteLater();
 	scoller = nullptr;
 }
@@ -192,6 +228,10 @@ void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 	if (this->isHidden()) {
 		return;
 	}
+
+	double cursor_speed = 2;
+	StyleContainer::getContainer().getStyleObject()["console"].Get("cursor-speed", cursor_speed);
+
 	if (event->modifiers() == Qt::KeyboardModifier::NoModifier) {
 		Qt::Key key = static_cast<Qt::Key>(event->key());
 		if (key >= Qt::Key::Key_A && key <= Qt::Key::Key_Z) {
@@ -358,7 +398,7 @@ void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 		this->goDown();
 		this->curTimer.stop();
 		this->showCursor = true;
-		this->curTimer.start(this->curWait);
+		this->curTimer.start(1000 / cursor_speed);
 		this->update();
 	}
 	else if (event->modifiers() == Qt::KeyboardModifier::ShiftModifier) {
@@ -482,7 +522,7 @@ void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 		this->goDown();
 		this->curTimer.stop();
 		this->showCursor = true;
-		this->curTimer.start(this->curWait);
+		this->curTimer.start(1000 / cursor_speed);
 		this->update();
 	}
 }
@@ -494,12 +534,25 @@ void ConsoleWidget::resizeAll()
 	double scoll_width = 0.02;
 	StyleContainer::getContainer().getStyleObject()["console"].Get("scoll-width", scoll_width);
 
+	double fps = 10, cursor_speed = 2;
+	StyleContainer::getContainer().getStyleObject()["console"].Get("fps", fps);
+	StyleContainer::getContainer().getStyleObject()["console"].Get("cursor-speed", cursor_speed);
+
 	int scoll_width_i = screenSize.width() * scoll_width;
 
 	this->scoller->move(this->width() - scoll_width_i, 0);
 	this->scoller->resize(scoll_width_i, this->height());
 	this->scoller->raise();
 	this->scoller->show();
+
+	if (this->curTimer.isActive()) {
+		this->curTimer.stop();
+		this->curTimer.start(1000 / cursor_speed);
+	}
+	if (this->refreshTimer.isActive()) {
+		this->refreshTimer.stop();
+		this->refreshTimer.start(1000 / fps);
+	}
 
 	this->reSplit();
 }
@@ -522,36 +575,46 @@ void ConsoleWidget::doString(QString command)
 {
 	this->strInput.clear();
 	this->cursorPlace = 0;
+	this->linesMutex.lock();
 	this->lines.append(qMakePair(command, LineState::Input));
+	this->linesMutex.unlock();
 	emit this->command(command);
-	this->reSplit();
+	this->haveChange = true;
 }
 
 void ConsoleWidget::on_luaMessage(QString message)
 {
 	QStringList messList = message.split('\n', Qt::KeepEmptyParts);
 	for (auto& s : messList) {
+		this->linesMutex.lock();
 		this->lines.append(qMakePair(s, LineState::Output));
+		this->linesMutex.unlock();
 	}
-	this->reSplit();
+	this->haveChange = true;
 }
 
 void ConsoleWidget::on_luaError(QString message)
 {
 	QStringList messList = message.split('\n', Qt::KeepEmptyParts);
 	for (auto& s : messList) {
+		this->linesMutex.lock();
 		this->lines.append(qMakePair(s, LineState::Error));
+		this->linesMutex.unlock();
 	}
-	this->reSplit();
+	this->haveChange = true;
 }
 
 void ConsoleWidget::on_luaClear()
 {
+	this->linesMutex.lock();
 	this->lines.clear();
+	this->linesMutex.unlock();
+
 	this->lineSplit.clear();
 	this->scoller->setTips({});
 	QPair<double, double> value = this->scoller->setValue(0, 1);
 	this->currentTopLine = 0;
+	
 	this->update();
 }
 
@@ -577,11 +640,11 @@ void ConsoleWidget::reSplit()
 	int lineHeight = this->height() / line_size;
 	int fontPixelSize = lineHeight * font_height;
 
-	QPainter painter(this);
 	QFont font;
 	font.setPixelSize(fontPixelSize);
-	painter.setFont(font);
+	QFontMetrics fontM(font);
 	
+	this->linesMutex.lock();
 	this->lineSplit.clear();
 	
 	for (auto& p : this->lines) {
@@ -594,7 +657,7 @@ void ConsoleWidget::reSplit()
 		
 		QString temp;
 		while (str.length() > 0) {
-			if (painter.fontMetrics().horizontalAdvance(temp + str.at(0)) > paintableWidth) {
+			if (fontM.horizontalAdvance(temp + str.at(0)) > paintableWidth) {
 				this->lineSplit.append(qMakePair(temp, state));
 				temp.clear();
 			}
@@ -605,26 +668,7 @@ void ConsoleWidget::reSplit()
 			this->lineSplit.append(qMakePair(temp, state));
 		}
 	}
-	
-	painter.end();
-
-	QVector<double> tipPlace;
-	for (int i = 0; i < this->lineSplit.size(); i++) {
-		if (this->lineSplit.at(i).second == LineState::Error) {
-			tipPlace.append((double)i / (double)(this->lineSplit.size() + line_size));
-		}
-	}
-	this->scoller->setTips(tipPlace);
-
-	QPair<double, double> value = this->scoller->getValue();
-	int lTop = (this->lineSplit.size() + line_size) * value.first;
-	lTop = qMax(lTop, 0);
-	int lBottom = lTop + line_size;
-
-	this->currentTopLine = lTop;
-	value = this->scoller->setValue((double)lTop / (double)(this->lineSplit.size() + line_size), (double)lBottom / (double)(this->lineSplit.size() + line_size));
-
-	this->update();
+	this->linesMutex.unlock();
 }
 
 void ConsoleWidget::on_timerTimeOut()
@@ -675,4 +719,58 @@ void ConsoleWidget::on_WheelChanged(int delta)
 	QPair<double, double> value = this->scoller->setValue((double)lTop / (double)(this->lineSplit.size() + line_size), (double)lBottom / (double)(this->lineSplit.size() + line_size));
 
 	this->update();
+}
+
+void ConsoleWidget::on_refreshTimeOut()
+{
+	if (this->haveChange) {
+		this->haveChange = false;
+
+		this->reSplit();
+
+		int line_size = 25;
+		StyleContainer::getContainer().getStyleObject()["console"].Get("line-size", line_size);
+
+		QVector<double> tipPlace;
+		for (int i = 0; i < this->lineSplit.size(); i++) {
+			if (this->lineSplit.at(i).second == LineState::Error) {
+				tipPlace.append((double)i / (double)(this->lineSplit.size() + line_size));
+			}
+		}
+		this->scoller->setTips(tipPlace);
+
+		QPair<double, double> value = this->scoller->getValue();
+		int lTop = (this->lineSplit.size() + line_size) * value.first;
+		lTop = qMax(lTop, 0);
+		int lBottom = lTop + line_size;
+
+		this->currentTopLine = lTop;
+		value = this->scoller->setValue((double)lTop / (double)(this->lineSplit.size() + line_size), (double)lBottom / (double)(this->lineSplit.size() + line_size));
+		this->update();
+	}
+}
+
+void ConsoleWidget::showEvent(QShowEvent* event)
+{
+	Q_UNUSED(event);
+	double fps = 10, cursor_speed = 2;
+	StyleContainer::getContainer().getStyleObject()["console"].Get("fps", fps);
+	StyleContainer::getContainer().getStyleObject()["console"].Get("cursor-speed", cursor_speed);
+
+	this->curTimer.start(1000 / cursor_speed);
+	this->refreshTimer.start(1000 / fps);
+}
+
+void ConsoleWidget::hideEvent(QHideEvent* event)
+{
+	Q_UNUSED(event);
+	this->curTimer.stop();
+	this->refreshTimer.stop();
+}
+
+void ConsoleWidget::closeEvent(QCloseEvent* event)
+{
+	Q_UNUSED(event);
+	this->curTimer.stop();
+	this->refreshTimer.stop();
 }

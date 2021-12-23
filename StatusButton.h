@@ -12,8 +12,8 @@ public:
 	StatusButton(QWidget *parent = Q_NULLPTR);
 	~StatusButton();
 
-private:
-
 protected:
 	void paintEvent(QPaintEvent* event)override;
+	QString str;
+
 };

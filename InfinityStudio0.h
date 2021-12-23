@@ -17,6 +17,7 @@
 #include "StatusBar.h"
 #include "CentralWidget.h"
 #include "ConsoleWidget.h"
+#include "ILVM.h"
 
 class InfinityStudio0 : public QMainWindow
 {
@@ -46,16 +47,19 @@ protected:
 	void resizeEvent(QResizeEvent* event)override;
 
 private slots:
-	void on_title_close();
-	void on_title_maxium();
-	void on_title_float();
-	void on_title_minium();
+	void on_titleClose();
+	void on_titleMaximum();
+	void on_titleFloat();
+	void on_titleMinimum();
 
 	void on_windowMove(QPoint pos);
 	void on_resourceRefresh();
 	void on_consoleChanged();
 
 	void on_fastModeChanged(bool fast);
+
+	void on_VMSBClicked();
+	void on_VMSBActivedCritial();
 
 signals:
 	void consoleFastReady(bool fast);

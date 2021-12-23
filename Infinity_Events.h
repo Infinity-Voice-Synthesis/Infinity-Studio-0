@@ -29,6 +29,7 @@ public slots:
 
 	void on_luaErrorMessage(QString message);
 	void on_luaNormalMessage(QString message);
+	void on_luaClearMessage();
 	void on_luaMainStarted();
 	void on_luaMainEnded();
 
@@ -44,6 +45,7 @@ signals:
 
 	void console_error(QString message);
 	void console_normal(QString message);
+	void console_clear();
 	void console_mainStart();
 	void console_mainEnd();
 };

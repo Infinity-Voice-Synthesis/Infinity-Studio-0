@@ -8,6 +8,7 @@
 #include "ConsoleButton.h"
 #include <QMessageBox>
 #include "RefreshableWidget.h"
+#include "VMStateButton.h"
 
 class StatusBar : public RefreshableWidget
 {
@@ -17,10 +18,24 @@ public:
 	StatusBar(QWidget *parent = Q_NULLPTR);
 	~StatusBar();
 
+	bool VMIsFree();
+
 private:
 	ConsoleButton* consoleb = nullptr;
+	VMStateButton* vmb = nullptr;
+
+	bool vmFree = true;
 
 protected:
 	void paintEvent(QPaintEvent* event)override;
 	void resizeAll()override;
+
+private slots:
+	void on_VMMTStart();
+	void on_VMMTEnd();
+
+signals:
+	void VMBClicked();
+	void VMBActiveCritical();
+
 };

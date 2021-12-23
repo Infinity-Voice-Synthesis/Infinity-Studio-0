@@ -4,7 +4,7 @@ CentralWidget::CentralWidget(QWidget *parent)
 	: RefreshableWidget(parent)
 {
 	while (trackw == nullptr) {
-		trackw = new TrackWidget(this);
+		trackw = new(std::nothrow) TrackWidget(this);
 		if (trackw == nullptr) {
 			QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"trackw\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 			if (result != QMessageBox::Retry) {
@@ -18,7 +18,7 @@ CentralWidget::CentralWidget(QWidget *parent)
 		}
 	}
 	while (notew == nullptr) {
-		notew = new NoteWidget(this);
+		notew = new(std::nothrow) NoteWidget(this);
 		if (notew == nullptr) {
 			QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"notew\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 			if (result != QMessageBox::Retry) {
@@ -32,7 +32,7 @@ CentralWidget::CentralWidget(QWidget *parent)
 		}
 	}
 	while (paramw == nullptr) {
-		paramw = new ParamWidget(this);
+		paramw = new(std::nothrow) ParamWidget(this);
 		if (paramw == nullptr) {
 			QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"paramw\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 			if (result != QMessageBox::Retry) {

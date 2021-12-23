@@ -17,6 +17,7 @@ class ILVM : public QObject
 	static ILVM vm;
 
 	QList<LThread*> threads;
+	QList<LThread*> threads_bin;
 	LThread* mainThread = nullptr;
 
 	const QString mainId = "_main";
@@ -30,6 +31,8 @@ public:
 	static void lStdOutLine();
 	static void lStdOutErr(const char* format, const char* data);
 
+	void mainCritical();
+
 public slots:
 	void on_commandsIn(QString command);
 
@@ -40,6 +43,7 @@ private slots:
 signals:
 	void errorMessage(QString message);
 	void normalMessage(QString message);
+	void clearMessage();
 
 	void mainStart();
 	void mainStop();

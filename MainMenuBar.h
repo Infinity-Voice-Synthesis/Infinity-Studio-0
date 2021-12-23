@@ -12,6 +12,7 @@
 #include <QMessageBox>
 #include "StyleContainer.h"
 #include "RefreshableWidget.h"
+#include <QFontMetrics>
 
 class MainMenuBar : public RefreshableWidget
 {

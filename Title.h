@@ -18,6 +18,7 @@
 #include "StyleContainer.h"
 #include "Infinity_Events.h"
 #include "RefreshableWidget.h"
+#include <QFontMetrics>
 
 class Title : public RefreshableWidget
 {

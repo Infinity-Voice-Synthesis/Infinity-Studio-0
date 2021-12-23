@@ -6,7 +6,7 @@ MainMenuBar::MainMenuBar(QWidget* parent)
 	for (int i = 0; i < this->buttonList.size(); i++) {
 		MainMenuButton* button = nullptr;
 		while (button == nullptr) {
-			button = new MainMenuButton(this);
+			button = new(std::nothrow) MainMenuButton(this);
 			if (button == nullptr) {
 				QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"button\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 				if (result != QMessageBox::Retry) {
@@ -27,7 +27,7 @@ MainMenuBar::MainMenuBar(QWidget* parent)
 	}
 	MainMenuButton* moreButton = nullptr;
 	while (moreButton == nullptr) {
-		moreButton = new MainMenuButton(this);
+		moreButton = new(std::nothrow) MainMenuButton(this);
 		if (moreButton == nullptr) {
 			QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"moreButton\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 			if (result != QMessageBox::Retry) {
@@ -61,23 +61,15 @@ void MainMenuBar::resizeAll()
 {
 	QSize screenSize = Infinity_global::getScreenSize();
 
-	QPainter painter(this);
-
 	double font_pixel_size = 0, font_border_width = 0;
 	StyleContainer::getContainer().getStyleObject()["main-menu-bar"].Get("font-pixel-size", font_pixel_size);
 	StyleContainer::getContainer().getStyleObject()["main-menu-bar"].Get("font-border-width", font_border_width);
 	int font_pixel_size_i = font_pixel_size * screenSize.width();
 	int font_border_width_i = font_border_width * screenSize.width();
 
-	QPen pen;
-	pen.setWidth(1);
-	pen.setStyle(Qt::SolidLine);
-	pen.setCapStyle(Qt::RoundCap);
-	pen.setJoinStyle(Qt::RoundJoin);
-	painter.setPen(pen);
 	QFont font;
 	font.setPixelSize(font_pixel_size_i);
-	painter.setFont(font);
+	QFontMetrics fontM(font);
 
 	int button_xpos_temp = 0;
 	this->moreButtonOn = false;
@@ -92,8 +84,8 @@ void MainMenuBar::resizeAll()
 		if (strTrans.isEmpty()) {
 			strTrans = strSource;
 		}
-		int more_font_width = painter.fontMetrics().horizontalAdvance(this->strMore);
-		int font_width = painter.fontMetrics().horizontalAdvance(strTrans);
+		int more_font_width = fontM.horizontalAdvance(this->strMore);
+		int font_width = fontM.horizontalAdvance(strTrans);
 		if ((font_width + more_font_width + font_border_width_i * 4) > (this->width() - button_xpos_temp)) {
 			MainMenuButton* buttonTemp = this->buttons.at(this->buttonList.size());
 			buttonTemp->move(button_xpos_temp, 0);
