@@ -29,11 +29,26 @@ static int luaB_print (lua_State *L) {
     size_t l;
     const char *s = luaL_tolstring(L, i, &l);  /* convert it to string */
     if (i > 1)  /* not the first element? */
-      lua_writestring("\t", 1);  /* add a tab before it */
-    lua_writestring(s, l);  /* print it */
+        if (get_LUA_InfOChar() == NULL) {
+            lua_writestring("\t", 1);  /* add a tab before it */
+        }
+        else {
+            get_LUA_InfOChar()(L, "\t", 1);
+        }
+    if (get_LUA_InfOChar() == NULL) {
+        lua_writestring(s, l);  /* print it */
+    }
+    else {
+        get_LUA_InfOChar()(L, s, l);
+    }
     lua_pop(L, 1);  /* pop result */
   }
-  lua_writeline();
+  if (get_LUA_InfOLine() == NULL) {
+      lua_writeline();
+  }
+  else {
+      get_LUA_InfOLine()(L);
+  }
   return 0;
 }
 

@@ -1,6 +1,10 @@
 #include "ILLibs.h"
 
-QSet<QString> ILLibs::threadDestoried;
+extern "C" {
+#include "Lua/lstate.h"
+}
+
+QString ILLibs::destoryId;
 
 std::function<void(QString&)> ILLibs::console_mesFunction;
 std::function<void(QString&)> ILLibs::console_assFunction;
@@ -9,23 +13,26 @@ std::function<void()> ILLibs::console_clsFunction;
 std::function<bool(QString&)> ILLibs::thread_finFunction;
 std::function<QStringList()> ILLibs::thread_lstFunction;
 std::function<bool(QString&)> ILLibs::thread_creFunction;
-std::function<bool(QString&)> ILLibs::thread_desFunction;
+std::function<bool(QString&)> ILLibs::thread_rmvFunction;
 std::function<bool(QString&)> ILLibs::thread_chkFunction;
+std::function<bool(QString&)> ILLibs::thread_desFunction;
 std::function<bool(QString&, QString&)> ILLibs::thread_runFunction;
 std::function<bool(QString&, QString&)> ILLibs::thread_execFunction;
+std::function<void()> ILLibs::thread_fluFunction;
 
 bool ILLibs::isDestoried(lua_State* state)
 {
-	lua_getfield(state, LUA_REGISTRYINDEX, "_ITHREADID");
-	QString tName = QString::fromStdString(luaL_checkstring(state, -1));
-	return ILLibs::threadDestoried.contains(tName);
+	QMutex* mutex = (QMutex*)state->thread_mutex;
+	QString* str = (QString*)state->thread_id;
+	mutex->lock();
+	QString tName = (*str);
+	mutex->unlock();
+	return tName == ILLibs::destoryId;
 }
 
-void ILLibs::add_destory(QString threadId)
+void ILLibs::set_destory(QString destoryId)
 {
-	if (!ILLibs::threadDestoried.contains(threadId)) {
-		ILLibs::threadDestoried.insert(threadId);
-	}
+	ILLibs::destoryId = destoryId;
 }
 
 void ILLibs::reg_mesFunctions(
@@ -43,19 +50,23 @@ void ILLibs::reg_thrFunctions(
 	std::function<bool(QString&)> thread_finFunction,
 	std::function<QStringList()> thread_lstFunction,
 	std::function<bool(QString&)> thread_creFunction,
-	std::function<bool(QString&)> thread_desFunction,
+	std::function<bool(QString&)> thread_rmvFunction,
 	std::function<bool(QString&)> thread_chkFunction,
+	std::function<bool(QString&)> thread_desFunction,
 	std::function<bool(QString&, QString&)> thread_doFunction,
-	std::function<bool(QString&, QString&)> thread_execFunction
+	std::function<bool(QString&, QString&)> thread_execFunction,
+	std::function<void()> thread_fluFunction
 )
 {
 	ILLibs::thread_finFunction = thread_finFunction;
 	ILLibs::thread_lstFunction = thread_lstFunction;
 	ILLibs::thread_creFunction = thread_creFunction;
-	ILLibs::thread_desFunction = thread_desFunction;
+	ILLibs::thread_rmvFunction = thread_rmvFunction;
 	ILLibs::thread_chkFunction = thread_chkFunction;
+	ILLibs::thread_desFunction = thread_desFunction;
 	ILLibs::thread_runFunction = thread_doFunction;
 	ILLibs::thread_execFunction = thread_execFunction;
+	ILLibs::thread_fluFunction = thread_fluFunction;
 }
 
 int ILLibs::infinity_runtime_scriptPath(lua_State* state)
@@ -103,10 +114,12 @@ int ILLibs::infinity_console_cls(lua_State* state)
 
 int ILLibs::infinity_thread_current(lua_State* state)
 {
-	if (ILLibs::isDestoried(state)) {
-		return 0;
-	}
-	lua_getfield(state, LUA_REGISTRYINDEX, "_ITHREADID");
+	QMutex* mutex = (QMutex*)state->thread_mutex;
+	QString* str = (QString*)state->thread_id;
+	mutex->lock();
+	QString tName = (*str);
+	mutex->unlock();
+	lua_pushstring(state, tName.toStdString().c_str());
 	return 1;
 }
 
@@ -151,12 +164,37 @@ int ILLibs::infinity_thread_create(lua_State* state)
 	return 1;
 }
 
+int ILLibs::infinity_thread_remove(lua_State* state)
+{
+	if (ILLibs::isDestoried(state)) {
+		return 0;
+	}
+	QString id = QString::fromStdString(luaL_checkstring(state, 1));
+	bool ok = ILLibs::thread_rmvFunction(id);
+	if (!ok) {
+		QString error = QString::asprintf("Can't remove thread:%s", qPrintable(id));
+		ILLibs::console_assFunction(error);
+	}
+	lua_pushboolean(state, ok);
+	return 1;
+}
+
 int ILLibs::infinity_thread_destory(lua_State* state)
 {
 	if (ILLibs::isDestoried(state)) {
 		return 0;
 	}
 	QString id = QString::fromStdString(luaL_checkstring(state, 1));
+	QMutex* mutex = (QMutex*)state->thread_mutex;
+	QString* str = (QString*)state->thread_id;
+	mutex->lock();
+	QString tName = (*str);
+	mutex->unlock();
+	if (id == tName) {
+		QString error = "The thread can't destory itself!";
+		ILLibs::console_assFunction(error);
+		return 0;
+	}
 	bool ok = ILLibs::thread_desFunction(id);
 	if (!ok) {
 		QString error = QString::asprintf("Can't destory thread:%s", qPrintable(id));
@@ -206,4 +244,13 @@ int ILLibs::infinity_thread_exec(lua_State* state)
 	}
 	lua_pushboolean(state, ok);
 	return 1;
+}
+
+int ILLibs::infinity_thread_flush(lua_State* state)
+{
+	if (ILLibs::isDestoried(state)) {
+		return 0;
+	}
+	ILLibs::thread_fluFunction();
+	return 0;
 }

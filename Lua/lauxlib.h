@@ -251,17 +251,17 @@ typedef struct luaL_Stream {
 
 /* print a string */
 #if !defined(lua_writestring)
-#define lua_writestring(s,l)   if(get_LUA_InfOChar()!=NULL)(get_LUA_InfOChar())((s),(l))//fwrite((s), sizeof(char), (l), stdout)
+#define lua_writestring(s,l)   fwrite((s), sizeof(char), (l), stdout)//if(get_LUA_InfOChar()!=NULL)(get_LUA_InfOChar())((s),(l))//
 #endif
 
 /* print a newline and flush the output */
 #if !defined(lua_writeline)
-#define lua_writeline()        if(get_LUA_InfOLine()!=NULL)(get_LUA_InfOLine())()//(lua_writestring("\n", 1), fflush(stdout))
+#define lua_writeline()        (lua_writestring("\n", 1), fflush(stdout))//if(get_LUA_InfOLine()!=NULL)(get_LUA_InfOLine())()//
 #endif
 
 /* print an error message */
 #if !defined(lua_writestringerror)
-#define lua_writestringerror(s,p) if(get_LUA_InfOError()!=NULL)(get_LUA_InfOError())((s),(p))//(fprintf(stderr, (s), (p)), fflush(stderr))
+#define lua_writestringerror(s,p) (fprintf(stderr, (s), (p)), fflush(stderr))//if(get_LUA_InfOError()!=NULL)(get_LUA_InfOError())((s),(p))//
 #endif
 
 /* }================================================================== */

@@ -1021,8 +1021,15 @@ static void *l_alloc (void *ud, void *ptr, size_t osize, size_t nsize) {
 static int panic (lua_State *L) {
   const char *msg = lua_tostring(L, -1);
   if (msg == NULL) msg = "error object is not a string";
-  lua_writestringerror("PANIC: unprotected error in call to Lua API (%s)\n",
-                        msg);
+  if (get_LUA_InfOError() == NULL) {
+      lua_writestringerror("PANIC: unprotected error in call to Lua API (%s)\n",
+          msg);
+  }
+  else {
+      get_LUA_InfOError()(L, "PANIC: unprotected error in call to Lua API (%s)\n",
+          msg);
+  }
+  
   return 0;  /* return to Lua to abort */
 }
 
@@ -1066,11 +1073,21 @@ static void warnfoff (void *ud, const char *message, int tocont) {
 */
 static void warnfcont (void *ud, const char *message, int tocont) {
   lua_State *L = (lua_State *)ud;
-  lua_writestringerror("%s", message);  /* write message */
+  if (get_LUA_InfOError() == NULL) {
+      lua_writestringerror("%s", message);  /* write message */
+  }
+  else {
+      get_LUA_InfOError()(L, "%s", message);
+  }
   if (tocont)  /* not the last part? */
     lua_setwarnf(L, warnfcont, L);  /* to be continued */
   else {  /* last part */
-    lua_writestringerror("%s", "\n");  /* finish message with end-of-line */
+      if (get_LUA_InfOError() == NULL) {
+          lua_writestringerror("%s", "\n");  /* finish message with end-of-line */
+      }
+      else {
+          get_LUA_InfOError()(L, "%s", "\n");
+      }
     lua_setwarnf(L, warnfon, L);  /* next call is a new message */
   }
 }
@@ -1079,7 +1096,12 @@ static void warnfcont (void *ud, const char *message, int tocont) {
 static void warnfon (void *ud, const char *message, int tocont) {
   if (checkcontrol((lua_State *)ud, message, tocont))  /* control message? */
     return;  /* nothing else to be done */
-  lua_writestringerror("%s", "Lua warning: ");  /* start a new warning */
+  if (get_LUA_InfOError() == NULL) {
+      lua_writestringerror("%s", "Lua warning: ");  /* start a new warning */
+  }
+  else {
+      get_LUA_InfOError()((lua_State*)ud, "%s", "Lua warning: ");
+  }
   warnfcont(ud, message, tocont);  /* finish processing */
 }
 

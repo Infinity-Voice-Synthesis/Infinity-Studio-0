@@ -614,6 +614,8 @@ void ConsoleWidget::on_luaError(QString message)
 
 void ConsoleWidget::on_luaClear()
 {
+	this->sThread->clear();
+
 	this->linesMutex.lock();
 	this->lines.clear();
 	this->linesMutex.unlock();

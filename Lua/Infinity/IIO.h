@@ -1,10 +1,11 @@
 #pragma once
 
 #include <stdlib.h>
+#include "../lua.h"
 
-typedef void(*LUA_InfOChar_Function)(const char*, size_t);
-typedef void(*LUA_InfOLine_Function)();
-typedef void(*LUA_InfOError_Function)(const char*, const char*);
+typedef void(*LUA_InfOChar_Function)(lua_State*, const char*, size_t);
+typedef void(*LUA_InfOLine_Function)(lua_State*);
+typedef void(*LUA_InfOError_Function)(lua_State*, const char*, const char*);
 
 
 void set_LUA_InfOChar(LUA_InfOChar_Function arg);

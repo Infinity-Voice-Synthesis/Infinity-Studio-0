@@ -2,30 +2,40 @@
 
 ILVM ILVM::vm = ILVM(nullptr);
 QString ILVM::outStrTemp;
-quint64 ILVM::t_count = 0;
 
-void ILVM::lStdOut(const char* data, size_t size)
+void ILVM::lStdOut(lua_State* L, const char* data, size_t size)
 {
+	if (ILLibs::isDestoried(L)) {
+		return;
+	}
 	for (int i = 0; i < size; i++) {
 		ILVM::outStrTemp.append(data[i]);
 		QApplication::processEvents();
 	}
 }
 
-void ILVM::lStdOutLine()
+void ILVM::lStdOutLine(lua_State* L)
 {
+	if (ILLibs::isDestoried(L)) {
+		return;
+	}
 	emit ILVM::getVM().normalMessage(ILVM::outStrTemp);
 	ILVM::outStrTemp.clear();
 }
 
-void ILVM::lStdOutErr(const char* format, const char* data)
+void ILVM::lStdOutErr(lua_State* L, const char* format, const char* data)
 {
+	if (ILLibs::isDestoried(L)) {
+		return;
+	}
 	emit ILVM::getVM().errorMessage(QString::asprintf(format, data));
 }
 
 ILVM::ILVM(QObject *parent)
 	: QObject(parent)
 {
+	ILLibs::set_destory(this->destoryId);
+
 	set_LUA_InfOChar(ILVM::lStdOut);
 	set_LUA_InfOLine(ILVM::lStdOutLine);
 	set_LUA_InfOError(ILVM::lStdOutErr);
@@ -39,10 +49,12 @@ ILVM::ILVM(QObject *parent)
 		[this](QString& id) {return this->findThread(id); },
 		[this] {return this->getThreadList(); },
 		[this](QString& id) {return this->createThread(id); },
-		[this](QString& id) {return this->destoryThread(id); },
+		[this](QString& id) {return this->removeThread(id); },
 		[this](QString& id) {return this->threadIsRunning(id); },
+		[this](QString& id) {return this->destoryThread(id); },
 		[this](QString& id, QString& str) {return this->doStringOnThread(id, str); },
-		[this](QString& id, QString& str) {return this->doFileOnThread(id, str); }
+		[this](QString& id, QString& str) {return this->doFileOnThread(id, str); },
+		[this] {this->flushBin(); }
 	);
 }
 
@@ -100,13 +112,9 @@ void ILVM::on_commandsIn(QString command)
 		connect(this->mainThread, &LThread::tStarted, this, &ILVM::on_threadStart, Qt::ConnectionType::QueuedConnection);
 		connect(this->mainThread, &LThread::tEnded, this, &ILVM::on_threadStop, Qt::ConnectionType::QueuedConnection);
 
-		this->mainThread->setId(this->mainId + "_" + QString::number(ILVM::t_count));
-		ILVM::t_count++;
+		this->mainThread->setId(this->mainId);
 
 		emit this->normalMessage(QString("VM initialized: "  LUA_VERSION));
-	}
-	if (this->mainThread->isRunning()) {
-		emit this->normalMessage("The VM is running.Command will wait in queue.");
 	}
 	if (!this->mainThread->doString(command)) {
 		emit this->errorMessage("Can't execute the command!");
@@ -143,9 +151,8 @@ void ILVM::mainCritical()
 				this->threads.removeAt(i);
 				this->threads_bin.append(thread);
 
+				thread->destoryId(this->destoryId);
 				thread->quit();
-
-				ILLibs::add_destory(thread->getId());
 
 				this->isSafeMode = true;
 
@@ -182,10 +189,12 @@ void ILVM::VMPushAllFunctions(LThread* thread)
 	thread->addFunction("find", ILLibs::infinity_thread_find);
 	thread->addFunction("list", ILLibs::infinity_thread_list);
 	thread->addFunction("create", ILLibs::infinity_thread_create);
-	thread->addFunction("destory", ILLibs::infinity_thread_destory);
+	thread->addFunction("remove", ILLibs::infinity_thread_remove);
 	thread->addFunction("check", ILLibs::infinity_thread_check);
+	thread->addFunction("destory", ILLibs::infinity_thread_destory);
 	thread->addFunction("run", ILLibs::infinity_thread_run);
 	thread->addFunction("exec", ILLibs::infinity_thread_exec);
+	thread->addFunction("flush", ILLibs::infinity_thread_flush);
 	thread->endTable();//Thread
 
 	thread->beginTable("Synth");
@@ -216,11 +225,16 @@ QStringList ILVM::getThreadList()
 
 bool ILVM::createThread(QString id)
 {
-	if (id.startsWith("_main_")) {
+	if (id == this->mainId || id == this->destoryId) {
 		return false;
 	}
 	if (this->findThread(id)) {
 		return false;
+	}
+	for (auto t : this->threads_bin) {
+		if (t->getId() == id) {
+			return false;
+		}
 	}
 
 	LThread* thread = nullptr;
@@ -237,12 +251,7 @@ bool ILVM::createThread(QString id)
 
 	this->threads.append(thread);
 
-	if (this->isSafeMode) {
-		this->VMPushOptionalFunctions(thread);
-	}
-	else {
-		this->VMPushAllFunctions(thread);
-	}
+	this->VMPushAllFunctions(thread);
 
 	connect(thread, &LThread::errorMessage, this, &ILVM::errorMessage, Qt::ConnectionType::QueuedConnection);
 	connect(thread, &LThread::normalMessage, this, &ILVM::normalMessage, Qt::ConnectionType::QueuedConnection);
@@ -254,9 +263,9 @@ bool ILVM::createThread(QString id)
 	return true;
 }
 
-bool ILVM::destoryThread(QString id)
+bool ILVM::removeThread(QString id)
 {
-	if (id.startsWith("_main_")) {
+	if (id == this->mainId || id == this->destoryId) {
 		return false;
 	}
 	for (int i = 0; i < this->threads.size(); i++) {
@@ -280,7 +289,7 @@ bool ILVM::destoryThread(QString id)
 
 bool ILVM::doStringOnThread(QString id, QString str)
 {
-	if (id.startsWith("_main_")) {
+	if (id == this->mainId || id == this->destoryId) {
 		return false;
 	}
 	for (auto t : this->threads) {
@@ -293,7 +302,7 @@ bool ILVM::doStringOnThread(QString id, QString str)
 
 bool ILVM::doFileOnThread(QString id, QString file)
 {
-	if (id.startsWith("_main_")) {
+	if (id == this->mainId || id == this->destoryId) {
 		return false;
 	}
 	for (auto t : this->threads) {
@@ -312,4 +321,40 @@ bool ILVM::threadIsRunning(QString id)
 		}
 	}
 	return false;
+}
+
+bool ILVM::destoryThread(QString id)
+{
+	if (id == this->mainId || id == this->destoryId) {
+		return false;
+	}
+	for (int i = 0; i < this->threads.size(); i++) {
+		LThread* t = this->threads.at(i);
+		if (t->getId() == id) {
+			if (t->isRunning()) {
+				disconnect(t, &LThread::errorMessage, this, &ILVM::errorMessage);
+				disconnect(t, &LThread::normalMessage, this, &ILVM::normalMessage);
+
+				this->threads.removeAt(i);
+				this->threads_bin.append(t);
+
+				t->destoryId(this->destoryId);
+				t->quit();
+
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+void ILVM::flushBin()
+{
+	for (int i = this->threads_bin.size() - 1; i >= 0; i--) {
+		LThread* t = this->threads_bin.at(i);
+		if (!t->isRunning()) {
+			t->deleteLater();
+			this->threads_bin.removeAt(i);
+		}
+	}
 }

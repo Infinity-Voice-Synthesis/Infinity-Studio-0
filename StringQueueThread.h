@@ -13,6 +13,7 @@ public:
 	StringQueueThread(QObject *parent);
 	~StringQueueThread();
 	void strConnect(std::function<void(QStringList&)> func);
+	void clear();
 
 private:
 	QMutex queueMutex;

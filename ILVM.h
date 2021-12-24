@@ -22,7 +22,7 @@ class ILVM : public QObject
 	LThread* mainThread = nullptr;
 
 	const QString mainId = "_main";
-	static quint64 t_count;
+	const QString destoryId = "_destory";
 
 	static QString outStrTemp;
 
@@ -34,21 +34,25 @@ class ILVM : public QObject
 public:
 	static ILVM& getVM();
 
-	static void lStdOut(const char* data, size_t size);
-	static void lStdOutLine();
-	static void lStdOutErr(const char* format, const char* data);
+	static void lStdOut(lua_State* L, const char* data, size_t size);
+	static void lStdOutLine(lua_State* L);
+	static void lStdOutErr(lua_State* L, const char* format, const char* data);
 
 	void mainCritical();
 
 	bool findThread(QString id);
 	QStringList getThreadList();
 	bool createThread(QString id);
+	bool removeThread(QString id);
+
 	bool destoryThread(QString id);
 
 	bool doStringOnThread(QString id, QString str);
 	bool doFileOnThread(QString id, QString file);
 
 	bool threadIsRunning(QString id);
+
+	void flushBin();
 
 public slots:
 	void on_commandsIn(QString command);

@@ -1,9 +1,15 @@
 #include "LThread.h"
 
+extern "C" {
+#include "Lua/lstate.h"
+}
+
 LThread::LThread(QObject *parent)
 	: QThread(parent)
 {
 	this->lstate = luaL_newstate();
+	this->lstate->thread_id = (void*)(&(this->Id));
+	this->lstate->thread_mutex = (void*)(&(this->idMutex));
 	luaL_openlibs(this->lstate);
 
 	bool error1 = luaL_dostring(this->lstate, QString("package.path = '" + QCoreApplication::applicationDirPath() + "/scripts/?.lua;'").toStdString().c_str());
@@ -31,15 +37,15 @@ void LThread::run()
 		if (error) {
 			emit this->errorMessage(QString::fromStdString(lua_tostring(this->lstate, -1)));
 			lua_pop(this->lstate, 1);
+			emit this->tEnded(this->Id);
+			return;
 		}
 	}
-	else if (this->tType == LType::DoString) {
-		while (this->strList.size() > 0) {
-			bool error = luaL_dostring(this->lstate, this->strList.dequeue().toStdString().c_str());
-			if (error) {
-				emit this->errorMessage(QString::fromStdString(lua_tostring(this->lstate, -1)));
-				lua_pop(this->lstate, 1);
-			}
+	while (this->strList.size() > 0) {
+		bool error = luaL_dostring(this->lstate, this->strList.dequeue().toStdString().c_str());
+		if (error) {
+			emit this->errorMessage(QString::fromStdString(lua_tostring(this->lstate, -1)));
+			lua_pop(this->lstate, 1);
 		}
 	}
 	emit this->tEnded(this->Id);
@@ -49,13 +55,11 @@ void LThread::run()
 bool LThread::doFile(QString name)
 {
 	if (!this->Id.isEmpty()) {
-		if (this->tType != LType::DoString) {
-			if (!this->isRunning()) {
-				this->tType = LType::DoFile;
-				this->lFileName = name;
-				this->start();
-				return true;
-			}
+		if (!this->isRunning()) {
+			this->tType = LType::DoFile;
+			this->lFileName = name;
+			this->start();
+			return true;
 		}
 	}
 	return false;
@@ -69,6 +73,9 @@ bool LThread::doString(QString str)
 		if (!this->isRunning()) {
 			this->start();
 		}
+		else {
+			emit this->normalMessage("The VM is running.Command will wait in queue.");
+		}
 		return true;
 	}
 	return false;
@@ -79,9 +86,6 @@ bool LThread::setId(QString id)
 	if (!id.isEmpty()) {
 		if (this->Id.isEmpty()) {
 			this->Id = id;
-			lua_pushstring(this->lstate, "_ITHREADID");
-			lua_pushstring(this->lstate, id.toStdString().c_str());
-			lua_settable(this->lstate, LUA_REGISTRYINDEX);
 			return true;
 		}
 	}
@@ -119,4 +123,15 @@ void LThread::addFunction(QString name, lua_CFunction function)
 	lua_pushstring(this->lstate, name.toStdString().c_str());
 	lua_pushcfunction(this->lstate, function);
 	lua_settable(this->lstate, -3);
+}
+
+bool LThread::destoryId(QString id)
+{
+	if (this->isRunning()) {
+		this->idMutex.lock();
+		this->Id = id;
+		this->idMutex.unlock();
+		return true;
+	}
+	return false;
 }

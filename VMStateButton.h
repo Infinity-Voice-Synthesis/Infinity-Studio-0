@@ -1,6 +1,7 @@
 #pragma once
 
 #include "StatusButton.h"
+#include <QTimer>
 
 class VMStateButton : public StatusButton
 {
@@ -14,6 +15,10 @@ public:
 
 protected:
 	void mouseDoubleClickEvent(QMouseEvent* event)override;
+	void mouseReleaseEvent(QMouseEvent* event)override;
+
+private:
+	QTimer clickTimer;
 
 signals:
 	void activeCritical();

@@ -324,6 +324,8 @@ struct lua_State {
   int basehookcount;
   int hookcount;
   volatile l_signalT hookmask;
+  void* thread_id;
+  void* thread_mutex;
 };
 
 

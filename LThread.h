@@ -3,9 +3,12 @@
 #include <QThread>
 #include <QCoreApplication>
 #include <QQueue>
+#include <QMutex>
 #include "Infinity_global.h"
 
 #include "Lua/lua.hpp"
+
+#include "ILLibs.h"
 
 class LThread : public QThread
 {
@@ -21,6 +24,8 @@ public:
 	bool setId(QString id);
 	QString getId();
 
+	bool destoryId(QString id);
+
 	void beginGlobalTable();
 	void endGlobalTable(QString name);
 
@@ -34,6 +39,7 @@ private:
 
 	QString lFileName;
 	QString Id;
+	QMutex idMutex;
 
 	enum class LType {
 		DoFile,

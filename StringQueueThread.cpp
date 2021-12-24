@@ -41,3 +41,10 @@ void StringQueueThread::run()
 	}
 	this->quit();
 }
+
+void StringQueueThread::clear()
+{
+	this->queueMutex.lock();
+	this->messageQueue.clear();
+	this->queueMutex.unlock();
+}
