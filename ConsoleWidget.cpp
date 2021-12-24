@@ -387,7 +387,9 @@ void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 				this->currentTemp = -1;
 				break;
 			case Qt::Key_BracketRight:
-				this->strInput.insert(this->cursorPlace, QChar(']'));
+				if (!((this->cursorPlace < this->strInput.size()) && (this->strInput.at(this->cursorPlace) == QChar(']')))) {
+					this->strInput.insert(this->cursorPlace, QChar(']'));
+				}
 				this->cursorPlace++;
 				this->currentTemp = -1;
 				break;
@@ -456,7 +458,9 @@ void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 				this->currentTemp = -1;
 				break;
 			case Qt::Key_ParenRight:
-				this->strInput.insert(this->cursorPlace, QChar(')'));
+				if (!((this->cursorPlace < this->strInput.size()) && (this->strInput.at(this->cursorPlace) == QChar(')')))) {
+					this->strInput.insert(this->cursorPlace, QChar(')'));
+				}
 				this->cursorPlace++;
 				this->currentTemp = -1;
 				break;
@@ -481,7 +485,9 @@ void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 				this->currentTemp = -1;
 				break;
 			case Qt::Key_Greater:
-				this->strInput.insert(this->cursorPlace, QChar('>'));
+				if (!((this->cursorPlace < this->strInput.size()) && (this->strInput.at(this->cursorPlace) == QChar('>')))) {
+					this->strInput.insert(this->cursorPlace, QChar('>'));
+				}
 				this->cursorPlace++;
 				this->currentTemp = -1;
 				break;
@@ -511,7 +517,9 @@ void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 				this->currentTemp = -1;
 				break;
 			case Qt::Key_BraceRight:
-				this->strInput.insert(this->cursorPlace, QChar('}'));
+				if (!((this->cursorPlace < this->strInput.size()) && (this->strInput.at(this->cursorPlace) == QChar('}')))) {
+					this->strInput.insert(this->cursorPlace, QChar('}'));
+				}
 				this->cursorPlace++;
 				this->currentTemp = -1;
 				break;

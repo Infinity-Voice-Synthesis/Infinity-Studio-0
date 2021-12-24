@@ -31,9 +31,18 @@ ILVM::ILVM(QObject *parent)
 	set_LUA_InfOError(ILVM::lStdOutErr);
 
 	ILLibs::reg_mesFunctions(
-		[this](QString message) {emit this->normalMessage(message); },
-		[this](QString message) {emit this->errorMessage(message); },
+		[this](QString& message) {emit this->normalMessage(message); },
+		[this](QString& message) {emit this->errorMessage(message); },
 		[this] {emit this->clearMessage(); }
+	);
+	ILLibs::reg_thrFunctions(
+		[this](QString& id) {return this->findThread(id); },
+		[this] {return this->getThreadList(); },
+		[this](QString& id) {return this->createThread(id); },
+		[this](QString& id) {return this->destoryThread(id); },
+		[this](QString& id) {return this->threadIsRunning(id); },
+		[this](QString& id, QString& str) {return this->doStringOnThread(id, str); },
+		[this](QString& id, QString& str) {return this->doFileOnThread(id, str); }
 	);
 }
 
@@ -73,12 +82,7 @@ void ILVM::on_commandsIn(QString command)
 			if (this->mainThread == nullptr) {
 				QMessageBox::Button result = QMessageBox::critical(nullptr, "Infinity Studio 0", "Application can't alloc memory for object \"mainThread\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
 				if (result != QMessageBox::Retry) {
-					if (Infinity_global::getGlobal().get_App_init_OK()) {
-						Infinity_global::getGlobal().set_RAII_memory_OK(false);
-						QApplication::exit(-1);
-					}
-					Infinity_global::getGlobal().set_RAII_memory_OK(false);
-					return;
+					return ;
 				}
 			}
 		}
@@ -163,6 +167,10 @@ void ILVM::VMPushAllFunctions(LThread* thread)
 {
 	thread->beginGlobalTable();
 
+	thread->beginTable("Runtime");
+	thread->addFunction("scriptPath", ILLibs::infinity_runtime_scriptPath);
+	thread->endTable();//Runtime
+
 	thread->beginTable("Console");
 	thread->addFunction("println", ILLibs::infinity_console_println);
 	thread->addFunction("assert", ILLibs::infinity_console_assert);
@@ -170,7 +178,14 @@ void ILVM::VMPushAllFunctions(LThread* thread)
 	thread->endTable();//Console
 
 	thread->beginTable("Thread");
-
+	thread->addFunction("current", ILLibs::infinity_thread_current);
+	thread->addFunction("find", ILLibs::infinity_thread_find);
+	thread->addFunction("list", ILLibs::infinity_thread_list);
+	thread->addFunction("create", ILLibs::infinity_thread_create);
+	thread->addFunction("destory", ILLibs::infinity_thread_destory);
+	thread->addFunction("check", ILLibs::infinity_thread_check);
+	thread->addFunction("run", ILLibs::infinity_thread_run);
+	thread->addFunction("exec", ILLibs::infinity_thread_exec);
 	thread->endTable();//Thread
 
 	thread->beginTable("Synth");
@@ -178,4 +193,123 @@ void ILVM::VMPushAllFunctions(LThread* thread)
 	thread->endTable();//Synth
 
 	thread->endGlobalTable("Infinity");
+}
+
+bool ILVM::findThread(QString id)
+{
+	for (auto t : this->threads) {
+		if (t->getId() == id) {
+			return true;
+		}
+	}
+	return false;
+}
+
+QStringList ILVM::getThreadList()
+{
+	QStringList list;
+	for (auto t : this->threads) {
+		list.append(t->getId());
+	}
+	return list;
+}
+
+bool ILVM::createThread(QString id)
+{
+	if (id.startsWith("_main_")) {
+		return false;
+	}
+	if (this->findThread(id)) {
+		return false;
+	}
+
+	LThread* thread = nullptr;
+
+	while (thread == nullptr) {
+		thread = new(std::nothrow) LThread(this);
+		if (thread == nullptr) {
+			QMessageBox::Button result = QMessageBox::critical(nullptr, "Infinity Studio 0", "Application can't alloc memory for object \"thread\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
+			if (result != QMessageBox::Retry) {
+				return false;
+			}
+		}
+	}
+
+	this->threads.append(thread);
+
+	if (this->isSafeMode) {
+		this->VMPushOptionalFunctions(thread);
+	}
+	else {
+		this->VMPushAllFunctions(thread);
+	}
+
+	connect(thread, &LThread::errorMessage, this, &ILVM::errorMessage, Qt::ConnectionType::QueuedConnection);
+	connect(thread, &LThread::normalMessage, this, &ILVM::normalMessage, Qt::ConnectionType::QueuedConnection);
+	
+	thread->setId(id);
+
+	emit this->normalMessage(QString("VM initialized: "  LUA_VERSION));
+
+	return true;
+}
+
+bool ILVM::destoryThread(QString id)
+{
+	if (id.startsWith("_main_")) {
+		return false;
+	}
+	for (int i = 0; i < this->threads.size(); i++) {
+		LThread* t = this->threads.at(i);
+		if (t->getId() == id) {
+			if (t->isRunning()) {
+				return false;
+			}
+			disconnect(t, &LThread::errorMessage, this, &ILVM::errorMessage);
+			disconnect(t, &LThread::normalMessage, this, &ILVM::normalMessage);
+
+			t->deleteLater();
+
+			this->threads.removeAt(i);
+
+			return true;
+		}
+	}
+	return false;
+}
+
+bool ILVM::doStringOnThread(QString id, QString str)
+{
+	if (id.startsWith("_main_")) {
+		return false;
+	}
+	for (auto t : this->threads) {
+		if (t->getId() == id) {
+			return t->doString(str);
+		}
+	}
+	return false;
+}
+
+bool ILVM::doFileOnThread(QString id, QString file)
+{
+	if (id.startsWith("_main_")) {
+		return false;
+	}
+	for (auto t : this->threads) {
+		if (t->getId() == id) {
+			return t->doFile(file);
+		}
+	}
+	return false;
+}
+
+bool ILVM::threadIsRunning(QString id)
+{
+	for (auto t : this->threads) {
+		if (t->getId() == id) {
+			return t->isRunning();
+		}
+	}
+	return false;
 }

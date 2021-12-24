@@ -27,7 +27,7 @@ void LThread::run()
 {
 	emit this->tStarted(this->Id);
 	if (this->tType == LType::DoFile) {
-		bool error = luaL_dofile(this->lstate, QString(QCoreApplication::applicationDirPath() + "/scripts/" + this->lFileName + ".lua").toStdString().c_str());
+		bool error = luaL_dofile(this->lstate, this->lFileName.toStdString().c_str());
 		if (error) {
 			emit this->errorMessage(QString::fromStdString(lua_tostring(this->lstate, -1)));
 			lua_pop(this->lstate, 1);

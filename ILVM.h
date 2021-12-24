@@ -40,6 +40,16 @@ public:
 
 	void mainCritical();
 
+	bool findThread(QString id);
+	QStringList getThreadList();
+	bool createThread(QString id);
+	bool destoryThread(QString id);
+
+	bool doStringOnThread(QString id, QString str);
+	bool doFileOnThread(QString id, QString file);
+
+	bool threadIsRunning(QString id);
+
 public slots:
 	void on_commandsIn(QString command);
 
