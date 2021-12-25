@@ -9,8 +9,6 @@
 
 class ILLibs
 {
-	static QString destoryId;
-
 	static std::function<void(QString&)> console_mesFunction;
 	static std::function<void(QString&)> console_assFunction;
 	static std::function<void()> console_clsFunction;
@@ -26,9 +24,6 @@ class ILLibs
 	static std::function<void()> thread_fluFunction;
 
 public:
-	static void set_destory(QString destoryId);
-	static bool isDestoried(lua_State* state);
-
 	static void reg_mesFunctions(
 		std::function<void(QString&)> console_mesFunction,
 		std::function<void(QString&)> console_assFunction,

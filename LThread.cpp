@@ -4,12 +4,35 @@ extern "C" {
 #include "Lua/lstate.h"
 }
 
+QString LThread::destoryId;
+
+void LThread::set_destory(QString destoryId)
+{
+	LThread::destoryId = destoryId;
+}
+
+void LThread::hookFunction(lua_State* L, lua_Debug* ar)
+{
+	QMutex* mutex = (QMutex*)L->thread_mutex;
+	QString* str = (QString*)L->thread_id;
+	mutex->lock();
+	QString tName = (*str);
+	mutex->unlock();
+	if (tName == LThread::destoryId) {
+		lua_pushstring(L, "This thread is destoried!");
+		lua_error(L);
+	}
+}
+
 LThread::LThread(QObject *parent)
 	: QThread(parent)
 {
 	this->lstate = luaL_newstate();
 	this->lstate->thread_id = (void*)(&(this->Id));
 	this->lstate->thread_mutex = (void*)(&(this->idMutex));
+
+	lua_sethook(this->lstate, LThread::hookFunction, LUA_MASKLINE, 0);
+
 	luaL_openlibs(this->lstate);
 
 	bool error1 = luaL_dostring(this->lstate, QString("package.path = '" + QCoreApplication::applicationDirPath() + "/scripts/?.lua;'").toStdString().c_str());
@@ -125,7 +148,7 @@ void LThread::addFunction(QString name, lua_CFunction function)
 	lua_settable(this->lstate, -3);
 }
 
-bool LThread::destoryId(QString id)
+bool LThread::destory(QString id)
 {
 	if (this->isRunning()) {
 		this->idMutex.lock();

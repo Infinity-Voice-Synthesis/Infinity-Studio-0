@@ -4,8 +4,6 @@ extern "C" {
 #include "Lua/lstate.h"
 }
 
-QString ILLibs::destoryId;
-
 std::function<void(QString&)> ILLibs::console_mesFunction;
 std::function<void(QString&)> ILLibs::console_assFunction;
 std::function<void()> ILLibs::console_clsFunction;
@@ -19,21 +17,6 @@ std::function<bool(QString&)> ILLibs::thread_desFunction;
 std::function<bool(QString&, QString&)> ILLibs::thread_runFunction;
 std::function<bool(QString&, QString&)> ILLibs::thread_execFunction;
 std::function<void()> ILLibs::thread_fluFunction;
-
-bool ILLibs::isDestoried(lua_State* state)
-{
-	QMutex* mutex = (QMutex*)state->thread_mutex;
-	QString* str = (QString*)state->thread_id;
-	mutex->lock();
-	QString tName = (*str);
-	mutex->unlock();
-	return tName == ILLibs::destoryId;
-}
-
-void ILLibs::set_destory(QString destoryId)
-{
-	ILLibs::destoryId = destoryId;
-}
 
 void ILLibs::reg_mesFunctions(
 	std::function<void(QString&)> console_mesFunction,
@@ -71,9 +54,6 @@ void ILLibs::reg_thrFunctions(
 
 int ILLibs::infinity_runtime_scriptPath(lua_State* state)
 {
-	if (ILLibs::isDestoried(state)) {
-		return 0;
-	}
 	QString name = QString::fromStdString(luaL_checkstring(state, 1));
 	lua_pushstring(state, QString(QCoreApplication::applicationDirPath() + "/scripts/" + name + ".lua").toStdString().c_str());
 	return 1;
@@ -81,9 +61,6 @@ int ILLibs::infinity_runtime_scriptPath(lua_State* state)
 
 int ILLibs::infinity_console_println(lua_State* state)
 {
-	if (ILLibs::isDestoried(state)) {
-		return 0;
-	}
 	QString message = QString::fromStdString(luaL_checkstring(state, 1));
 	if (!message.isEmpty()) {
 		ILLibs::console_mesFunction(message);
@@ -93,9 +70,6 @@ int ILLibs::infinity_console_println(lua_State* state)
 
 int ILLibs::infinity_console_assert(lua_State* state)
 {
-	if (ILLibs::isDestoried(state)) {
-		return 0;
-	}
 	QString message = QString::fromStdString(luaL_checkstring(state, 1));
 	if (!message.isEmpty()) {
 		ILLibs::console_assFunction(message);
@@ -105,9 +79,6 @@ int ILLibs::infinity_console_assert(lua_State* state)
 
 int ILLibs::infinity_console_cls(lua_State* state)
 {
-	if (ILLibs::isDestoried(state)) {
-		return 0;
-	}
 	ILLibs::console_clsFunction();
 	return 0;
 }
@@ -125,9 +96,6 @@ int ILLibs::infinity_thread_current(lua_State* state)
 
 int ILLibs::infinity_thread_find(lua_State* state)
 {
-	if (ILLibs::isDestoried(state)) {
-		return 0;
-	}
 	QString id = QString::fromStdString(luaL_checkstring(state, 1));
 	lua_pushboolean(state, ILLibs::thread_finFunction(id));
 	return 1;
@@ -135,9 +103,6 @@ int ILLibs::infinity_thread_find(lua_State* state)
 
 int ILLibs::infinity_thread_list(lua_State* state)
 {
-	if (ILLibs::isDestoried(state)) {
-		return 0;
-	}
 	QStringList tList = ILLibs::thread_lstFunction();
 	lua_newtable(state);
 	int count = 0;
@@ -151,9 +116,6 @@ int ILLibs::infinity_thread_list(lua_State* state)
 
 int ILLibs::infinity_thread_create(lua_State* state)
 {
-	if (ILLibs::isDestoried(state)) {
-		return 0;
-	}
 	QString id = QString::fromStdString(luaL_checkstring(state, 1));
 	bool ok = ILLibs::thread_creFunction(id);
 	if (!ok) {
@@ -166,9 +128,6 @@ int ILLibs::infinity_thread_create(lua_State* state)
 
 int ILLibs::infinity_thread_remove(lua_State* state)
 {
-	if (ILLibs::isDestoried(state)) {
-		return 0;
-	}
 	QString id = QString::fromStdString(luaL_checkstring(state, 1));
 	bool ok = ILLibs::thread_rmvFunction(id);
 	if (!ok) {
@@ -181,9 +140,6 @@ int ILLibs::infinity_thread_remove(lua_State* state)
 
 int ILLibs::infinity_thread_destory(lua_State* state)
 {
-	if (ILLibs::isDestoried(state)) {
-		return 0;
-	}
 	QString id = QString::fromStdString(luaL_checkstring(state, 1));
 	QMutex* mutex = (QMutex*)state->thread_mutex;
 	QString* str = (QString*)state->thread_id;
@@ -206,9 +162,6 @@ int ILLibs::infinity_thread_destory(lua_State* state)
 
 int ILLibs::infinity_thread_check(lua_State* state)
 {
-	if (ILLibs::isDestoried(state)) {
-		return 0;
-	}
 	QString id = QString::fromStdString(luaL_checkstring(state, 1));
 	lua_pushboolean(state, ILLibs::thread_chkFunction(id));
 	return 1;
@@ -216,9 +169,6 @@ int ILLibs::infinity_thread_check(lua_State* state)
 
 int ILLibs::infinity_thread_run(lua_State* state)
 {
-	if (ILLibs::isDestoried(state)) {
-		return 0;
-	}
 	QString id = QString::fromStdString(luaL_checkstring(state, 1));
 	QString str = QString::fromStdString(luaL_checkstring(state, 2));
 	bool ok = ILLibs::thread_runFunction(id, str);
@@ -232,9 +182,6 @@ int ILLibs::infinity_thread_run(lua_State* state)
 
 int ILLibs::infinity_thread_exec(lua_State* state)
 {
-	if (ILLibs::isDestoried(state)) {
-		return 0;
-	}
 	QString id = QString::fromStdString(luaL_checkstring(state, 1));
 	QString str = QString::fromStdString(luaL_checkstring(state, 2));
 	bool ok = ILLibs::thread_execFunction(id, str);
@@ -248,9 +195,6 @@ int ILLibs::infinity_thread_exec(lua_State* state)
 
 int ILLibs::infinity_thread_flush(lua_State* state)
 {
-	if (ILLibs::isDestoried(state)) {
-		return 0;
-	}
 	ILLibs::thread_fluFunction();
 	return 0;
 }

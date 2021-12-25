@@ -24,7 +24,7 @@ public:
 	bool setId(QString id);
 	QString getId();
 
-	bool destoryId(QString id);
+	bool destory(QString id);
 
 	void beginGlobalTable();
 	void endGlobalTable(QString name);
@@ -33,6 +33,8 @@ public:
 	void endTable();
 
 	void addFunction(QString name, lua_CFunction function);
+
+	static void set_destory(QString destoryId);
 
 private:
 	lua_State* lstate = nullptr;
@@ -49,6 +51,10 @@ private:
 	LType tType = LType::DoFile;
 
 	QQueue<QString> strList;
+
+	static QString destoryId;
+
+	static void hookFunction(lua_State* L, lua_Debug* ar);
 
 protected:
 	void run()override;

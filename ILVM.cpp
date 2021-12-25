@@ -5,9 +5,6 @@ QString ILVM::outStrTemp;
 
 void ILVM::lStdOut(lua_State* L, const char* data, size_t size)
 {
-	if (ILLibs::isDestoried(L)) {
-		return;
-	}
 	for (int i = 0; i < size; i++) {
 		ILVM::outStrTemp.append(data[i]);
 		QApplication::processEvents();
@@ -16,25 +13,19 @@ void ILVM::lStdOut(lua_State* L, const char* data, size_t size)
 
 void ILVM::lStdOutLine(lua_State* L)
 {
-	if (ILLibs::isDestoried(L)) {
-		return;
-	}
 	emit ILVM::getVM().normalMessage(ILVM::outStrTemp);
 	ILVM::outStrTemp.clear();
 }
 
 void ILVM::lStdOutErr(lua_State* L, const char* format, const char* data)
 {
-	if (ILLibs::isDestoried(L)) {
-		return;
-	}
 	emit ILVM::getVM().errorMessage(QString::asprintf(format, data));
 }
 
 ILVM::ILVM(QObject *parent)
 	: QObject(parent)
 {
-	ILLibs::set_destory(this->destoryId);
+	LThread::set_destory(this->destoryId);
 
 	set_LUA_InfOChar(ILVM::lStdOut);
 	set_LUA_InfOLine(ILVM::lStdOutLine);
@@ -151,7 +142,7 @@ void ILVM::mainCritical()
 				this->threads.removeAt(i);
 				this->threads_bin.append(thread);
 
-				thread->destoryId(this->destoryId);
+				thread->destory(this->destoryId);
 				thread->quit();
 
 				this->isSafeMode = true;
@@ -338,7 +329,7 @@ bool ILVM::destoryThread(QString id)
 				this->threads.removeAt(i);
 				this->threads_bin.append(t);
 
-				t->destoryId(this->destoryId);
+				t->destory(this->destoryId);
 				t->quit();
 
 				return true;
