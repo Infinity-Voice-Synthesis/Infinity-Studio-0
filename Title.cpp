@@ -16,6 +16,7 @@ Title::Title(QWidget* parent)
 
 	connect(closeB, &CloseButton::clicked, this, &Title::closeB_clicked);
 	connect(maxiumB, &CloseButton::clicked, this, &Title::maxiumB_clicked);
+	connect(maxiumB, &CloseButton::clicked, [this] {this->wSizeN = reinterpret_cast<QMainWindow*>(this->parent())->size(); });
 	connect(floatB, &CloseButton::clicked, this, &Title::floatB_clicked);
 	connect(miniumB, &CloseButton::clicked, this, &Title::miniumB_clicked);
 	connect(&(Infinity_Events::getClass()), &Infinity_Events::resource_refresh, this, &Title::on_resourceRefresh);
@@ -120,6 +121,11 @@ void Title::RAII_free()
 
 	closeB->deleteLater();
 	closeB = nullptr;
+}
+
+void Title::setSizeMini(QSize size)
+{
+	this->wSizeN = size;
 }
 
 void Title::on_resourceRefresh()
@@ -304,7 +310,7 @@ void Title::mousePressEvent(QMouseEvent* event)
 	if (event->button() == Qt::LeftButton) {
 		this->mousePressed = true;
 		this->mouseStartPoint = event->globalPos();
-		this->windowTopLeftPoint = reinterpret_cast<QWidget*>(parent())->frameGeometry().topLeft();
+		this->windowTopLeftPoint = reinterpret_cast<QWidget*>(this->parent())->frameGeometry().topLeft();
 	}
 }
 
@@ -315,13 +321,25 @@ void Title::mouseMoveEvent(QMouseEvent* event)
 		QPoint distance = event->globalPos() - this->mouseStartPoint;
 
 		if (event->globalPos().y() == 0) {
-			emit maxiumB_clicked();
+			this->wSizeN = reinterpret_cast<QMainWindow*>(this->parent())->size();
+			emit this->maxiumB_clicked();
 		}
 		else {
-			if (reinterpret_cast<QMainWindow*>(parent())->isMaximized()) {
-				emit floatB_clicked();
+			if (reinterpret_cast<QMainWindow*>(this->parent())->isMaximized()) {
+				QSize sizeCurrent = reinterpret_cast<QMainWindow*>(this->parent())->size();
+				double px = static_cast<double>(this->mouseStartPoint.x()) / sizeCurrent.width();
+				double py = static_cast<double>(this->mouseStartPoint.y()) / sizeCurrent.height();
+				int tlx = event->globalPos().x() - this->wSizeN.width() * px;
+				int tly = event->globalPos().y() - this->wSizeN.height() * py;
+				QPoint pointT(tlx, tly);
+				emit this->floatB_clicked();
+				emit this->windowMove(pointT);
+				this->mouseStartPoint = event->globalPos();
+				this->windowTopLeftPoint = pointT;
 			}
-			emit windowMove(this->windowTopLeftPoint + distance);
+			else {
+				emit this->windowMove(this->windowTopLeftPoint + distance);
+			}
 		}
 	}
 }
@@ -343,11 +361,12 @@ void Title::mouseDoubleClickEvent(QMouseEvent* event)
 {
 	if (event->button() == Qt::LeftButton) {
 		this->mousePressed = false;
-		if (reinterpret_cast<QMainWindow*>(parent())->isMaximized()) {
-			emit floatB_clicked();
+		if (reinterpret_cast<QMainWindow*>(this->parent())->isMaximized()) {
+			this->wSizeN = reinterpret_cast<QMainWindow*>(this->parent())->size();
+			emit this->floatB_clicked();
 		}
 		else {
-			emit maxiumB_clicked();
+			emit this->maxiumB_clicked();
 		}
 	}
 }

@@ -29,6 +29,7 @@ public:
 	~Title();
 
 	void setWindowMaxium(bool windowMaxium);
+	void setSizeMini(QSize size);
 
 private:
 	CloseButton* closeB = nullptr;
@@ -40,6 +41,8 @@ private:
 	bool mousePressed = false;
 	QPoint mouseStartPoint;
 	QPoint windowTopLeftPoint;
+
+	QSize wSizeN;
 
 	void RAII_alloc();
 	void RAII_free();

@@ -24,6 +24,7 @@ InfinityStudio0::InfinityStudio0(QWidget* parent)
 	this->setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
 	this->setMouseTracking(true);
 	this->resize(screenSize.width() * win_width, screenSize.height() * win_height);
+	this->title->setSizeMini(QSize(screenSize.width() * win_width, screenSize.height() * win_height));
 	this->showMaximized();
 
 	connect(title, &Title::closeB_clicked, this, &InfinityStudio0::on_titleClose);
