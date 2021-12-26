@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package infinity.dm.renderClass;
+import "note.proto";
+
+message RenderClass {
+    string id=1;
+    repeated infinity.dm.note.Note notes=2;
+    bool rendered=3;
+}

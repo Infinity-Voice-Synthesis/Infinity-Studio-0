@@ -4,7 +4,7 @@
 #include <QCoreApplication>
 #include <QQueue>
 #include <QMutex>
-#include "Infinity_global.h"
+#include <QMap>
 
 #include "Lua/lua.hpp"
 
@@ -36,6 +36,16 @@ public:
 
 	static void set_destory(QString destoryId);
 
+	bool checkShare(QString key);
+	void* newShare(QString key, size_t size);
+	bool removeShare(QString key);
+	void* getShare(QString key);
+	size_t sizeShare(QString key);
+	bool clearShare();
+	QStringList listShare();
+	void lockShare();
+	void unlockShare();
+
 private:
 	lua_State* lstate = nullptr;
 
@@ -55,6 +65,9 @@ private:
 	static QString destoryId;
 
 	static void hookFunction(lua_State* L, lua_Debug* ar);
+
+	QMap<QString, QPair<size_t, void*>> shareData;
+	QMutex shareMutex;
 
 protected:
 	void run()override;

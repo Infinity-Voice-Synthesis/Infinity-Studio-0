@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package infinity.dm.param;
+
+message Param {
+    string name=1;
+    double max=2;
+    double min=3;
+    double default=4;
+    double value=5;
+}

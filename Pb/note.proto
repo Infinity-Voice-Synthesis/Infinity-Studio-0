@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package infinity.dm.note;
+
+import "param.proto";
+import "utils/s_dpair.proto";
+
+message Note {
+    double SP=1;
+    double EP=2;
+    uint32 PIT=3;
+    string name=4;
+    string SDB=5;
+    string flag=6;
+    repeated infinity.dm.param.Param noteParams=7;
+    repeated infinity.utils.s_dpair.Pair x_sampa=8;
+    bool consonant=9;
+}

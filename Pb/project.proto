@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package infinity.dm.project;
+import "track.proto";
+
+message Project {
+    uint32 time=1;
+    uint32 beat=2;
+    double tempo=3;
+    uint32 sps=4;
+    string editor=5;
+    repeated string author=6;
+    repeated infinity.dm.track.Track tracks=7;
+}

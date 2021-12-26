@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package infinity.dm.wpart;
+
+message Part {
+    double SP=1;
+    double EP=2;
+    string waveFile=3;
+    double stp=4;
+}

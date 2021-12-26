@@ -8,6 +8,8 @@
 #include <QMessageBox>
 #include "ILLibs.h"
 
+#define ILVM_COPYRIGHT "Infinity Studio Script Interpreter 1.0.0" "  Copyright (C) 2019-2021 Infinity Synthesis Team"
+
 class ILVM : public QObject
 {
 	Q_OBJECT
@@ -53,6 +55,16 @@ public:
 	bool threadIsRunning(QString id);
 
 	void flushBin();
+
+	bool checkShare(QString id, QString key);
+	void* newShare(QString id, QString key, size_t size);
+	bool removeShare(QString id, QString key);
+	void* getShare(QString id, QString key);
+	size_t sizeShare(QString id, QString key);
+	bool clearShare(QString id);
+	QStringList listShare(QString id);
+	void lockShare(QString id);
+	void unlockShare(QString id);
 
 public slots:
 	void on_commandsIn(QString command);

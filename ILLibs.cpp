@@ -18,6 +18,16 @@ std::function<bool(QString&, QString&)> ILLibs::thread_runFunction;
 std::function<bool(QString&, QString&)> ILLibs::thread_execFunction;
 std::function<void()> ILLibs::thread_fluFunction;
 
+std::function<void* (QString&, QString&, size_t)> ILLibs::share_creFunction;
+std::function<bool(QString&, QString&)> ILLibs::share_finFunction;
+std::function<bool(QString&, QString&)> ILLibs::share_rmvFunction;
+std::function<size_t(QString&, QString&)> ILLibs::share_sizFunction;
+std::function<void* (QString&, QString&)> ILLibs::share_getFunction;
+std::function<bool(QString&)> ILLibs::share_cleFunction;
+std::function<QStringList(QString&)> ILLibs::share_lstFunction;
+std::function<void(QString&)> ILLibs::share_lckFunction;
+std::function<void(QString&)> ILLibs::share_ulkFunction;
+
 void ILLibs::reg_mesFunctions(
 	std::function<void(QString&)> console_mesFunction,
 	std::function<void(QString&)> console_assFunction,
@@ -52,12 +62,54 @@ void ILLibs::reg_thrFunctions(
 	ILLibs::thread_fluFunction = thread_fluFunction;
 }
 
+void ILLibs::reg_shrFunctions(
+	std::function<void* (QString&, QString&, size_t)> share_creFunction,
+	std::function<bool(QString&, QString&)> share_finFunction,
+	std::function<bool(QString&, QString&)> share_rmvFunction,
+	std::function<size_t(QString&, QString&)> share_sizFunction,
+	std::function<void* (QString&, QString&)> share_getFunction,
+	std::function<bool(QString&)> share_cleFunction,
+	std::function<QStringList(QString&)> share_lstFunction,
+	std::function<void(QString&)> share_lckFunction,
+	std::function<void(QString&)> share_ulkFunction
+)
+{
+	ILLibs::share_creFunction = share_creFunction;
+	ILLibs::share_finFunction = share_finFunction;
+	ILLibs::share_rmvFunction = share_rmvFunction;
+	ILLibs::share_sizFunction = share_sizFunction;
+	ILLibs::share_getFunction = share_getFunction;
+	ILLibs::share_cleFunction = share_cleFunction;
+	ILLibs::share_lstFunction = share_lstFunction;
+	ILLibs::share_lckFunction = share_lckFunction;
+	ILLibs::share_ulkFunction = share_ulkFunction;
+}
+
 int ILLibs::infinity_runtime_scriptPath(lua_State* state)
 {
 	QString name = QString::fromStdString(luaL_checkstring(state, 1));
 	lua_pushstring(state, QString(QCoreApplication::applicationDirPath() + "/scripts/" + name + ".lua").toStdString().c_str());
 	return 1;
 }
+
+int ILLibs::infinity_runtime_scriptDir(lua_State* state)
+{
+	lua_pushstring(state, QString(QCoreApplication::applicationDirPath() + "/scripts").toStdString().c_str());
+	return 1;
+}
+
+int ILLibs::infinity_runtime_appPath(lua_State* state)
+{
+	lua_pushstring(state, QString(QCoreApplication::applicationFilePath()).toStdString().c_str());
+	return 1;
+}
+
+int ILLibs::infinity_runtime_appDir(lua_State* state)
+{
+	lua_pushstring(state, QString(QCoreApplication::applicationDirPath()).toStdString().c_str());
+	return 1;
+}
+
 
 int ILLibs::infinity_console_println(lua_State* state)
 {
@@ -196,5 +248,101 @@ int ILLibs::infinity_thread_exec(lua_State* state)
 int ILLibs::infinity_thread_flush(lua_State* state)
 {
 	ILLibs::thread_fluFunction();
+	return 0;
+}
+
+int ILLibs::infinity_thread_share_create(lua_State* state)
+{
+	QString id = QString::fromStdString(luaL_checkstring(state, 1));
+	QString key = QString::fromStdString(luaL_checkstring(state, 2));
+	size_t size = luaL_checkinteger(state, 3);
+	void* result = ILLibs::share_creFunction(id, key, size);
+	if (result == nullptr) {
+		QString error = QString::asprintf("Can't create share data \"%s\" on thread:%s", qPrintable(key), qPrintable(id));
+		ILLibs::console_assFunction(error);
+	}
+	lua_pushlightuserdata(state, result);
+	return 1;
+}
+
+int ILLibs::infinity_thread_share_find(lua_State* state)
+{
+	QString id = QString::fromStdString(luaL_checkstring(state, 1));
+	QString key = QString::fromStdString(luaL_checkstring(state, 2));
+	lua_pushboolean(state, ILLibs::share_finFunction(id, key));
+	return 1;
+}
+
+int ILLibs::infinity_thread_share_remove(lua_State* state)
+{
+	QString id = QString::fromStdString(luaL_checkstring(state, 1));
+	QString key = QString::fromStdString(luaL_checkstring(state, 2));
+	bool ok = ILLibs::share_rmvFunction(id, key);
+	if (!ok) {
+		QString error = QString::asprintf("Can't remove share data \"%s\" on thread:%s", qPrintable(key), qPrintable(id));
+		ILLibs::console_assFunction(error);
+	}
+	lua_pushboolean(state, ok);
+	return 1;
+}
+
+int ILLibs::infinity_thread_share_size(lua_State* state)
+{
+	QString id = QString::fromStdString(luaL_checkstring(state, 1));
+	QString key = QString::fromStdString(luaL_checkstring(state, 2));
+	lua_pushinteger(state, ILLibs::share_sizFunction(id, key));
+	return 1;
+}
+
+int ILLibs::infinity_thread_share_get(lua_State* state)
+{
+	QString id = QString::fromStdString(luaL_checkstring(state, 1));
+	QString key = QString::fromStdString(luaL_checkstring(state, 2));
+	void* result = ILLibs::share_getFunction(id, key);
+	if (result == nullptr) {
+		QString error = QString::asprintf("Can't get share data \"%s\" on thread:%s", qPrintable(key), qPrintable(id));
+		ILLibs::console_assFunction(error);
+	}
+	lua_pushlightuserdata(state, result);
+	return 1;
+}
+
+int ILLibs::infinity_thread_share_clear(lua_State* state)
+{
+	QString id = QString::fromStdString(luaL_checkstring(state, 1));
+	bool ok = ILLibs::share_cleFunction(id);
+	if (!ok) {
+		QString error = QString::asprintf("Can't clear share data on thread:%s", qPrintable(id));
+		ILLibs::console_assFunction(error);
+	}
+	lua_pushboolean(state, ok);
+	return 1;
+}
+
+int ILLibs::infinity_thread_share_list(lua_State* state)
+{
+	QString id = QString::fromStdString(luaL_checkstring(state, 1));
+	QStringList tList = ILLibs::share_lstFunction(id);
+	lua_newtable(state);
+	int count = 0;
+	for (auto& s : tList) {
+		lua_pushnumber(state, ++count);
+		lua_pushstring(state, s.toStdString().c_str());
+		lua_settable(state, -3);
+	}
+	return 1;
+}
+
+int ILLibs::infinity_thread_share_lock(lua_State* state)
+{
+	QString id = QString::fromStdString(luaL_checkstring(state, 1));
+	ILLibs::share_lckFunction(id);
+	return 0;
+}
+
+int ILLibs::infinity_thread_share_unlock(lua_State* state)
+{
+	QString id = QString::fromStdString(luaL_checkstring(state, 1));
+	ILLibs::share_ulkFunction(id);
 	return 0;
 }

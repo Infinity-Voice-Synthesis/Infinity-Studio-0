@@ -47,6 +47,17 @@ ILVM::ILVM(QObject *parent)
 		[this](QString& id, QString& str) {return this->doFileOnThread(id, str); },
 		[this] {this->flushBin(); }
 	);
+	ILLibs::reg_shrFunctions(
+		[this](QString& id, QString& key, size_t size) {return this->newShare(id, key, size); },
+		[this](QString& id, QString& key) {return this->checkShare(id, key); },
+		[this](QString& id, QString& key) {return this->removeShare(id, key); },
+		[this](QString& id, QString& key) {return this->sizeShare(id, key); },
+		[this](QString& id, QString& key) {return this->getShare(id, key); },
+		[this](QString& id) {return this->clearShare(id); },
+		[this](QString& id) {return this->listShare(id); },
+		[this](QString& id) {this->lockShare(id); },
+		[this](QString& id) {this->unlockShare(id); }
+	);
 }
 
 ILVM::~ILVM()
@@ -105,7 +116,8 @@ void ILVM::on_commandsIn(QString command)
 
 		this->mainThread->setId(this->mainId);
 
-		emit this->normalMessage(QString("VM initialized: "  LUA_VERSION));
+		emit this->normalMessage(QString(ILVM_COPYRIGHT));
+		emit this->normalMessage(QString(LUA_COPYRIGHT));
 	}
 	if (!this->mainThread->doString(command)) {
 		emit this->errorMessage("Can't execute the command!");
@@ -167,6 +179,9 @@ void ILVM::VMPushAllFunctions(LThread* thread)
 
 	thread->beginTable("Runtime");
 	thread->addFunction("scriptPath", ILLibs::infinity_runtime_scriptPath);
+	thread->addFunction("scriptDir", ILLibs::infinity_runtime_scriptDir);
+	thread->addFunction("appPath", ILLibs::infinity_runtime_appPath);
+	thread->addFunction("appDir", ILLibs::infinity_runtime_appDir);
 	thread->endTable();//Runtime
 
 	thread->beginTable("Console");
@@ -176,6 +191,19 @@ void ILVM::VMPushAllFunctions(LThread* thread)
 	thread->endTable();//Console
 
 	thread->beginTable("Thread");
+
+	thread->beginTable("Share");
+	thread->addFunction("create", ILLibs::infinity_thread_share_create);
+	thread->addFunction("find", ILLibs::infinity_thread_share_find);
+	thread->addFunction("remove", ILLibs::infinity_thread_share_remove);
+	thread->addFunction("size", ILLibs::infinity_thread_share_size);
+	thread->addFunction("get", ILLibs::infinity_thread_share_get);
+	thread->addFunction("clear", ILLibs::infinity_thread_share_clear);
+	thread->addFunction("list", ILLibs::infinity_thread_share_list);
+	thread->addFunction("lock", ILLibs::infinity_thread_share_lock);
+	thread->addFunction("unlock", ILLibs::infinity_thread_share_unlock);
+	thread->endTable();
+
 	thread->addFunction("current", ILLibs::infinity_thread_current);
 	thread->addFunction("find", ILLibs::infinity_thread_find);
 	thread->addFunction("list", ILLibs::infinity_thread_list);
@@ -249,7 +277,8 @@ bool ILVM::createThread(QString id)
 	
 	thread->setId(id);
 
-	emit this->normalMessage(QString("VM initialized: "  LUA_VERSION));
+	emit this->normalMessage(QString(ILVM_COPYRIGHT));
+	emit this->normalMessage(QString(LUA_COPYRIGHT));
 
 	return true;
 }
@@ -348,4 +377,121 @@ void ILVM::flushBin()
 			this->threads_bin.removeAt(i);
 		}
 	}
+}
+
+bool ILVM::checkShare(QString id, QString key)
+{
+	if (id == this->destoryId) {
+		return false;
+	}
+	for (auto t : this->threads) {
+		if (t->getId() == id) {
+			return t->checkShare(key);
+		}
+	}
+	return false;
+}
+
+void* ILVM::newShare(QString id, QString key, size_t size)
+{
+	if (id == this->destoryId) {
+		return nullptr;
+	}
+	for (auto t : this->threads) {
+		if (t->getId() == id) {
+			return t->newShare(key, size);
+		}
+	}
+	return nullptr;
+}
+
+bool ILVM::removeShare(QString id, QString key)
+{
+	if (id == this->destoryId) {
+		return false;
+	}
+	for (auto t : this->threads) {
+		if (t->getId() == id) {
+			return t->removeShare(key);
+		}
+	}
+	return false;
+}
+
+void* ILVM::getShare(QString id, QString key)
+{
+	if (id == this->destoryId) {
+		return nullptr;
+	}
+	for (auto t : this->threads) {
+		if (t->getId() == id) {
+			return t->getShare(key);
+		}
+	}
+	return nullptr;
+}
+
+size_t ILVM::sizeShare(QString id, QString key)
+{
+	if (id == this->destoryId) {
+		return 0;
+	}
+	for (auto t : this->threads) {
+		if (t->getId() == id) {
+			return t->sizeShare(key);
+		}
+	}
+	return 0;
+}
+
+bool ILVM::clearShare(QString id)
+{
+	if (id == this->destoryId) {
+		return false;
+	}
+	for (auto t : this->threads) {
+		if (t->getId() == id) {
+			return t->clearShare();
+		}
+	}
+	return false;
+}
+
+QStringList ILVM::listShare(QString id)
+{
+	if (id == this->destoryId) {
+		return QStringList();
+	}
+	for (auto t : this->threads) {
+		if (t->getId() == id) {
+			return t->listShare();
+		}
+	}
+	return QStringList();
+}
+
+void ILVM::lockShare(QString id)
+{
+	if (id == this->destoryId) {
+		return;
+	}
+	for (auto t : this->threads) {
+		if (t->getId() == id) {
+			return t->lockShare();
+		}
+	}
+	return;
+}
+
+void ILVM::unlockShare(QString id)
+{
+	if (id == this->destoryId) {
+		return;
+	}
+	for (auto t : this->threads) {
+		if (t->getId() == id) {
+			return t->unlockShare();
+		}
+	}
+	return;
 }

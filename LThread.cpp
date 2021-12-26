@@ -50,6 +50,11 @@ LThread::LThread(QObject *parent)
 LThread::~LThread()
 {
 	lua_close(this->lstate);
+
+	for (auto& p : this->shareData) {
+		free(p.second);
+	}
+	this->shareData.clear();
 }
 
 void LThread::run()
@@ -157,4 +162,89 @@ bool LThread::destory(QString id)
 		return true;
 	}
 	return false;
+}
+
+bool LThread::checkShare(QString key)
+{
+	this->shareMutex.lock();
+	bool result = this->shareData.contains(key);
+	this->shareMutex.unlock();
+	return result;
+}
+
+void* LThread::newShare(QString key, size_t size)
+{
+	if (checkShare(key)) {
+		return nullptr;
+	}
+	this->shareMutex.lock();
+	void* result = malloc(size);
+	this->shareData.insert(key, qMakePair(size, result));
+	this->shareMutex.unlock();
+	return result;
+}
+
+bool LThread::removeShare(QString key)
+{
+	if (!checkShare(key)) {
+		return false;
+	}
+	this->shareMutex.lock();
+	free(this->shareData.value(key).second);
+	this->shareData.remove(key);
+	this->shareMutex.unlock();
+	return true;
+}
+
+void* LThread::getShare(QString key)
+{
+	if (!checkShare(key)) {
+		return nullptr;
+	}
+	this->shareMutex.lock();
+	void* result = this->shareData.value(key).second;
+	this->shareMutex.unlock();
+	return result;
+}
+
+size_t LThread::sizeShare(QString key)
+{
+	if (!checkShare(key)) {
+		return 0;
+	}
+	this->shareMutex.lock();
+	size_t result = this->shareData.value(key).first;
+	this->shareMutex.unlock();
+	return result;
+}
+
+bool LThread::clearShare()
+{
+	this->shareMutex.lock();
+	for (auto& p : this->shareData) {
+		if (p.second != nullptr) {
+			free(p.second);
+		}
+	}
+	this->shareData.clear();
+	this->shareMutex.unlock();
+	return true;
+}
+
+QStringList LThread::listShare()
+{
+	this->shareMutex.lock();
+	QStringList result = this->shareData.keys();
+	this->shareMutex.unlock();
+	return result;
+}
+
+void LThread::lockShare()
+{
+	this->shareMutex.lock();
+}
+
+void LThread::unlockShare()
+{
+	this->shareMutex.unlock();
 }

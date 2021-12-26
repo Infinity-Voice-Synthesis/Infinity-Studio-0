@@ -23,6 +23,16 @@ class ILLibs
 	static std::function<bool(QString&, QString&)> thread_execFunction;
 	static std::function<void()> thread_fluFunction;
 
+	static std::function<void* (QString&, QString&, size_t)> share_creFunction;
+	static std::function<bool(QString&, QString&)> share_finFunction;
+	static std::function<bool(QString&, QString&)> share_rmvFunction;
+	static std::function<size_t(QString&, QString&)> share_sizFunction;
+	static std::function<void* (QString&, QString&)> share_getFunction;
+	static std::function<bool(QString&)> share_cleFunction;
+	static std::function<QStringList(QString&)> share_lstFunction;
+	static std::function<void(QString&)> share_lckFunction;
+	static std::function<void(QString&)> share_ulkFunction;
+
 public:
 	static void reg_mesFunctions(
 		std::function<void(QString&)> console_mesFunction,
@@ -40,7 +50,22 @@ public:
 		std::function<bool(QString&, QString&)> thread_execFunction,
 		std::function<void()> thread_fluFunction
 	);
+	static void reg_shrFunctions(
+		std::function<void* (QString&, QString&, size_t)> share_creFunction,
+		std::function<bool(QString&, QString&)> share_finFunction,
+		std::function<bool(QString&, QString&)> share_rmvFunction,
+		std::function<size_t(QString&, QString&)> share_sizFunction,
+		std::function<void* (QString&, QString&)> share_getFunction,
+		std::function<bool(QString&)> share_cleFunction,
+		std::function<QStringList(QString&)> share_lstFunction,
+		std::function<void(QString&)> share_lckFunction,
+		std::function<void(QString&)> share_ulkFunction
+	);
+
 	static int infinity_runtime_scriptPath(lua_State* state);
+	static int infinity_runtime_scriptDir(lua_State* state);
+	static int infinity_runtime_appPath(lua_State* state);
+	static int infinity_runtime_appDir(lua_State* state);
 
 	static int infinity_console_println(lua_State* state);
 	static int infinity_console_assert(lua_State* state);
@@ -56,5 +81,15 @@ public:
 	static int infinity_thread_run(lua_State* state);
 	static int infinity_thread_exec(lua_State* state);
 	static int infinity_thread_flush(lua_State* state);
+
+	static int infinity_thread_share_create(lua_State* state);
+	static int infinity_thread_share_find(lua_State* state);
+	static int infinity_thread_share_remove(lua_State* state);
+	static int infinity_thread_share_size(lua_State* state);
+	static int infinity_thread_share_get(lua_State* state);
+	static int infinity_thread_share_clear(lua_State* state);
+	static int infinity_thread_share_list(lua_State* state);
+	static int infinity_thread_share_lock(lua_State* state);
+	static int infinity_thread_share_unlock(lua_State* state);
 };
 
