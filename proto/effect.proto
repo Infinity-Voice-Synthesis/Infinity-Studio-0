@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package infinity;
+
+import "tparam.proto";
+
+message Effector {
+    string name = 1;//效果器名称
+    bool isOn = 2;//开启
+    double mix = 3;//混合系数
+
+    repeated infinity.TrackParam params = 4;//参数
+}

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package infinity;
+
+import "track.proto";
+
+message Project {
+    uint32 time = 1;//总时长
+    uint32 beat = 2;//拍号
+    double tempo = 3;//曲速
+    uint64 sRate = 4;//采样率
+
+    string editor = 5;//编辑器记录
+    repeated string authors = 6;//作者编辑记录
+
+    repeated infinity.Track tracks = 7;//轨道
+}

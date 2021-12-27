@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package infinity;
+
+import "note.proto";
+import "tparam.proto";
+import "wave.proto";
+import "effect.proto";
+
+message Track {
+    string name = 1;//轨道名称
+    string color = 2;//轨道颜色
+    string library = 3;//声库
+
+    string timbreA = 4;//音色交叉，A/B
+    string timbreB = 5;//for XSY
+
+    bool isVoice = 6;//人声轨
+
+    bool mute = 7;//静音
+    bool solo = 8;//独奏
+
+    repeated infinity.Note notes = 9;//音符
+    repeated infinity.TrackParam params = 10;//参数
+    repeated infinity.Wave waves = 11;//音频片段
+    repeated infinity.Effector effectors = 12;//效果器
+}

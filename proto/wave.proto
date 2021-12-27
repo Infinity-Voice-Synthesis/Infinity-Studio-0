@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package infinity;
+
+message Wave {
+    uint32 startBeat = 1;//概念同infinity.Note
+    uint32 startTick = 2;//每拍480ticks
+    uint64 length = 3;//by ticks
+
+    string file = 4;//关联文件
+
+    uint64 deviation = 5;//片段开始位置距音频开头时间//by ticks
+}
