@@ -490,6 +490,9 @@
     <ClCompile Include="google\protobuf\util\internal\utility.cc">
       <Filter>google\protobuf\util\internal</Filter>
     </ClCompile>
+    <ClCompile Include="DataModel.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="InfinityStudio0.qrc" />
@@ -555,12 +558,6 @@
     <Filter Include="Source Files\llibs">
       <UniqueIdentifier>{4521b804-ebb0-4eb8-b0b6-71eb68f29d1b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pb">
-      <UniqueIdentifier>{781925e8-5317-488d-8a64-14a74616c6c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pb\utils">
-      <UniqueIdentifier>{ca9abdc3-9e72-4449-a463-9d6248006ad2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="google">
       <UniqueIdentifier>{51cc0050-ae83-4ccf-84e4-0b2e42ddcd51}</UniqueIdentifier>
     </Filter>
@@ -578,6 +575,18 @@
     </Filter>
     <Filter Include="google\protobuf\util\internal">
       <UniqueIdentifier>{9e812c0a-3126-4c2b-83eb-e0fa87996e0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\data">
+      <UniqueIdentifier>{f1636400-0597-40f5-acc0-151cbf2d42b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\data">
+      <UniqueIdentifier>{3ae535c9-698d-408c-8980-3a5fb1abb7e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pb">
+      <UniqueIdentifier>{781925e8-5317-488d-8a64-14a74616c6c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pb\utils">
+      <UniqueIdentifier>{ca9abdc3-9e72-4449-a463-9d6248006ad2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1072,6 +1081,9 @@
     </ClInclude>
     <ClInclude Include="google\protobuf\util\internal\constants.h">
       <Filter>google\protobuf\util\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="DataModel.h">
+      <Filter>Header Files\data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
