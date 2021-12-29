@@ -26,6 +26,7 @@ constexpr Track::Track(
   , name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , color_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , library_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , dictionary_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , timbrea_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , timbreb_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , isvoice_(false)
@@ -54,6 +55,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_track_2eproto::offsets[] PROTO
   PROTOBUF_FIELD_OFFSET(::infinity::Track, name_),
   PROTOBUF_FIELD_OFFSET(::infinity::Track, color_),
   PROTOBUF_FIELD_OFFSET(::infinity::Track, library_),
+  PROTOBUF_FIELD_OFFSET(::infinity::Track, dictionary_),
   PROTOBUF_FIELD_OFFSET(::infinity::Track, timbrea_),
   PROTOBUF_FIELD_OFFSET(::infinity::Track, timbreb_),
   PROTOBUF_FIELD_OFFSET(::infinity::Track, isvoice_),
@@ -74,14 +76,15 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_track_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\013track.proto\022\010infinity\032\nnote.proto\032\014tpa"
-  "ram.proto\032\nwave.proto\032\014effect.proto\"\217\002\n\005"
+  "ram.proto\032\nwave.proto\032\014effect.proto\"\243\002\n\005"
   "Track\022\014\n\004name\030\001 \001(\t\022\r\n\005color\030\002 \001(\t\022\017\n\007li"
-  "brary\030\003 \001(\t\022\017\n\007timbreA\030\004 \001(\t\022\017\n\007timbreB\030"
-  "\005 \001(\t\022\017\n\007isVoice\030\006 \001(\010\022\014\n\004mute\030\007 \001(\010\022\014\n\004"
-  "solo\030\010 \001(\010\022\035\n\005notes\030\t \003(\0132\016.infinity.Not"
-  "e\022$\n\006params\030\n \003(\0132\024.infinity.TrackParam\022"
-  "\035\n\005waves\030\013 \003(\0132\016.infinity.Wave\022%\n\teffect"
-  "ors\030\014 \003(\0132\022.infinity.Effectorb\006proto3"
+  "brary\030\003 \001(\t\022\022\n\ndictionary\030\004 \001(\t\022\017\n\007timbr"
+  "eA\030\005 \001(\t\022\017\n\007timbreB\030\006 \001(\t\022\017\n\007isVoice\030\007 \001"
+  "(\010\022\014\n\004mute\030\010 \001(\010\022\014\n\004solo\030\t \001(\010\022\035\n\005notes\030"
+  "\n \003(\0132\016.infinity.Note\022$\n\006params\030\013 \003(\0132\024."
+  "infinity.TrackParam\022\035\n\005waves\030\014 \003(\0132\016.inf"
+  "inity.Wave\022%\n\teffectors\030\r \003(\0132\022.infinity"
+  ".Effectorb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_track_2eproto_deps[4] = {
   &::descriptor_table_effect_2eproto,
@@ -91,7 +94,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_track_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_track_2eproto = {
-  false, false, 357, descriptor_table_protodef_track_2eproto, "track.proto", 
+  false, false, 377, descriptor_table_protodef_track_2eproto, "track.proto", 
   &descriptor_table_track_2eproto_once, descriptor_table_track_2eproto_deps, 4, 1,
   schemas, file_default_instances, TableStruct_track_2eproto::offsets,
   file_level_metadata_track_2eproto, file_level_enum_descriptors_track_2eproto, file_level_service_descriptors_track_2eproto,
@@ -157,6 +160,11 @@ Track::Track(const Track& from)
     library_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_library(), 
       GetArenaForAllocation());
   }
+  dictionary_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_dictionary().empty()) {
+    dictionary_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_dictionary(), 
+      GetArenaForAllocation());
+  }
   timbrea_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_timbrea().empty()) {
     timbrea_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_timbrea(), 
@@ -177,6 +185,7 @@ inline void Track::SharedCtor() {
 name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 color_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 library_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+dictionary_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 timbrea_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 timbreb_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
@@ -197,6 +206,7 @@ inline void Track::SharedDtor() {
   name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   color_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   library_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  dictionary_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   timbrea_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   timbreb_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
@@ -224,6 +234,7 @@ void Track::Clear() {
   name_.ClearToEmpty();
   color_.ClearToEmpty();
   library_.ClearToEmpty();
+  dictionary_.ClearToEmpty();
   timbrea_.ClearToEmpty();
   timbreb_.ClearToEmpty();
   ::memset(&isvoice_, 0, static_cast<size_t>(
@@ -265,91 +276,100 @@ const char* Track::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inte
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string timbreA = 4;
+      // string dictionary = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+          auto str = _internal_mutable_dictionary();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "infinity.Track.dictionary"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string timbreA = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
           auto str = _internal_mutable_timbrea();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "infinity.Track.timbreA"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string timbreB = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
+      // string timbreB = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
           auto str = _internal_mutable_timbreb();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "infinity.Track.timbreB"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // bool isVoice = 6;
-      case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
+      // bool isVoice = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
           isvoice_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // bool mute = 7;
-      case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
+      // bool mute = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 64)) {
           mute_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // bool solo = 8;
-      case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 64)) {
+      // bool solo = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 72)) {
           solo_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // repeated .infinity.Note notes = 9;
-      case 9:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 74)) {
+      // repeated .infinity.Note notes = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 82)) {
           ptr -= 1;
           do {
             ptr += 1;
             ptr = ctx->ParseMessage(_internal_add_notes(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<74>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<82>(ptr));
         } else goto handle_unusual;
         continue;
-      // repeated .infinity.TrackParam params = 10;
-      case 10:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 82)) {
+      // repeated .infinity.TrackParam params = 11;
+      case 11:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 90)) {
           ptr -= 1;
           do {
             ptr += 1;
             ptr = ctx->ParseMessage(_internal_add_params(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<82>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<90>(ptr));
         } else goto handle_unusual;
         continue;
-      // repeated .infinity.Wave waves = 11;
-      case 11:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 90)) {
+      // repeated .infinity.Wave waves = 12;
+      case 12:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 98)) {
           ptr -= 1;
           do {
             ptr += 1;
             ptr = ctx->ParseMessage(_internal_add_waves(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<90>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<98>(ptr));
         } else goto handle_unusual;
         continue;
-      // repeated .infinity.Effector effectors = 12;
-      case 12:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 98)) {
+      // repeated .infinity.Effector effectors = 13;
+      case 13:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 106)) {
           ptr -= 1;
           do {
             ptr += 1;
             ptr = ctx->ParseMessage(_internal_add_effectors(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<98>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<106>(ptr));
         } else goto handle_unusual;
         continue;
       default: {
@@ -411,74 +431,84 @@ failure:
         3, this->_internal_library(), target);
   }
 
-  // string timbreA = 4;
+  // string dictionary = 4;
+  if (!this->_internal_dictionary().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_dictionary().data(), static_cast<int>(this->_internal_dictionary().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "infinity.Track.dictionary");
+    target = stream->WriteStringMaybeAliased(
+        4, this->_internal_dictionary(), target);
+  }
+
+  // string timbreA = 5;
   if (!this->_internal_timbrea().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_timbrea().data(), static_cast<int>(this->_internal_timbrea().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "infinity.Track.timbreA");
     target = stream->WriteStringMaybeAliased(
-        4, this->_internal_timbrea(), target);
+        5, this->_internal_timbrea(), target);
   }
 
-  // string timbreB = 5;
+  // string timbreB = 6;
   if (!this->_internal_timbreb().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_timbreb().data(), static_cast<int>(this->_internal_timbreb().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "infinity.Track.timbreB");
     target = stream->WriteStringMaybeAliased(
-        5, this->_internal_timbreb(), target);
+        6, this->_internal_timbreb(), target);
   }
 
-  // bool isVoice = 6;
+  // bool isVoice = 7;
   if (this->_internal_isvoice() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(6, this->_internal_isvoice(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(7, this->_internal_isvoice(), target);
   }
 
-  // bool mute = 7;
+  // bool mute = 8;
   if (this->_internal_mute() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(7, this->_internal_mute(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(8, this->_internal_mute(), target);
   }
 
-  // bool solo = 8;
+  // bool solo = 9;
   if (this->_internal_solo() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(8, this->_internal_solo(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(9, this->_internal_solo(), target);
   }
 
-  // repeated .infinity.Note notes = 9;
+  // repeated .infinity.Note notes = 10;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_notes_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(9, this->_internal_notes(i), target, stream);
+      InternalWriteMessage(10, this->_internal_notes(i), target, stream);
   }
 
-  // repeated .infinity.TrackParam params = 10;
+  // repeated .infinity.TrackParam params = 11;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_params_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(10, this->_internal_params(i), target, stream);
+      InternalWriteMessage(11, this->_internal_params(i), target, stream);
   }
 
-  // repeated .infinity.Wave waves = 11;
+  // repeated .infinity.Wave waves = 12;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_waves_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(11, this->_internal_waves(i), target, stream);
+      InternalWriteMessage(12, this->_internal_waves(i), target, stream);
   }
 
-  // repeated .infinity.Effector effectors = 12;
+  // repeated .infinity.Effector effectors = 13;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_effectors_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(12, this->_internal_effectors(i), target, stream);
+      InternalWriteMessage(13, this->_internal_effectors(i), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -497,28 +527,28 @@ size_t Track::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .infinity.Note notes = 9;
+  // repeated .infinity.Note notes = 10;
   total_size += 1UL * this->_internal_notes_size();
   for (const auto& msg : this->notes_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // repeated .infinity.TrackParam params = 10;
+  // repeated .infinity.TrackParam params = 11;
   total_size += 1UL * this->_internal_params_size();
   for (const auto& msg : this->params_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // repeated .infinity.Wave waves = 11;
+  // repeated .infinity.Wave waves = 12;
   total_size += 1UL * this->_internal_waves_size();
   for (const auto& msg : this->waves_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // repeated .infinity.Effector effectors = 12;
+  // repeated .infinity.Effector effectors = 13;
   total_size += 1UL * this->_internal_effectors_size();
   for (const auto& msg : this->effectors_) {
     total_size +=
@@ -546,31 +576,38 @@ size_t Track::ByteSizeLong() const {
         this->_internal_library());
   }
 
-  // string timbreA = 4;
+  // string dictionary = 4;
+  if (!this->_internal_dictionary().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_dictionary());
+  }
+
+  // string timbreA = 5;
   if (!this->_internal_timbrea().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_timbrea());
   }
 
-  // string timbreB = 5;
+  // string timbreB = 6;
   if (!this->_internal_timbreb().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_timbreb());
   }
 
-  // bool isVoice = 6;
+  // bool isVoice = 7;
   if (this->_internal_isvoice() != 0) {
     total_size += 1 + 1;
   }
 
-  // bool mute = 7;
+  // bool mute = 8;
   if (this->_internal_mute() != 0) {
     total_size += 1 + 1;
   }
 
-  // bool solo = 8;
+  // bool solo = 9;
   if (this->_internal_solo() != 0) {
     total_size += 1 + 1;
   }
@@ -615,6 +652,9 @@ void Track::MergeFrom(const Track& from) {
   }
   if (!from._internal_library().empty()) {
     _internal_set_library(from._internal_library());
+  }
+  if (!from._internal_dictionary().empty()) {
+    _internal_set_dictionary(from._internal_dictionary());
   }
   if (!from._internal_timbrea().empty()) {
     _internal_set_timbrea(from._internal_timbrea());
@@ -666,6 +706,11 @@ void Track::InternalSwap(Track* other) {
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       &library_, GetArenaForAllocation(),
       &other->library_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &dictionary_, GetArenaForAllocation(),
+      &other->dictionary_, other->GetArenaForAllocation()
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),

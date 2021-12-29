@@ -11,17 +11,18 @@ message Track {
     string name = 1;//轨道名称
     string color = 2;//轨道颜色
     string library = 3;//声库
+    string dictionary = 4;//字典
 
-    string timbreA = 4;//音色交叉，A/B
-    string timbreB = 5;//for XSY
+    string timbreA = 5;//音色交叉，A/B
+    string timbreB = 6;//for XSY
 
-    bool isVoice = 6;//人声轨
+    bool isVoice = 7;//人声轨
 
-    bool mute = 7;//静音
-    bool solo = 8;//独奏
+    bool mute = 8;//静音
+    bool solo = 9;//独奏
 
-    repeated infinity.Note notes = 9;//音符
-    repeated infinity.TrackParam params = 10;//参数
-    repeated infinity.Wave waves = 11;//音频片段
-    repeated infinity.Effector effectors = 12;//效果器
+    repeated infinity.Note notes = 10;//音符
+    repeated infinity.TrackParam params = 11;//参数
+    repeated infinity.Wave waves = 12;//音频片段
+    repeated infinity.Effector effectors = 13;//效果器
 }

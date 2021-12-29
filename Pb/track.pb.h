@@ -184,20 +184,21 @@ class Track final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kNotesFieldNumber = 9,
-    kParamsFieldNumber = 10,
-    kWavesFieldNumber = 11,
-    kEffectorsFieldNumber = 12,
+    kNotesFieldNumber = 10,
+    kParamsFieldNumber = 11,
+    kWavesFieldNumber = 12,
+    kEffectorsFieldNumber = 13,
     kNameFieldNumber = 1,
     kColorFieldNumber = 2,
     kLibraryFieldNumber = 3,
-    kTimbreAFieldNumber = 4,
-    kTimbreBFieldNumber = 5,
-    kIsVoiceFieldNumber = 6,
-    kMuteFieldNumber = 7,
-    kSoloFieldNumber = 8,
+    kDictionaryFieldNumber = 4,
+    kTimbreAFieldNumber = 5,
+    kTimbreBFieldNumber = 6,
+    kIsVoiceFieldNumber = 7,
+    kMuteFieldNumber = 8,
+    kSoloFieldNumber = 9,
   };
-  // repeated .infinity.Note notes = 9;
+  // repeated .infinity.Note notes = 10;
   int notes_size() const;
   private:
   int _internal_notes_size() const;
@@ -215,7 +216,7 @@ class Track final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::Note >&
       notes() const;
 
-  // repeated .infinity.TrackParam params = 10;
+  // repeated .infinity.TrackParam params = 11;
   int params_size() const;
   private:
   int _internal_params_size() const;
@@ -233,7 +234,7 @@ class Track final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::TrackParam >&
       params() const;
 
-  // repeated .infinity.Wave waves = 11;
+  // repeated .infinity.Wave waves = 12;
   int waves_size() const;
   private:
   int _internal_waves_size() const;
@@ -251,7 +252,7 @@ class Track final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::Wave >&
       waves() const;
 
-  // repeated .infinity.Effector effectors = 12;
+  // repeated .infinity.Effector effectors = 13;
   int effectors_size() const;
   private:
   int _internal_effectors_size() const;
@@ -311,7 +312,21 @@ class Track final :
   std::string* _internal_mutable_library();
   public:
 
-  // string timbreA = 4;
+  // string dictionary = 4;
+  void clear_dictionary();
+  const std::string& dictionary() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_dictionary(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_dictionary();
+  PROTOBUF_MUST_USE_RESULT std::string* release_dictionary();
+  void set_allocated_dictionary(std::string* dictionary);
+  private:
+  const std::string& _internal_dictionary() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_dictionary(const std::string& value);
+  std::string* _internal_mutable_dictionary();
+  public:
+
+  // string timbreA = 5;
   void clear_timbrea();
   const std::string& timbrea() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -325,7 +340,7 @@ class Track final :
   std::string* _internal_mutable_timbrea();
   public:
 
-  // string timbreB = 5;
+  // string timbreB = 6;
   void clear_timbreb();
   const std::string& timbreb() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -339,7 +354,7 @@ class Track final :
   std::string* _internal_mutable_timbreb();
   public:
 
-  // bool isVoice = 6;
+  // bool isVoice = 7;
   void clear_isvoice();
   bool isvoice() const;
   void set_isvoice(bool value);
@@ -348,7 +363,7 @@ class Track final :
   void _internal_set_isvoice(bool value);
   public:
 
-  // bool mute = 7;
+  // bool mute = 8;
   void clear_mute();
   bool mute() const;
   void set_mute(bool value);
@@ -357,7 +372,7 @@ class Track final :
   void _internal_set_mute(bool value);
   public:
 
-  // bool solo = 8;
+  // bool solo = 9;
   void clear_solo();
   bool solo() const;
   void set_solo(bool value);
@@ -380,6 +395,7 @@ class Track final :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr color_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr library_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr dictionary_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr timbrea_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr timbreb_;
   bool isvoice_;
@@ -537,7 +553,53 @@ inline void Track::set_allocated_library(std::string* library) {
   // @@protoc_insertion_point(field_set_allocated:infinity.Track.library)
 }
 
-// string timbreA = 4;
+// string dictionary = 4;
+inline void Track::clear_dictionary() {
+  dictionary_.ClearToEmpty();
+}
+inline const std::string& Track::dictionary() const {
+  // @@protoc_insertion_point(field_get:infinity.Track.dictionary)
+  return _internal_dictionary();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void Track::set_dictionary(ArgT0&& arg0, ArgT... args) {
+ 
+ dictionary_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:infinity.Track.dictionary)
+}
+inline std::string* Track::mutable_dictionary() {
+  std::string* _s = _internal_mutable_dictionary();
+  // @@protoc_insertion_point(field_mutable:infinity.Track.dictionary)
+  return _s;
+}
+inline const std::string& Track::_internal_dictionary() const {
+  return dictionary_.Get();
+}
+inline void Track::_internal_set_dictionary(const std::string& value) {
+  
+  dictionary_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* Track::_internal_mutable_dictionary() {
+  
+  return dictionary_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* Track::release_dictionary() {
+  // @@protoc_insertion_point(field_release:infinity.Track.dictionary)
+  return dictionary_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void Track::set_allocated_dictionary(std::string* dictionary) {
+  if (dictionary != nullptr) {
+    
+  } else {
+    
+  }
+  dictionary_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), dictionary,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:infinity.Track.dictionary)
+}
+
+// string timbreA = 5;
 inline void Track::clear_timbrea() {
   timbrea_.ClearToEmpty();
 }
@@ -583,7 +645,7 @@ inline void Track::set_allocated_timbrea(std::string* timbrea) {
   // @@protoc_insertion_point(field_set_allocated:infinity.Track.timbreA)
 }
 
-// string timbreB = 5;
+// string timbreB = 6;
 inline void Track::clear_timbreb() {
   timbreb_.ClearToEmpty();
 }
@@ -629,7 +691,7 @@ inline void Track::set_allocated_timbreb(std::string* timbreb) {
   // @@protoc_insertion_point(field_set_allocated:infinity.Track.timbreB)
 }
 
-// bool isVoice = 6;
+// bool isVoice = 7;
 inline void Track::clear_isvoice() {
   isvoice_ = false;
 }
@@ -649,7 +711,7 @@ inline void Track::set_isvoice(bool value) {
   // @@protoc_insertion_point(field_set:infinity.Track.isVoice)
 }
 
-// bool mute = 7;
+// bool mute = 8;
 inline void Track::clear_mute() {
   mute_ = false;
 }
@@ -669,7 +731,7 @@ inline void Track::set_mute(bool value) {
   // @@protoc_insertion_point(field_set:infinity.Track.mute)
 }
 
-// bool solo = 8;
+// bool solo = 9;
 inline void Track::clear_solo() {
   solo_ = false;
 }
@@ -689,7 +751,7 @@ inline void Track::set_solo(bool value) {
   // @@protoc_insertion_point(field_set:infinity.Track.solo)
 }
 
-// repeated .infinity.Note notes = 9;
+// repeated .infinity.Note notes = 10;
 inline int Track::_internal_notes_size() const {
   return notes_.size();
 }
@@ -726,7 +788,7 @@ Track::notes() const {
   return notes_;
 }
 
-// repeated .infinity.TrackParam params = 10;
+// repeated .infinity.TrackParam params = 11;
 inline int Track::_internal_params_size() const {
   return params_.size();
 }
@@ -763,7 +825,7 @@ Track::params() const {
   return params_;
 }
 
-// repeated .infinity.Wave waves = 11;
+// repeated .infinity.Wave waves = 12;
 inline int Track::_internal_waves_size() const {
   return waves_.size();
 }
@@ -800,7 +862,7 @@ Track::waves() const {
   return waves_;
 }
 
-// repeated .infinity.Effector effectors = 12;
+// repeated .infinity.Effector effectors = 13;
 inline int Track::_internal_effectors_size() const {
   return effectors_.size();
 }
