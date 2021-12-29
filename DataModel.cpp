@@ -136,6 +136,339 @@ std::list<std::string> DataModel::getProjectAuthors()
 	return result;
 }
 
+void DataModel::addVoiceTrack(std::string name, std::string color, std::string library)
+{
+	if (name.empty()) {
+		return;
+	}
+	if (color.empty()) {
+		return;
+	}
+	if (library.empty()) {
+		return;
+	}
+	{
+		bool flag = false;
+		for (auto& i : Package::getPackage().getLibraryAvailable()) {
+			if (i == library) {
+				flag = true;
+				break;
+			}
+		}
+		if (!flag) {
+			return;
+		}
+	}
+	std::string engine = Package::getPackage().getEngineName(library);
+	{
+		bool flag = false;
+		for (auto& i : Package::getPackage().getEngineAvailable()) {
+			if (i == engine) {
+				flag = true;
+				break;
+			}
+		}
+		if (!flag) {
+			return;
+		}
+	}
+
+	std::string timbre = Package::getPackage().getLibraryTimbreDefault(library);
+
+	bool haveSolo = false;
+	for (auto& t : this->project->tracks()) {
+		if (t.solo()) {
+			haveSolo = true;
+			break;
+		}
+	}
+
+	infinity::Track* track = this->project->add_tracks();
+	track->set_name(name);
+	track->set_color(color);
+	track->set_library(library);
+	track->set_timbrea(timbre);
+	track->set_timbreb(timbre);
+	track->set_isvoice(true);
+	track->set_solo(false);
+	track->set_mute(!haveSolo);
+
+	for (auto& p : Package::getPackage().getEngineParam(engine)) {
+		infinity::TrackParam* param = track->add_params();
+		param->set_name(p.name);
+		param->set_vmax(p.vMax);
+		param->set_vmin(p.vMin);
+		param->set_vdefault(p.vDefault);
+
+		param->set_color(color);
+	}
+
+}
+
+void DataModel::addWaveTrack(std::string name, std::string color)
+{
+	if (name.empty()) {
+		return;
+	}
+	if (color.empty()) {
+		return;
+	}
+	bool haveSolo = false;
+	for (auto& t : this->project->tracks()) {
+		if (t.solo()) {
+			haveSolo = true;
+			break;
+		}
+	}
+
+	infinity::Track* track = this->project->add_tracks();
+	track->set_name(name);
+	track->set_color(color);
+	track->set_isvoice(false);
+	track->set_solo(false);
+	track->set_mute(!haveSolo);
+}
+
+void DataModel::removeTrack(int trackIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (this->project->tracks_size() == 1) {
+			return;
+		}
+		auto it = this->project->mutable_tracks()->begin() + trackIndex;
+		this->project->mutable_tracks()->erase(it);
+	}
+}
+
+void DataModel::setTrackName(int trackIndex, std::string name)
+{
+	if (name.empty()) {
+		return;
+	}
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		this->project->mutable_tracks(trackIndex)->set_name(name);
+	}
+}
+
+std::string DataModel::getTrackName(int trackIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		return this->project->tracks(trackIndex).name();
+	}
+	return std::string();
+}
+
+void DataModel::setTrackColor(int trackIndex, std::string color)
+{
+	if (color.empty()) {
+		return;
+	}
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		this->project->mutable_tracks(trackIndex)->set_color(color);
+	}
+}
+
+std::string DataModel::getTrackColor(int trackIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		return this->project->tracks(trackIndex).color();
+	}
+	return std::string();
+}
+
+void DataModel::setTrackLibrary(int trackIndex, std::string library)
+{
+	if (library.empty()) {
+		return;
+	}
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (library == this->project->tracks(trackIndex).library()) {
+			return;
+		}
+		{
+			bool flag = false;
+			for (auto& i : Package::getPackage().getLibraryAvailable()) {
+				if (i == library) {
+					flag = true;
+					break;
+				}
+			}
+			if (!flag) {
+				return;
+			}
+		}
+		std::string engine = Package::getPackage().getEngineName(library);
+		{
+			bool flag = false;
+			for (auto& i : Package::getPackage().getEngineAvailable()) {
+				if (i == engine) {
+					flag = true;
+					break;
+				}
+			}
+			if (!flag) {
+				return;
+			}
+		}
+
+		std::string timbre = Package::getPackage().getLibraryTimbreDefault(library);
+
+		this->project->mutable_tracks(trackIndex)->set_library(library);
+		this->project->mutable_tracks(trackIndex)->set_timbrea(timbre);
+		this->project->mutable_tracks(trackIndex)->set_timbreb(timbre);
+	}
+}
+
+std::string DataModel::getTrackLibrary(int trackIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		return this->project->tracks(trackIndex).library();
+	}
+	return std::string();
+}
+
+void DataModel::setTrackTimbreA(int trackIndex, std::string timbre)
+{
+	if (timbre.empty()) {
+		return;
+	}
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (timbre == this->project->tracks(trackIndex).timbrea()) {
+			return;
+		}
+		{
+			bool flag = false;
+			for (auto& i : Package::getPackage().getLibraryTimbre(this->project->tracks(trackIndex).library())) {
+				if (i == timbre) {
+					flag = true;
+					break;
+				}
+			}
+			if (!flag) {
+				return;
+			}
+		}
+		this->project->mutable_tracks(trackIndex)->set_timbrea(timbre);
+	}
+}
+
+std::string DataModel::getTrackTimbreA(int trackIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		return this->project->tracks(trackIndex).timbrea();
+	}
+	return std::string();
+}
+
+void DataModel::setTrackTimbreB(int trackIndex, std::string timbre)
+{
+	if (timbre.empty()) {
+		return;
+	}
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (timbre == this->project->tracks(trackIndex).timbreb()) {
+			return;
+		}
+		{
+			bool flag = false;
+			for (auto& i : Package::getPackage().getLibraryTimbre(this->project->tracks(trackIndex).library())) {
+				if (i == timbre) {
+					flag = true;
+					break;
+				}
+			}
+			if (!flag) {
+				return;
+			}
+		}
+		this->project->mutable_tracks(trackIndex)->set_timbreb(timbre);
+	}
+}
+
+std::string DataModel::getTrackTimbreB(int trackIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		return this->project->tracks(trackIndex).timbreb();
+	}
+	return std::string();
+}
+
+void DataModel::setTrackMute(int trackIndex, bool mute)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (mute == this->project->tracks(trackIndex).mute()) {
+			return;
+		}//未作改动
+		if (this->project->tracks(trackIndex).solo()) {
+			return;
+		}//当前轨solo，mute不可改动，必为false
+		if (!mute) {
+			bool haveSolo = false;
+			for (auto& t : this->project->tracks()) {
+				if (t.solo()) {
+					haveSolo = true;
+					return;
+				}
+			}
+		}//存在其他轨solo，当前mute不可改动，必为true
+		this->project->mutable_tracks(trackIndex)->set_mute(mute);
+	}
+}
+
+bool DataModel::getTrackMute(int trackIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		return this->project->tracks(trackIndex).mute();
+	}
+	return false;
+}
+
+void DataModel::setTrackSolo(int trackIndex, bool solo)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (solo == this->project->tracks(trackIndex).solo()) {
+			return;
+		}//未作改动
+		this->project->mutable_tracks(trackIndex)->set_solo(solo);
+		if (solo) {
+			this->project->mutable_tracks(trackIndex)->set_mute(false);//关闭当前轨mute
+			for (int i = 0; i < this->project->tracks_size(); i++) {
+				if (!this->project->tracks(i).solo()) {
+					this->project->mutable_tracks(i)->set_mute(true);
+				}
+			}//将所有非solo轨设为mute
+		}
+		else  {
+			bool haveSolo = false;
+			for (auto& t : this->project->tracks()) {
+				if (t.solo()) {
+					haveSolo = true;
+					break;
+				}
+			}//判断是否还存在solo
+			if (haveSolo) {
+				this->project->mutable_tracks(trackIndex)->set_mute(true);
+			}//有solo，当前轨设为mute
+			else {
+				for (int i = 0; i < this->project->tracks_size(); i++) {
+					if (this->project->tracks(i).mute()) {
+						this->project->mutable_tracks(i)->set_mute(false);
+					}
+				}
+			}//无solo，所有轨取消mute
+		}
+	}
+}
+
+bool DataModel::getTrackSolo(int trackIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		return this->project->tracks(trackIndex).solo();
+	}
+	return false;
+}
+
+
 //Utils
 
 std::pair<uint32_t, uint32_t> DataModel::Utils::getEP(uint32_t startBeat, uint32_t startTick, uint64_t length)

@@ -493,6 +493,9 @@
     <ClCompile Include="DataModel.cpp">
       <Filter>Source Files\data</Filter>
     </ClCompile>
+    <ClCompile Include="Package.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="InfinityStudio0.qrc" />
@@ -1083,6 +1086,9 @@
       <Filter>google\protobuf\util\internal</Filter>
     </ClInclude>
     <ClInclude Include="DataModel.h">
+      <Filter>Header Files\data</Filter>
+    </ClInclude>
+    <ClInclude Include="Package.h">
       <Filter>Header Files\data</Filter>
     </ClInclude>
   </ItemGroup>

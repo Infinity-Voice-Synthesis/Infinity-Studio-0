@@ -255,6 +255,7 @@
     <ClCompile Include="MiniumButton.cpp" />
     <ClCompile Include="MultiToolButton.cpp" />
     <ClCompile Include="NoteWidget.cpp" />
+    <ClCompile Include="Package.cpp" />
     <ClCompile Include="ParamWidget.cpp" />
     <ClCompile Include="Pb\effect.pb.cc" />
     <ClCompile Include="Pb\note.pb.cc" />
@@ -470,6 +471,7 @@
     <ClInclude Include="Lua\lundump.h" />
     <ClInclude Include="Lua\lvm.h" />
     <ClInclude Include="Lua\lzio.h" />
+    <ClInclude Include="Package.h" />
     <ClInclude Include="Pb\effect.pb.h" />
     <ClInclude Include="Pb\note.pb.h" />
     <ClInclude Include="Pb\nparam.pb.h" />
