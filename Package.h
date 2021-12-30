@@ -1,7 +1,8 @@
-#pragma once
+ï»¿#pragma once
 
 #include <string>
 #include <list>
+#include <map>
 
 class Package
 {
@@ -21,14 +22,21 @@ public:
 		double vDefault;
 	};
 
-	//Éù¿â
+	//å£°åº“
 	std::list<std::string> getLibraryAvailable();
 	std::string getEngineName(std::string library);
 	std::list<std::string> getLibraryTimbre(std::string library);
 	std::string getLibraryTimbreDefault(std::string library);
+	std::string getLibraryDictionaryDefault(std::string library);
 
-	//ÒýÇæ
+	//å¼•æ“Ž
 	std::list<std::string> getEngineAvailable();
 	std::list<Package::Param> getEngineParam(std::string engine);//ugly!
+	std::list<Package::Param> getEngineNoteParam(std::string engine);//ugly!
+	bool getEngineSplit(std::string engine);
+
+	//å­—å…¸
+	std::list<std::string> getDictionaryAvailable();
+	std::pair<std::map<std::string, int64_t>, bool> getDictionaryPhoneme(std::string dictionary, std::string name);
 };
 

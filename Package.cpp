@@ -1,4 +1,4 @@
-#include "Package.h"
+﻿#include "Package.h"
 
 Package Package::_package;
 
@@ -37,9 +37,9 @@ std::string Package::getLibraryTimbreDefault(std::string library)
 	return std::string();
 }
 
-std::list<Package::Param> Package::getEngineParam(std::string engine)
+std::string Package::getLibraryDictionaryDefault(std::string library)
 {
-	return std::list<Package::Param>();
+	return std::string();
 }
 
 //
@@ -47,4 +47,31 @@ std::list<Package::Param> Package::getEngineParam(std::string engine)
 std::list<std::string> Package::getEngineAvailable()
 {
 	return std::list<std::string>();
+}
+
+std::list<Package::Param> Package::getEngineParam(std::string engine)
+{
+	return std::list<Package::Param>();
+}
+
+std::list<Package::Param> Package::getEngineNoteParam(std::string engine)
+{
+	return std::list<Package::Param>();
+}
+
+bool Package::getEngineSplit(std::string engine)
+{
+	return false;
+}
+
+//
+
+std::list<std::string> Package::getDictionaryAvailable()
+{
+	return std::list<std::string>();
+}
+
+std::pair<std::map<std::string, int64_t>, bool> Package::getDictionaryPhoneme(std::string dictionary, std::string name)
+{
+	return std::make_pair(std::map<std::string, int64_t>(), false);
 }
