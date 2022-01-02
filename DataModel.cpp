@@ -14,7 +14,7 @@ DataModel::DataModel()
 		exit(-1);
 	}
 
-	project->set_time(40);
+	project->set_time(0);
 	project->set_beat(4);
 	project->set_tempo(120.00);
 	project->set_srate(48000);
@@ -27,7 +27,7 @@ DataModel::~DataModel()
 	project = nullptr;
 }
 
-void DataModel::setProjectTime(uint32_t time)
+void DataModel::setProjectTime()
 {
 	uint32_t minTime = 0;
 	for (auto& i : this->project->tracks()) {
@@ -61,11 +61,10 @@ void DataModel::setProjectTime(uint32_t time)
 			}//效果器也参与判断（同参数不重叠
 		}
 	}
-	time = std::max(minTime, time);//总时长不得短于最后元素
-	if (time == this->project->time()) {
+	if (minTime == this->project->time()) {
 		return;
 	}
-	this->project->set_time(time);
+	this->project->set_time(minTime);//time永远与最后元素齐平
 	this->viewFunc();
 }
 
@@ -278,6 +277,11 @@ void DataModel::removeTrack(int trackIndex)
 		this->project->mutable_tracks()->erase(it);
 	}
 	this->viewFunc();
+}
+
+int DataModel::countTrack()
+{
+	return this->project->tracks_size();
 }
 
 void DataModel::setTrackName(int trackIndex, std::string name)
@@ -823,6 +827,38 @@ void DataModel::addNote(int trackIndex, uint32_t startBeat, uint32_t startTick, 
 		this->viewFunc();
 	}
 }
+
+void DataModel::removeNote(int trackIndex, int noteIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
+			auto it = this->project->mutable_tracks(trackIndex)->mutable_notes()->begin() + noteIndex;
+			uint32_t startBeat = (*it).startbeat();
+			uint32_t startTick = (*it).starttick();
+			std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, (*it).length());
+			this->project->mutable_tracks(trackIndex)->mutable_notes()->erase(it);
+
+			this->setProjectTime();//调整时长
+
+			this->renderFunc(trackIndex, startTick > 0 ? startBeat + 1 : startBeat, EP.second > 0 ? EP.first + 1 : EP.first);
+			this->viewFunc();
+		}
+	}
+}
+
+int DataModel::countNote(int trackIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		return this->project->tracks(trackIndex).notes_size();
+	}
+	return -1;
+}
+
+void DataModel::setNotePlace(int trackIndex, int noteIndex, uint32_t startBeat, uint32_t startTick, uint64_t length)
+{
+
+}
+
 //Utils
 
 std::pair<uint32_t, uint32_t> DataModel::Utils::getEP(uint32_t startBeat, uint32_t startTick, uint64_t length)

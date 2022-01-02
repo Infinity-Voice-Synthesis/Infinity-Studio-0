@@ -20,7 +20,7 @@ class DataModel
 public:
 	static DataModel& getModel();
 
-	void setProjectTime(uint32_t time);
+	void setProjectTime();
 	uint32_t getProjectTime();
 	void setProjectBeat(uint32_t beat);
 	uint32_t getProjectBeat();
@@ -37,6 +37,7 @@ public:
 	void addVoiceTrack(std::string name, std::string color, std::string library);
 	void addWaveTrack(std::string name, std::string color);
 	void removeTrack(int trackIndex);
+	int countTrack();
 	//轨道数量
 
 	void setTrackName(int trackIndex, std::string name);
@@ -58,6 +59,12 @@ public:
 	//轨道属性
 
 	void addNote(int trackIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pitch, std::string name);
+	void removeNote(int trackIndex, int noteIndex);
+	int countNote(int trackIndex);
+	//音符数量
+
+	void setNotePlace(int trackIndex, int noteIndex, uint32_t startBeat, uint32_t startTick, uint64_t length);
+	//音符属性
 	
 	//删除参数样式时需检查当前参数是否属于当前引擎，如不属于，则删除参数且该参数不渲染
 private:

@@ -8,7 +8,7 @@
 #include <QMessageBox>
 #include "ILLibs.h"
 
-#define ILVM_COPYRIGHT "Infinity Studio Script Interpreter 1.0.0" "  Copyright (C) 2019-2021 Infinity Synthesis Team"
+#define ILVM_COPYRIGHT "Infinity Studio Script Interpreter 1.0.0" "  Copyright (C) 2019-2022 Infinity Synthesis Team"
 
 class ILVM : public QObject
 {
