@@ -1,4 +1,4 @@
-#include "ILLibs.h"
+﻿#include "ILLibs.h"
 
 extern "C" {
 #include "Lua/lstate.h"
@@ -110,6 +110,13 @@ int ILLibs::infinity_runtime_appDir(lua_State* state)
 	return 1;
 }
 
+int ILLibs::infinity_runtime_msleep(lua_State* state)
+{
+	int msecs = luaL_checkinteger(state, 1);
+	QTime timePoint = QTime::currentTime();
+	while (timePoint.msecsTo(QTime::currentTime()) < msecs);
+	return 0;
+}
 
 int ILLibs::infinity_console_println(lua_State* state)
 {

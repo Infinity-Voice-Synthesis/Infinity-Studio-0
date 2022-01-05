@@ -63,7 +63,13 @@ public:
 	int countNote(int trackIndex);
 	//音符数量
 
-	void setNotePlace(int trackIndex, int noteIndex, uint32_t startBeat, uint32_t startTick, uint64_t length);
+	void setNotePlace(int trackIndex, int noteIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pitch);
+	uint32_t getNoteStartBeat(int trackIndex, int noteIndex);
+	uint32_t getNoteStartTick(int trackIndex, int noteIndex);
+	uint64_t getNoteLength(int trackIndex, int noteIndex);
+	uint32_t getNotePitch(int trackIndex, int noteIndex);
+	void setNotePlace(int trackIndex, int noteIndex, std::string name);
+	std::string getNoteName(int trackIndex, int noteIndex);
 	//音符属性
 	
 	//删除参数样式时需检查当前参数是否属于当前引擎，如不属于，则删除参数且该参数不渲染
@@ -73,7 +79,8 @@ private:
 	class Utils {
 	public:
 		static std::pair<uint32_t,uint32_t> getEP(uint32_t startBeat, uint32_t startTick, uint64_t length);
-		static uint64_t SP(uint32_t startBeat, uint32_t startTick);
+		static uint64_t getTick(uint32_t startBeat, uint32_t startTick);
+		static std::pair<uint32_t, uint32_t> getBeat(uint64_t tick);
 	};
 
 	std::function<void(int, uint32_t, uint32_t)> renderFunc;//渲染

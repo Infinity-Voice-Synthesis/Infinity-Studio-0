@@ -1,4 +1,4 @@
-#include "ILVM.h"
+﻿#include "ILVM.h"
 
 ILVM ILVM::vm = ILVM(nullptr);
 QString ILVM::outStrTemp;
@@ -170,7 +170,7 @@ void ILVM::mainCritical()
 
 void ILVM::VMPushOptionalFunctions(LThread* thread)
 {
-
+	this->VMPushAllFunctions(thread);//Debug Mode.
 }
 
 void ILVM::VMPushAllFunctions(LThread* thread)
@@ -182,6 +182,7 @@ void ILVM::VMPushAllFunctions(LThread* thread)
 	thread->addFunction("scriptDir", ILLibs::infinity_runtime_scriptDir);
 	thread->addFunction("appPath", ILLibs::infinity_runtime_appPath);
 	thread->addFunction("appDir", ILLibs::infinity_runtime_appDir);
+	thread->addFunction("msleep", ILLibs::infinity_runtime_msleep);
 	thread->endTable();//Runtime
 
 	thread->beginTable("Console");

@@ -1,4 +1,4 @@
-#include "ConsoleWidget.h"
+﻿#include "ConsoleWidget.h"
 
 ConsoleWidget::ConsoleWidget(QWidget *parent)
 	: RefreshableWidget(parent)
@@ -18,7 +18,7 @@ ConsoleWidget::ConsoleWidget(QWidget *parent)
 		}
 	}
 
-	while (sThread == nullptr) {
+	/*while (sThread == nullptr) {
 		sThread = new(std::nothrow) StringQueueThread(this);
 		if (sThread == nullptr) {
 			QMessageBox::Button result = QMessageBox::critical(this, "Infinity Studio 0", "Application can't alloc memory for object \"sThread\" on heap!\nPlease check your memory then retry or abort this application!", QMessageBox::Retry | QMessageBox::Button::Abort, QMessageBox::Abort);
@@ -31,27 +31,27 @@ ConsoleWidget::ConsoleWidget(QWidget *parent)
 				return;
 			}
 		}
-	}
+	}*/
 
-	sThread->strConnect([this](QStringList& lines)->void {
+	/*sThread->strConnect([this](QStringList& lines)->void {
 		for (auto& s : lines) {
 			this->linesMutex.lock();
 			this->lines.append(qMakePair(s, LineState::Output));
 			this->linesMutex.unlock();
 			this->haveChange = true;
 		}
-		});
+		});*/
 	
 	connect(this, &ConsoleWidget::command, &(Infinity_Events::getClass()), &Infinity_Events::on_console_command);
-	connect(&(Infinity_Events::getClass()), &Infinity_Events::console_normal, sThread, &StringQueueThread::addMessage);
-	//connect(&(Infinity_Events::getClass()), &Infinity_Events::console_normal, this, &ConsoleWidget::on_luaMessage);
+	//connect(&(Infinity_Events::getClass()), &Infinity_Events::console_normal, sThread, &StringQueueThread::addMessage);
+	connect(&(Infinity_Events::getClass()), &Infinity_Events::console_normal, this, &ConsoleWidget::on_luaMessage);
 	connect(&(Infinity_Events::getClass()), &Infinity_Events::console_error, this, &ConsoleWidget::on_luaError);
 	connect(&(Infinity_Events::getClass()), &Infinity_Events::console_clear, this, &ConsoleWidget::on_luaClear);
 
 	connect(scoller, &ConsoleScollBar::valueChanged, this, &ConsoleWidget::on_ScollValueChanged);
 	connect(scoller, &ConsoleScollBar::wheelChanged, this, &ConsoleWidget::on_WheelChanged);
 
-	sThread->start();
+	//sThread->start();
 
 	scoller->show();
 	this->setFocusPolicy(Qt::FocusPolicy::StrongFocus);
@@ -64,12 +64,12 @@ ConsoleWidget::ConsoleWidget(QWidget *parent)
 
 ConsoleWidget::~ConsoleWidget()
 {
-	if (sThread->isRunning()) {
+	/*if (sThread->isRunning()) {
 		sThread->requestInterruption();
 		sThread->wait();
 	}
 	sThread->deleteLater();
-	sThread = nullptr;
+	sThread = nullptr;*/
 
 	scoller->deleteLater();
 	scoller = nullptr;
@@ -614,18 +614,19 @@ void ConsoleWidget::on_luaError(QString message)
 
 void ConsoleWidget::on_luaClear()
 {
-	this->sThread->clear();
+	//this->sThread->clear();
 
 	this->linesMutex.lock();
 	this->lines.clear();
 	this->linesMutex.unlock();
 
 	this->lineSplit.clear();
-	this->scoller->setTips({});
-	QPair<double, double> value = this->scoller->setValue(0, 1);
+	//this->scoller->setTips({});
+	//QPair<double, double> value = this->scoller->setValue(0, 1);
 	this->currentTopLine = 0;
 	
-	this->update();
+	//this->update();
+	this->haveChange = true;
 }
 
 void ConsoleWidget::reSplit()

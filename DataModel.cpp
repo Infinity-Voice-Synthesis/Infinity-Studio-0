@@ -729,6 +729,13 @@ bool DataModel::getTrackSolo(int trackIndex)
 void DataModel::addNote(int trackIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pitch, std::string name)
 {
 	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (length == 0) {
+			return;
+		}
+		if (startTick >= 480) {
+			startBeat += startTick / 480;
+			startTick %= 480;
+		}
 		std::string dictionary = Package::getPackage().getLibraryDictionaryDefault(this->project->tracks(trackIndex).library());
 		{
 			bool flag = false;
@@ -758,14 +765,14 @@ void DataModel::addNote(int trackIndex, uint32_t startBeat, uint32_t startTick, 
 
 		infinity::Note* note = nullptr;
 		if (this->project->tracks(trackIndex).notes_size() > 0) {
-			if (DataModel::Utils::SP(startBeat, startTick) < DataModel::Utils::SP(this->project->tracks(trackIndex).notes(0).startbeat(), this->project->tracks(trackIndex).notes(0).starttick())) {
+			if (DataModel::Utils::getTick(startBeat, startTick) < DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(0).startbeat(), this->project->tracks(trackIndex).notes(0).starttick())) {
 				this->project->mutable_tracks(trackIndex)->mutable_notes()->Add();//末尾建立空element
 				for (int i = this->project->tracks(trackIndex).notes_size() - 2; i >= 0 ; i--) {
 					this->project->mutable_tracks(trackIndex)->mutable_notes(i + 1)->CopyFrom(this->project->tracks(trackIndex).notes(i));
 				}//element集体后移
 				note = this->project->mutable_tracks(trackIndex)->mutable_notes(0);//腾出头element
 			}
-			else if (DataModel::Utils::SP(startBeat, startTick) >= DataModel::Utils::SP(this->project->tracks(trackIndex).notes(this->project->tracks(trackIndex).notes_size() - 1).startbeat(), this->project->tracks(trackIndex).notes(this->project->tracks(trackIndex).notes_size() - 1).starttick())) {
+			else if (DataModel::Utils::getTick(startBeat, startTick) >= DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(this->project->tracks(trackIndex).notes_size() - 1).startbeat(), this->project->tracks(trackIndex).notes(this->project->tracks(trackIndex).notes_size() - 1).starttick())) {
 				note = this->project->mutable_tracks(trackIndex)->mutable_notes()->Add();//末尾
 			}
 			else {
@@ -773,8 +780,8 @@ void DataModel::addNote(int trackIndex, uint32_t startBeat, uint32_t startTick, 
 				for (int i = this->project->tracks(trackIndex).notes_size() - 2; i > 0; i--) {
 					this->project->mutable_tracks(trackIndex)->mutable_notes(i + 1)->CopyFrom(this->project->tracks(trackIndex).notes(i));//element后移
 					if (
-						DataModel::Utils::SP(startBeat, startTick) >= DataModel::Utils::SP(this->project->tracks(trackIndex).notes(i - 1).startbeat(), this->project->tracks(trackIndex).notes(i - 1).starttick()) &&
-						DataModel::Utils::SP(startBeat, startTick) < DataModel::Utils::SP(this->project->tracks(trackIndex).notes(i + 1).startbeat(), this->project->tracks(trackIndex).notes(i + 1).starttick())
+						DataModel::Utils::getTick(startBeat, startTick) >= DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(i - 1).startbeat(), this->project->tracks(trackIndex).notes(i - 1).starttick()) &&
+						DataModel::Utils::getTick(startBeat, startTick) < DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(i + 1).startbeat(), this->project->tracks(trackIndex).notes(i + 1).starttick())
 						) {//如果当前element符合要求
 						note = this->project->mutable_tracks(trackIndex)->mutable_notes(i);//移动element空出位置即是插入位置
 					}
@@ -854,9 +861,200 @@ int DataModel::countNote(int trackIndex)
 	return -1;
 }
 
-void DataModel::setNotePlace(int trackIndex, int noteIndex, uint32_t startBeat, uint32_t startTick, uint64_t length)
+void DataModel::setNotePlace(int trackIndex, int noteIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pitch)
 {
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
+			if (length == 0) {
+				return;
+			}
+			if (startTick >= 480) {
+				startBeat += startTick / 480;
+				startTick %= 480;
+			}
+			uint32_t currentStartBeat = this->project->tracks(trackIndex).notes(noteIndex).startbeat();
+			uint32_t currentStartTick = this->project->tracks(trackIndex).notes(noteIndex).starttick();
+			uint64_t currentLength = this->project->tracks(trackIndex).notes(noteIndex).length();
 
+			std::pair<uint32_t, uint32_t> currentEP = DataModel::Utils::getEP(currentStartBeat, currentStartTick, currentLength);
+			std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, length);
+
+			this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->set_startbeat(startBeat);
+			this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->set_starttick(startTick);
+			this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->set_length(length);
+			this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->set_pitch(pitch);
+
+			if (noteIndex > 0) {
+				for (int i = noteIndex; i > 0; i--)
+				{
+					if (DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(i).startbeat(), this->project->tracks(trackIndex).notes(i).starttick()) < DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(i - 1).startbeat(), this->project->tracks(trackIndex).notes(i - 1).starttick())) {
+						infinity::Note temp(this->project->tracks(trackIndex).notes(i));
+						this->project->mutable_tracks(trackIndex)->mutable_notes(i)->CopyFrom(this->project->tracks(trackIndex).notes(i - 1));
+						this->project->mutable_tracks(trackIndex)->mutable_notes(i - 1)->CopyFrom(temp);
+					}
+					else {
+						break;
+					}
+				}
+			}
+			if (noteIndex < this->project->tracks(trackIndex).notes_size() - 1) {
+				for (int i = noteIndex; i < this->project->tracks(trackIndex).notes_size(); i++)
+				{
+					if (DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(i).startbeat(), this->project->tracks(trackIndex).notes(i).starttick()) > DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(i + 1).startbeat(), this->project->tracks(trackIndex).notes(i + 1).starttick())) {
+						infinity::Note temp(this->project->tracks(trackIndex).notes(i));
+						this->project->mutable_tracks(trackIndex)->mutable_notes(i)->CopyFrom(this->project->tracks(trackIndex).notes(i + 1));
+						this->project->mutable_tracks(trackIndex)->mutable_notes(i + 1)->CopyFrom(temp);
+					}
+					else {
+						break;
+					}
+				}
+			}//排序
+
+			this->setProjectTime();//调整时长
+
+			uint64_t CST = DataModel::Utils::getTick(currentStartBeat, currentStartTick);
+			uint64_t CET = DataModel::Utils::getTick(currentEP.first, currentEP.second);
+			uint64_t ST = DataModel::Utils::getTick(startBeat, startTick);
+			uint64_t ET = DataModel::Utils::getTick(EP.first, EP.second);
+
+			if (CST <= ET && ST <= CET) {
+				uint64_t MST = std::min(CST, ST);
+				uint64_t MET = std::max(CET, ET);
+				std::pair<uint32_t, uint32_t> SB = DataModel::Utils::getBeat(MST);
+				std::pair<uint32_t, uint32_t> EB = DataModel::Utils::getBeat(MET);
+
+				this->renderFunc(trackIndex, SB.second > 0 ? SB.first + 1 : SB.first, EB.second > 0 ? EB.first + 1 : EB.first);
+			}//前后变化区段重叠
+			else {
+				this->renderFunc(trackIndex, currentStartTick > 0 ? currentStartBeat + 1 : currentStartBeat, currentEP.second > 0 ? currentEP.first + 1 : currentEP.first);
+				this->renderFunc(trackIndex, startTick > 0 ? startBeat + 1 : startBeat, EP.second > 0 ? EP.first + 1 : EP.first);
+			}//前后变化区段分离
+
+			this->viewFunc();
+		}
+	}
+}
+
+uint32_t DataModel::getNoteStartBeat(int trackIndex, int noteIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
+			return this->project->tracks(trackIndex).notes(noteIndex).startbeat();
+		}
+	}
+	return 0;
+}
+
+uint32_t DataModel::getNoteStartTick(int trackIndex, int noteIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
+			return this->project->tracks(trackIndex).notes(noteIndex).starttick();
+		}
+	}
+	return 0;
+}
+
+uint64_t DataModel::getNoteLength(int trackIndex, int noteIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
+			return this->project->tracks(trackIndex).notes(noteIndex).length();
+		}
+	}
+	return 0;
+}
+
+uint32_t DataModel::getNotePitch(int trackIndex, int noteIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
+			return this->project->tracks(trackIndex).notes(noteIndex).pitch();
+		}
+	}
+	return 0;
+}
+
+void DataModel::setNotePlace(int trackIndex, int noteIndex, std::string name)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
+			if (name.empty()) {
+				return;
+			}
+
+			std::string dictionary = this->project->tracks(trackIndex).dictionary();
+			{
+				bool flag = false;
+				for (auto& i : Package::getPackage().getDictionaryAvailable()) {
+					if (i == dictionary) {
+						flag = true;
+						break;
+					}
+				}
+				if (!flag) {
+					return;
+				}
+			}
+			std::string engine = Package::getPackage().getEngineName(this->project->tracks(trackIndex).library());
+			{
+				bool flag = false;
+				for (auto& i : Package::getPackage().getEngineAvailable()) {
+					if (i == engine) {
+						flag = true;
+						break;
+					}
+				}
+				if (!flag) {
+					return;
+				}
+			}
+
+			this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->set_name(name);
+
+			if (Package::getPackage().getEngineSplit(engine)) {
+				infinity::Note* note = this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex);
+				std::pair<std::map<std::string, int64_t>, bool> phonemeM = this->eSplitFunc(engine, dictionary, note->name());
+				note->clear_phonemes();
+				for (auto& p : phonemeM.first) {
+					infinity::utils::Pair* pair = note->add_phonemes();
+					pair->set_key(p.first);
+					pair->set_value(p.second);
+				}
+				note->set_consonant(phonemeM.second);
+			}//调用引擎分词器
+			else {
+				infinity::Note* note = this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex);
+				std::pair<std::map<std::string, int64_t>, bool> phonemeM = Package::getPackage().getDictionaryPhoneme(dictionary, note->name());
+				note->clear_phonemes();
+				for (auto& p : phonemeM.first) {
+					infinity::utils::Pair* pair = note->add_phonemes();
+					pair->set_key(p.first);
+					pair->set_value(p.second);
+				}
+				note->set_consonant(phonemeM.second);
+			}//使用字典分词
+
+			uint32_t startBeat = this->project->tracks(trackIndex).notes(noteIndex).startbeat();
+			uint32_t startTick = this->project->tracks(trackIndex).notes(noteIndex).starttick();
+			uint64_t length = this->project->tracks(trackIndex).notes(noteIndex).length();
+
+			std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, length);
+			this->renderFunc(trackIndex, startTick > 0 ? startBeat + 1 : startBeat, EP.second > 0 ? EP.first + 1 : EP.first);
+			this->viewFunc();
+		}
+	}
+}
+
+std::string DataModel::getNoteName(int trackIndex, int noteIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
+			return this->project->tracks(trackIndex).notes(noteIndex).name();
+		}
+	}
+	return std::string();
 }
 
 //Utils
@@ -869,7 +1067,12 @@ std::pair<uint32_t, uint32_t> DataModel::Utils::getEP(uint32_t startBeat, uint32
 	return std::make_pair(startBeat, static_cast<uint32_t>(length));
 }
 
-uint64_t DataModel::Utils::SP(uint32_t startBeat, uint32_t startTick)
+uint64_t DataModel::Utils::getTick(uint32_t startBeat, uint32_t startTick)
 {
 	return static_cast<uint64_t>(startBeat) * 480 + startTick;
+}
+
+std::pair<uint32_t, uint32_t> DataModel::Utils::getBeat(uint64_t tick)
+{
+	return std::make_pair((uint32_t)(tick / 480), (uint32_t)(tick % 480));
 }

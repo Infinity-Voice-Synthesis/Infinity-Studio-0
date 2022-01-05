@@ -1,4 +1,4 @@
-#include "LThread.h"
+﻿#include "LThread.h"
 
 extern "C" {
 #include "Lua/lstate.h"

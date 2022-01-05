@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "RefreshableWidget.h"
 #include <QPainter>
@@ -10,7 +10,7 @@
 #include <QTimer>
 #include <QMouseEvent>
 #include <QWheelEvent>
-#include "StringQueueThread.h"
+//#include "StringQueueThread.h"
 #include <QMutex>
 #include <QFontMetrics>
 
@@ -25,7 +25,7 @@ public:
 private:
 	QString strInput;
 	ConsoleScollBar* scoller = nullptr;
-	StringQueueThread* sThread = nullptr;
+	//StringQueueThread* sThread = nullptr;
 
 	enum class LineState {
 		Input,

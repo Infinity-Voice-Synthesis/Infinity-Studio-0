@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QString>
 #include <QStringList>
@@ -6,6 +6,7 @@
 #include "Lua/lua.hpp"
 #include <QCoreApplication>
 #include <QMutex>
+#include <QTime>
 
 class ILLibs
 {
@@ -66,6 +67,7 @@ public:
 	static int infinity_runtime_scriptDir(lua_State* state);
 	static int infinity_runtime_appPath(lua_State* state);
 	static int infinity_runtime_appDir(lua_State* state);
+	static int infinity_runtime_msleep(lua_State* state);
 
 	static int infinity_console_println(lua_State* state);
 	static int infinity_console_assert(lua_State* state);
