@@ -68,9 +68,20 @@ public:
 	uint32_t getNoteStartTick(int trackIndex, int noteIndex);
 	uint64_t getNoteLength(int trackIndex, int noteIndex);
 	uint32_t getNotePitch(int trackIndex, int noteIndex);
-	void setNotePlace(int trackIndex, int noteIndex, std::string name);
+	void setNoteName(int trackIndex, int noteIndex, std::string name);
 	std::string getNoteName(int trackIndex, int noteIndex);
+	void setNoteTimbre(int trackIndex, int noteIndex, std::string timbre);
+	std::string getNoteTimbre(int trackIndex, int noteIndex);
+	void setNotePhonemes(int trackIndex, int noteIndex, std::vector<int64_t>& phonemes);
+	std::vector<std::pair<std::string, int64_t>> getNotePhonemes(int trackIndex, int noteIndex);
+	void setNoteFlags(int trackIndex, int noteIndex, std::string flags);
+	std::string getNoteFlags(int trackIndex, int noteIndex);
+	bool getNoteConsonant(int trackIndex, int noteIndex);
+	void setNoteGroup(int trackIndex, int noteIndex, int32_t group);//inside port
+	int32_t getNoteGroup(int trackIndex, int noteIndex);
 	//音符属性
+	
+	//音符参数数量
 	
 	//删除参数样式时需检查当前参数是否属于当前引擎，如不属于，则删除参数且该参数不渲染
 private:

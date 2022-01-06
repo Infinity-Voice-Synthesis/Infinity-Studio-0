@@ -876,6 +876,14 @@ void DataModel::setNotePlace(int trackIndex, int noteIndex, uint32_t startBeat, 
 			uint32_t currentStartTick = this->project->tracks(trackIndex).notes(noteIndex).starttick();
 			uint64_t currentLength = this->project->tracks(trackIndex).notes(noteIndex).length();
 
+			if (
+				currentStartBeat == startBeat &&
+				currentStartTick == startTick &&
+				currentLength == length
+				) {
+				return;
+			}
+
 			std::pair<uint32_t, uint32_t> currentEP = DataModel::Utils::getEP(currentStartBeat, currentStartTick, currentLength);
 			std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, length);
 
@@ -976,11 +984,15 @@ uint32_t DataModel::getNotePitch(int trackIndex, int noteIndex)
 	return 0;
 }
 
-void DataModel::setNotePlace(int trackIndex, int noteIndex, std::string name)
+void DataModel::setNoteName(int trackIndex, int noteIndex, std::string name)
 {
 	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
 		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
 			if (name.empty()) {
+				return;
+			}
+
+			if (name == this->project->tracks(trackIndex).notes(noteIndex).name()) {
 				return;
 			}
 
@@ -1055,6 +1067,222 @@ std::string DataModel::getNoteName(int trackIndex, int noteIndex)
 		}
 	}
 	return std::string();
+}
+
+void DataModel::setNoteTimbre(int trackIndex, int noteIndex, std::string timbre)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
+			if (timbre.empty()) {
+				return;
+			}
+			if (timbre == this->project->tracks(trackIndex).notes(noteIndex).timbre()) {
+				return;
+			}
+			{
+				bool flag = false;
+				for (auto& i : Package::getPackage().getLibraryTimbre(this->project->tracks(trackIndex).library())) {
+					if (i == timbre) {
+						flag = true;
+						break;
+					}
+				}
+				if (!flag) {
+					return;
+				}
+			}
+
+			this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->set_timbre(timbre);
+
+			uint32_t startBeat = this->project->tracks(trackIndex).notes(noteIndex).startbeat();
+			uint32_t startTick = this->project->tracks(trackIndex).notes(noteIndex).starttick();
+			uint64_t length = this->project->tracks(trackIndex).notes(noteIndex).length();
+
+			std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, length);
+			this->renderFunc(trackIndex, startTick > 0 ? startBeat + 1 : startBeat, EP.second > 0 ? EP.first + 1 : EP.first);
+			this->viewFunc();
+		}
+	}
+}
+
+std::string DataModel::getNoteTimbre(int trackIndex, int noteIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
+			return this->project->tracks(trackIndex).notes(noteIndex).timbre();
+		}
+	}
+	return std::string();
+}
+
+void DataModel::setNotePhonemes(int trackIndex, int noteIndex, std::vector<int64_t>& phonemes)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
+			if (phonemes.empty()) {
+				return;
+			}
+
+			std::vector<std::pair<std::string, int64_t>> currentPhonemes;
+			for (auto& p : this->project->tracks(trackIndex).notes(noteIndex).phonemes()) {
+				currentPhonemes.push_back(std::make_pair(p.key(), p.value()));
+			}
+
+			bool consonant = this->project->tracks(trackIndex).notes(noteIndex).consonant();
+
+			if (phonemes.size() != currentPhonemes.size()) {
+				return;
+			}
+
+			if (consonant) {
+				if (phonemes.at(0) > 0) {
+					return;
+				}
+			}
+			else {
+				if (phonemes.at(0) == 0) {
+					return;
+				}
+			}//检查头辅音
+
+			{
+				int64_t minTemp = phonemes.at(0);
+				for (int i = 1; i < phonemes.size(); i++) {
+					if (phonemes.at(i) < minTemp || phonemes.at(i) < 0) {
+						return;
+					}
+					minTemp = phonemes.at(i);
+				}
+			}//递增检查
+
+			{
+				int64_t endMax = this->project->tracks(trackIndex).notes(noteIndex).length();
+				if (noteIndex < this->project->tracks(trackIndex).notes_size() - 1) {
+					uint64_t endTick = DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(noteIndex + 1).startbeat(), this->project->tracks(trackIndex).notes(noteIndex + 1).starttick()) - this->project->tracks(trackIndex).notes(noteIndex + 1).phonemes(0).value();
+					int64_t endLength = endTick - DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(noteIndex).startbeat(), this->project->tracks(trackIndex).notes(noteIndex).starttick());
+					endMax = std::min(endMax, endLength);
+				}
+				if (phonemes.at(phonemes.size() - 1) > endMax) {
+					return;
+				}
+			}//检查尾音出界
+
+			this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->mutable_phonemes()->Clear();
+			for (int i = 0; i < phonemes.size(); i++) {
+				infinity::utils::Pair* pair = this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->mutable_phonemes()->Add();
+				pair->set_key(currentPhonemes.at(i).first);
+				pair->set_value(phonemes.at(i));
+			}
+
+			bool overlap = false;
+			if (consonant) {
+				if (noteIndex > 0) {
+					if (phonemes.at(0) != currentPhonemes.at(0).second) {
+						uint64_t TST = DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(noteIndex).startbeat(), this->project->tracks(trackIndex).notes(noteIndex).starttick());
+						uint64_t LET = DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(noteIndex - 1).startbeat(), this->project->tracks(trackIndex).notes(noteIndex - 1).starttick()) + this->project->tracks(trackIndex).notes(noteIndex - 1).length();
+						if (
+							TST - currentPhonemes.at(0).second < LET ||
+							TST - phonemes.at(0) < LET
+							) {
+							overlap = true;
+						}
+					}
+				}
+			}//检查与前音符重叠
+
+			if (overlap) {
+				uint32_t startBeat = this->project->tracks(trackIndex).notes(noteIndex - 1).startbeat();
+				uint32_t startTick = this->project->tracks(trackIndex).notes(noteIndex - 1).starttick();
+				uint64_t lengthAll = DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(noteIndex).startbeat(), this->project->tracks(trackIndex).notes(noteIndex).starttick()) - DataModel::Utils::getTick(startBeat, startTick) + this->project->tracks(trackIndex).notes(noteIndex).length();
+
+				std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, lengthAll);
+				this->renderFunc(trackIndex, startTick > 0 ? startBeat + 1 : startBeat, EP.second > 0 ? EP.first + 1 : EP.first);
+			}
+			else {
+				uint32_t startBeat = this->project->tracks(trackIndex).notes(noteIndex).startbeat();
+				uint32_t startTick = this->project->tracks(trackIndex).notes(noteIndex).starttick();
+				uint64_t length = this->project->tracks(trackIndex).notes(noteIndex).length();
+
+				std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, length);
+				this->renderFunc(trackIndex, startTick > 0 ? startBeat + 1 : startBeat, EP.second > 0 ? EP.first + 1 : EP.first);
+			}
+
+			this->viewFunc();
+		}
+	}
+}
+
+std::vector<std::pair<std::string, int64_t>> DataModel::getNotePhonemes(int trackIndex, int noteIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
+			std::vector<std::pair<std::string, int64_t>> phonemes;
+			for (auto& p : this->project->tracks(trackIndex).notes(noteIndex).phonemes()) {
+				phonemes.push_back(std::make_pair(p.key(), p.value()));
+			}
+			return phonemes;
+		}
+	}
+	return std::vector<std::pair<std::string, int64_t>>();
+}
+
+void DataModel::setNoteFlags(int trackIndex, int noteIndex, std::string flags)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
+			if (flags == this->project->tracks(trackIndex).notes(noteIndex).flags()) {
+				return;
+			}
+			this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->set_flags(flags);
+
+			uint32_t startBeat = this->project->tracks(trackIndex).notes(noteIndex).startbeat();
+			uint32_t startTick = this->project->tracks(trackIndex).notes(noteIndex).starttick();
+			uint64_t length = this->project->tracks(trackIndex).notes(noteIndex).length();
+
+			std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, length);
+			this->renderFunc(trackIndex, startTick > 0 ? startBeat + 1 : startBeat, EP.second > 0 ? EP.first + 1 : EP.first);
+			this->viewFunc();
+		}
+	}
+}
+
+std::string DataModel::getNoteFlags(int trackIndex, int noteIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
+			return this->project->tracks(trackIndex).notes(noteIndex).flags();
+		}
+	}
+	return std::string();
+}
+
+bool DataModel::getNoteConsonant(int trackIndex, int noteIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
+			return this->project->tracks(trackIndex).notes(noteIndex).consonant();
+		}
+	}
+	return false;
+}
+
+void DataModel::setNoteGroup(int trackIndex, int noteIndex, int32_t group)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
+			this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->set_group(group);
+		}
+	}
+}
+
+int32_t DataModel::getNoteGroup(int trackIndex, int noteIndex)
+{
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
+			return this->project->tracks(trackIndex).notes(noteIndex).group();
+		}
+	}
+	return -1;
 }
 
 //Utils
