@@ -223,33 +223,6 @@
     <ClCompile Include="ILLibs.cpp">
       <Filter>Source Files\llibs</Filter>
     </ClCompile>
-    <ClCompile Include="Pb\tparam.pb.cc">
-      <Filter>Pb</Filter>
-    </ClCompile>
-    <ClCompile Include="Pb\track.pb.cc">
-      <Filter>Pb</Filter>
-    </ClCompile>
-    <ClCompile Include="Pb\wave.pb.cc">
-      <Filter>Pb</Filter>
-    </ClCompile>
-    <ClCompile Include="Pb\effect.pb.cc">
-      <Filter>Pb</Filter>
-    </ClCompile>
-    <ClCompile Include="Pb\note.pb.cc">
-      <Filter>Pb</Filter>
-    </ClCompile>
-    <ClCompile Include="Pb\nparam.pb.cc">
-      <Filter>Pb</Filter>
-    </ClCompile>
-    <ClCompile Include="Pb\point.pb.cc">
-      <Filter>Pb</Filter>
-    </ClCompile>
-    <ClCompile Include="Pb\ppatt.pb.cc">
-      <Filter>Pb</Filter>
-    </ClCompile>
-    <ClCompile Include="Pb\project.pb.cc">
-      <Filter>Pb</Filter>
-    </ClCompile>
     <ClCompile Include="Pb\utils\pair.pb.cc">
       <Filter>Pb\utils</Filter>
     </ClCompile>
@@ -496,6 +469,36 @@
     <ClCompile Include="Package.cpp">
       <Filter>Source Files\data</Filter>
     </ClCompile>
+    <ClCompile Include="Pb\container.pb.cc">
+      <Filter>Pb</Filter>
+    </ClCompile>
+    <ClCompile Include="Pb\effect.pb.cc">
+      <Filter>Pb</Filter>
+    </ClCompile>
+    <ClCompile Include="Pb\note.pb.cc">
+      <Filter>Pb</Filter>
+    </ClCompile>
+    <ClCompile Include="Pb\nparam.pb.cc">
+      <Filter>Pb</Filter>
+    </ClCompile>
+    <ClCompile Include="Pb\pattern.pb.cc">
+      <Filter>Pb</Filter>
+    </ClCompile>
+    <ClCompile Include="Pb\point.pb.cc">
+      <Filter>Pb</Filter>
+    </ClCompile>
+    <ClCompile Include="Pb\ppatt.pb.cc">
+      <Filter>Pb</Filter>
+    </ClCompile>
+    <ClCompile Include="Pb\project.pb.cc">
+      <Filter>Pb</Filter>
+    </ClCompile>
+    <ClCompile Include="Pb\tparam.pb.cc">
+      <Filter>Pb</Filter>
+    </ClCompile>
+    <ClCompile Include="Pb\track.pb.cc">
+      <Filter>Pb</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="InfinityStudio0.qrc" />
@@ -703,33 +706,6 @@
     </ClInclude>
     <ClInclude Include="ILLibs.h">
       <Filter>Header Files\llibs</Filter>
-    </ClInclude>
-    <ClInclude Include="Pb\tparam.pb.h">
-      <Filter>Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="Pb\track.pb.h">
-      <Filter>Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="Pb\wave.pb.h">
-      <Filter>Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="Pb\effect.pb.h">
-      <Filter>Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="Pb\note.pb.h">
-      <Filter>Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="Pb\nparam.pb.h">
-      <Filter>Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="Pb\point.pb.h">
-      <Filter>Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="Pb\ppatt.pb.h">
-      <Filter>Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="Pb\project.pb.h">
-      <Filter>Pb</Filter>
     </ClInclude>
     <ClInclude Include="Pb\utils\pair.pb.h">
       <Filter>Pb\utils</Filter>
@@ -1090,6 +1066,36 @@
     </ClInclude>
     <ClInclude Include="Package.h">
       <Filter>Header Files\data</Filter>
+    </ClInclude>
+    <ClInclude Include="Pb\container.pb.h">
+      <Filter>Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="Pb\effect.pb.h">
+      <Filter>Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="Pb\note.pb.h">
+      <Filter>Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="Pb\nparam.pb.h">
+      <Filter>Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="Pb\pattern.pb.h">
+      <Filter>Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="Pb\point.pb.h">
+      <Filter>Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="Pb\ppatt.pb.h">
+      <Filter>Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="Pb\project.pb.h">
+      <Filter>Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="Pb\tparam.pb.h">
+      <Filter>Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="Pb\track.pb.h">
+      <Filter>Pb</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

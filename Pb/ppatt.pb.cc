@@ -16,7 +16,9 @@
 #include <google/protobuf/port_def.inc>
 
 PROTOBUF_PRAGMA_INIT_SEG
+namespace org {
 namespace infinity {
+namespace idm {
 constexpr ParamPattern::ParamPattern(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : points_()
@@ -32,42 +34,45 @@ struct ParamPatternDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ParamPatternDefaultTypeInternal _ParamPattern_default_instance_;
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_ppatt_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_ppatt_2eproto = nullptr;
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_ppatt_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_ppatt_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::infinity::ParamPattern, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::ParamPattern, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::infinity::ParamPattern, startbeat_),
-  PROTOBUF_FIELD_OFFSET(::infinity::ParamPattern, starttick_),
-  PROTOBUF_FIELD_OFFSET(::infinity::ParamPattern, length_),
-  PROTOBUF_FIELD_OFFSET(::infinity::ParamPattern, points_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::ParamPattern, startbeat_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::ParamPattern, starttick_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::ParamPattern, length_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::ParamPattern, points_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::infinity::ParamPattern)},
+  { 0, -1, sizeof(::org::infinity::idm::ParamPattern)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::infinity::_ParamPattern_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::org::infinity::idm::_ParamPattern_default_instance_),
 };
 
 const char descriptor_table_protodef_ppatt_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\013ppatt.proto\022\010infinity\032\013point.proto\"e\n\014"
-  "ParamPattern\022\021\n\tstartBeat\030\001 \001(\r\022\021\n\tstart"
-  "Tick\030\002 \001(\r\022\016\n\006length\030\003 \001(\004\022\037\n\006points\030\004 \003"
-  "(\0132\017.infinity.Pointb\006proto3"
+  "\n\013ppatt.proto\022\020org.infinity.idm\032\013point.p"
+  "roto\"m\n\014ParamPattern\022\021\n\tstartBeat\030\001 \001(\r\022"
+  "\021\n\tstartTick\030\002 \001(\r\022\016\n\006length\030\003 \001(\004\022\'\n\006po"
+  "ints\030\004 \003(\0132\027.org.infinity.idm.Pointb\006pro"
+  "to3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_ppatt_2eproto_deps[1] = {
   &::descriptor_table_point_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_ppatt_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_ppatt_2eproto = {
-  false, false, 147, descriptor_table_protodef_ppatt_2eproto, "ppatt.proto", 
+  false, false, 163, descriptor_table_protodef_ppatt_2eproto, "ppatt.proto", 
   &descriptor_table_ppatt_2eproto_once, descriptor_table_ppatt_2eproto_deps, 1, 1,
   schemas, file_default_instances, TableStruct_ppatt_2eproto::offsets,
   file_level_metadata_ppatt_2eproto, file_level_enum_descriptors_ppatt_2eproto, file_level_service_descriptors_ppatt_2eproto,
@@ -78,7 +83,9 @@ PROTOBUF_ATTRIBUTE_WEAK const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable
 
 // Force running AddDescriptors() at dynamic initialization time.
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_ppatt_2eproto(&descriptor_table_ppatt_2eproto);
+namespace org {
 namespace infinity {
+namespace idm {
 
 // ===================================================================
 
@@ -97,7 +104,7 @@ ParamPattern::ParamPattern(::PROTOBUF_NAMESPACE_ID::Arena* arena,
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
   }
-  // @@protoc_insertion_point(arena_constructor:infinity.ParamPattern)
+  // @@protoc_insertion_point(arena_constructor:org.infinity.idm.ParamPattern)
 }
 ParamPattern::ParamPattern(const ParamPattern& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
@@ -106,7 +113,7 @@ ParamPattern::ParamPattern(const ParamPattern& from)
   ::memcpy(&startbeat_, &from.startbeat_,
     static_cast<size_t>(reinterpret_cast<char*>(&length_) -
     reinterpret_cast<char*>(&startbeat_)) + sizeof(length_));
-  // @@protoc_insertion_point(copy_constructor:infinity.ParamPattern)
+  // @@protoc_insertion_point(copy_constructor:org.infinity.idm.ParamPattern)
 }
 
 inline void ParamPattern::SharedCtor() {
@@ -117,7 +124,7 @@ inline void ParamPattern::SharedCtor() {
 }
 
 ParamPattern::~ParamPattern() {
-  // @@protoc_insertion_point(destructor:infinity.ParamPattern)
+  // @@protoc_insertion_point(destructor:org.infinity.idm.ParamPattern)
   if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -138,7 +145,7 @@ void ParamPattern::SetCachedSize(int size) const {
 }
 
 void ParamPattern::Clear() {
-// @@protoc_insertion_point(message_clear_start:infinity.ParamPattern)
+// @@protoc_insertion_point(message_clear_start:org.infinity.idm.ParamPattern)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -177,7 +184,7 @@ const char* ParamPattern::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // repeated .infinity.Point points = 4;
+      // repeated .org.infinity.idm.Point points = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
           ptr -= 1;
@@ -214,7 +221,7 @@ failure:
 
 ::PROTOBUF_NAMESPACE_ID::uint8* ParamPattern::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:infinity.ParamPattern)
+  // @@protoc_insertion_point(serialize_to_array_start:org.infinity.idm.ParamPattern)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -236,7 +243,7 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(3, this->_internal_length(), target);
   }
 
-  // repeated .infinity.Point points = 4;
+  // repeated .org.infinity.idm.Point points = 4;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_points_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
@@ -248,19 +255,19 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:infinity.ParamPattern)
+  // @@protoc_insertion_point(serialize_to_array_end:org.infinity.idm.ParamPattern)
   return target;
 }
 
 size_t ParamPattern::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:infinity.ParamPattern)
+// @@protoc_insertion_point(message_byte_size_start:org.infinity.idm.ParamPattern)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .infinity.Point points = 4;
+  // repeated .org.infinity.idm.Point points = 4;
   total_size += 1UL * this->_internal_points_size();
   for (const auto& msg : this->points_) {
     total_size +=
@@ -311,7 +318,7 @@ void ParamPattern::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 
 
 void ParamPattern::MergeFrom(const ParamPattern& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:infinity.ParamPattern)
+// @@protoc_insertion_point(class_specific_merge_from_start:org.infinity.idm.ParamPattern)
   GOOGLE_DCHECK_NE(&from, this);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -330,7 +337,7 @@ void ParamPattern::MergeFrom(const ParamPattern& from) {
 }
 
 void ParamPattern::CopyFrom(const ParamPattern& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:infinity.ParamPattern)
+// @@protoc_insertion_point(class_specific_copy_from_start:org.infinity.idm.ParamPattern)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -359,10 +366,12 @@ void ParamPattern::InternalSwap(ParamPattern* other) {
 }
 
 // @@protoc_insertion_point(namespace_scope)
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::infinity::ParamPattern* Arena::CreateMaybeMessage< ::infinity::ParamPattern >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::infinity::ParamPattern >(arena);
+template<> PROTOBUF_NOINLINE ::org::infinity::idm::ParamPattern* Arena::CreateMaybeMessage< ::org::infinity::idm::ParamPattern >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::org::infinity::idm::ParamPattern >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

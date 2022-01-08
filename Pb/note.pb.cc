@@ -16,7 +16,9 @@
 #include <google/protobuf/port_def.inc>
 
 PROTOBUF_PRAGMA_INIT_SEG
+namespace org {
 namespace infinity {
+namespace idm {
 constexpr Note::Note(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : phonemes_()
@@ -28,8 +30,7 @@ constexpr Note::Note(
   , starttick_(0u)
   , length_(uint64_t{0u})
   , pitch_(0u)
-  , consonant_(false)
-  , group_(0){}
+  , consonant_(false){}
 struct NoteDefaultTypeInternal {
   constexpr NoteDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -39,46 +40,47 @@ struct NoteDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT NoteDefaultTypeInternal _Note_default_instance_;
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_note_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_note_2eproto = nullptr;
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_note_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_note_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::infinity::Note, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Note, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::infinity::Note, startbeat_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Note, starttick_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Note, length_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Note, pitch_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Note, name_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Note, timbre_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Note, phonemes_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Note, flags_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Note, consonant_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Note, params_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Note, group_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Note, startbeat_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Note, starttick_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Note, length_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Note, pitch_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Note, name_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Note, timbre_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Note, phonemes_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Note, flags_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Note, consonant_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Note, params_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::infinity::Note)},
+  { 0, -1, sizeof(::org::infinity::idm::Note)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::infinity::_Note_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::org::infinity::idm::_Note_default_instance_),
 };
 
 const char descriptor_table_protodef_note_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\nnote.proto\022\010infinity\032\020utils/pair.proto"
-  "\032\014nparam.proto\"\347\001\n\004Note\022\021\n\tstartBeat\030\001 \001"
-  "(\r\022\021\n\tstartTick\030\002 \001(\r\022\016\n\006length\030\003 \001(\004\022\r\n"
-  "\005pitch\030\004 \001(\r\022\014\n\004name\030\005 \001(\t\022\016\n\006timbre\030\006 \001"
-  "(\t\022&\n\010phonemes\030\007 \003(\0132\024.infinity.utils.Pa"
-  "ir\022\r\n\005flags\030\010 \001(\t\022\021\n\tconsonant\030\t \001(\010\022#\n\006"
-  "params\030\n \003(\0132\023.infinity.NoteParam\022\r\n\005gro"
-  "up\030\013 \001(\005b\006proto3"
+  "\n\nnote.proto\022\020org.infinity.idm\032\020utils/pa"
+  "ir.proto\032\014nparam.proto\"\350\001\n\004Note\022\021\n\tstart"
+  "Beat\030\001 \001(\r\022\021\n\tstartTick\030\002 \001(\r\022\016\n\006length\030"
+  "\003 \001(\004\022\r\n\005pitch\030\004 \001(\r\022\014\n\004name\030\005 \001(\t\022\016\n\006ti"
+  "mbre\030\006 \001(\t\022.\n\010phonemes\030\007 \003(\0132\034.org.infin"
+  "ity.idm.utils.Pair\022\r\n\005flags\030\010 \001(\t\022\021\n\tcon"
+  "sonant\030\t \001(\010\022+\n\006params\030\n \003(\0132\033.org.infin"
+  "ity.idm.NoteParamb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_note_2eproto_deps[2] = {
   &::descriptor_table_nparam_2eproto,
@@ -86,7 +88,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_note_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_note_2eproto = {
-  false, false, 296, descriptor_table_protodef_note_2eproto, "note.proto", 
+  false, false, 305, descriptor_table_protodef_note_2eproto, "note.proto", 
   &descriptor_table_note_2eproto_once, descriptor_table_note_2eproto_deps, 2, 1,
   schemas, file_default_instances, TableStruct_note_2eproto::offsets,
   file_level_metadata_note_2eproto, file_level_enum_descriptors_note_2eproto, file_level_service_descriptors_note_2eproto,
@@ -97,7 +99,9 @@ PROTOBUF_ATTRIBUTE_WEAK const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable
 
 // Force running AddDescriptors() at dynamic initialization time.
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_note_2eproto(&descriptor_table_note_2eproto);
+namespace org {
 namespace infinity {
+namespace idm {
 
 // ===================================================================
 
@@ -120,7 +124,7 @@ Note::Note(::PROTOBUF_NAMESPACE_ID::Arena* arena,
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
   }
-  // @@protoc_insertion_point(arena_constructor:infinity.Note)
+  // @@protoc_insertion_point(arena_constructor:org.infinity.idm.Note)
 }
 Note::Note(const Note& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
@@ -143,9 +147,9 @@ Note::Note(const Note& from)
       GetArenaForAllocation());
   }
   ::memcpy(&startbeat_, &from.startbeat_,
-    static_cast<size_t>(reinterpret_cast<char*>(&group_) -
-    reinterpret_cast<char*>(&startbeat_)) + sizeof(group_));
-  // @@protoc_insertion_point(copy_constructor:infinity.Note)
+    static_cast<size_t>(reinterpret_cast<char*>(&consonant_) -
+    reinterpret_cast<char*>(&startbeat_)) + sizeof(consonant_));
+  // @@protoc_insertion_point(copy_constructor:org.infinity.idm.Note)
 }
 
 inline void Note::SharedCtor() {
@@ -154,12 +158,12 @@ timbre_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlrea
 flags_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&startbeat_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&group_) -
-    reinterpret_cast<char*>(&startbeat_)) + sizeof(group_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&consonant_) -
+    reinterpret_cast<char*>(&startbeat_)) + sizeof(consonant_));
 }
 
 Note::~Note() {
-  // @@protoc_insertion_point(destructor:infinity.Note)
+  // @@protoc_insertion_point(destructor:org.infinity.idm.Note)
   if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -183,7 +187,7 @@ void Note::SetCachedSize(int size) const {
 }
 
 void Note::Clear() {
-// @@protoc_insertion_point(message_clear_start:infinity.Note)
+// @@protoc_insertion_point(message_clear_start:org.infinity.idm.Note)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -194,8 +198,8 @@ void Note::Clear() {
   timbre_.ClearToEmpty();
   flags_.ClearToEmpty();
   ::memset(&startbeat_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&group_) -
-      reinterpret_cast<char*>(&startbeat_)) + sizeof(group_));
+      reinterpret_cast<char*>(&consonant_) -
+      reinterpret_cast<char*>(&startbeat_)) + sizeof(consonant_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -238,7 +242,7 @@ const char* Note::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inter
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
           auto str = _internal_mutable_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "infinity.Note.name"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "org.infinity.idm.Note.name"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -247,11 +251,11 @@ const char* Note::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inter
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
           auto str = _internal_mutable_timbre();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "infinity.Note.timbre"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "org.infinity.idm.Note.timbre"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // repeated .infinity.utils.Pair phonemes = 7;
+      // repeated .org.infinity.idm.utils.Pair phonemes = 7;
       case 7:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
           ptr -= 1;
@@ -268,7 +272,7 @@ const char* Note::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inter
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 66)) {
           auto str = _internal_mutable_flags();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "infinity.Note.flags"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "org.infinity.idm.Note.flags"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -279,7 +283,7 @@ const char* Note::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inter
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // repeated .infinity.NoteParam params = 10;
+      // repeated .org.infinity.idm.NoteParam params = 10;
       case 10:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 82)) {
           ptr -= 1;
@@ -289,13 +293,6 @@ const char* Note::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inter
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<82>(ptr));
-        } else goto handle_unusual;
-        continue;
-      // int32 group = 11;
-      case 11:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 88)) {
-          group_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
         } else goto handle_unusual;
         continue;
       default: {
@@ -323,7 +320,7 @@ failure:
 
 ::PROTOBUF_NAMESPACE_ID::uint8* Note::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:infinity.Note)
+  // @@protoc_insertion_point(serialize_to_array_start:org.infinity.idm.Note)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -356,7 +353,7 @@ failure:
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "infinity.Note.name");
+      "org.infinity.idm.Note.name");
     target = stream->WriteStringMaybeAliased(
         5, this->_internal_name(), target);
   }
@@ -366,12 +363,12 @@ failure:
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_timbre().data(), static_cast<int>(this->_internal_timbre().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "infinity.Note.timbre");
+      "org.infinity.idm.Note.timbre");
     target = stream->WriteStringMaybeAliased(
         6, this->_internal_timbre(), target);
   }
 
-  // repeated .infinity.utils.Pair phonemes = 7;
+  // repeated .org.infinity.idm.utils.Pair phonemes = 7;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_phonemes_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
@@ -384,7 +381,7 @@ failure:
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_flags().data(), static_cast<int>(this->_internal_flags().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "infinity.Note.flags");
+      "org.infinity.idm.Note.flags");
     target = stream->WriteStringMaybeAliased(
         8, this->_internal_flags(), target);
   }
@@ -395,7 +392,7 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(9, this->_internal_consonant(), target);
   }
 
-  // repeated .infinity.NoteParam params = 10;
+  // repeated .org.infinity.idm.NoteParam params = 10;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_params_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
@@ -403,36 +400,30 @@ failure:
       InternalWriteMessage(10, this->_internal_params(i), target, stream);
   }
 
-  // int32 group = 11;
-  if (this->_internal_group() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(11, this->_internal_group(), target);
-  }
-
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:infinity.Note)
+  // @@protoc_insertion_point(serialize_to_array_end:org.infinity.idm.Note)
   return target;
 }
 
 size_t Note::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:infinity.Note)
+// @@protoc_insertion_point(message_byte_size_start:org.infinity.idm.Note)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .infinity.utils.Pair phonemes = 7;
+  // repeated .org.infinity.idm.utils.Pair phonemes = 7;
   total_size += 1UL * this->_internal_phonemes_size();
   for (const auto& msg : this->phonemes_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // repeated .infinity.NoteParam params = 10;
+  // repeated .org.infinity.idm.NoteParam params = 10;
   total_size += 1UL * this->_internal_params_size();
   for (const auto& msg : this->params_) {
     total_size +=
@@ -493,13 +484,6 @@ size_t Note::ByteSizeLong() const {
     total_size += 1 + 1;
   }
 
-  // int32 group = 11;
-  if (this->_internal_group() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_group());
-  }
-
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
         _internal_metadata_, total_size, &_cached_size_);
@@ -523,7 +507,7 @@ void Note::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 
 
 void Note::MergeFrom(const Note& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:infinity.Note)
+// @@protoc_insertion_point(class_specific_merge_from_start:org.infinity.idm.Note)
   GOOGLE_DCHECK_NE(&from, this);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -554,14 +538,11 @@ void Note::MergeFrom(const Note& from) {
   if (from._internal_consonant() != 0) {
     _internal_set_consonant(from._internal_consonant());
   }
-  if (from._internal_group() != 0) {
-    _internal_set_group(from._internal_group());
-  }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Note::CopyFrom(const Note& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:infinity.Note)
+// @@protoc_insertion_point(class_specific_copy_from_start:org.infinity.idm.Note)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -592,8 +573,8 @@ void Note::InternalSwap(Note* other) {
       &other->flags_, other->GetArenaForAllocation()
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Note, group_)
-      + sizeof(Note::group_)
+      PROTOBUF_FIELD_OFFSET(Note, consonant_)
+      + sizeof(Note::consonant_)
       - PROTOBUF_FIELD_OFFSET(Note, startbeat_)>(
           reinterpret_cast<char*>(&startbeat_),
           reinterpret_cast<char*>(&other->startbeat_));
@@ -606,10 +587,12 @@ void Note::InternalSwap(Note* other) {
 }
 
 // @@protoc_insertion_point(namespace_scope)
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::infinity::Note* Arena::CreateMaybeMessage< ::infinity::Note >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::infinity::Note >(arena);
+template<> PROTOBUF_NOINLINE ::org::infinity::idm::Note* Arena::CreateMaybeMessage< ::org::infinity::idm::Note >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::org::infinity::idm::Note >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

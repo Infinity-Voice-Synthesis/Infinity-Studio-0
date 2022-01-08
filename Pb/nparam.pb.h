@@ -53,20 +53,26 @@ struct TableStruct_nparam_2eproto {
   static const ::PROTOBUF_NAMESPACE_ID::uint32 offsets[];
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_nparam_2eproto;
+namespace org {
 namespace infinity {
+namespace idm {
 class NoteParam;
 struct NoteParamDefaultTypeInternal;
 extern NoteParamDefaultTypeInternal _NoteParam_default_instance_;
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 PROTOBUF_NAMESPACE_OPEN
-template<> ::infinity::NoteParam* Arena::CreateMaybeMessage<::infinity::NoteParam>(Arena*);
+template<> ::org::infinity::idm::NoteParam* Arena::CreateMaybeMessage<::org::infinity::idm::NoteParam>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
+namespace org {
 namespace infinity {
+namespace idm {
 
 // ===================================================================
 
 class NoteParam final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:infinity.NoteParam) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:org.infinity.idm.NoteParam) */ {
  public:
   inline NoteParam() : NoteParam(nullptr) {}
   ~NoteParam() override;
@@ -160,7 +166,7 @@ class NoteParam final :
   void InternalSwap(NoteParam* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "infinity.NoteParam";
+    return "org.infinity.idm.NoteParam";
   }
   protected:
   explicit NoteParam(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -236,7 +242,7 @@ class NoteParam final :
   void _internal_set_value(double value);
   public:
 
-  // @@protoc_insertion_point(class_scope:infinity.NoteParam)
+  // @@protoc_insertion_point(class_scope:org.infinity.idm.NoteParam)
  private:
   class _Internal;
 
@@ -267,7 +273,7 @@ inline void NoteParam::clear_name() {
   name_.ClearToEmpty();
 }
 inline const std::string& NoteParam::name() const {
-  // @@protoc_insertion_point(field_get:infinity.NoteParam.name)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.NoteParam.name)
   return _internal_name();
 }
 template <typename ArgT0, typename... ArgT>
@@ -275,11 +281,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void NoteParam::set_name(ArgT0&& arg0, ArgT... args) {
  
  name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:infinity.NoteParam.name)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.NoteParam.name)
 }
 inline std::string* NoteParam::mutable_name() {
   std::string* _s = _internal_mutable_name();
-  // @@protoc_insertion_point(field_mutable:infinity.NoteParam.name)
+  // @@protoc_insertion_point(field_mutable:org.infinity.idm.NoteParam.name)
   return _s;
 }
 inline const std::string& NoteParam::_internal_name() const {
@@ -294,7 +300,7 @@ inline std::string* NoteParam::_internal_mutable_name() {
   return name_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
 inline std::string* NoteParam::release_name() {
-  // @@protoc_insertion_point(field_release:infinity.NoteParam.name)
+  // @@protoc_insertion_point(field_release:org.infinity.idm.NoteParam.name)
   return name_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
 inline void NoteParam::set_allocated_name(std::string* name) {
@@ -305,7 +311,7 @@ inline void NoteParam::set_allocated_name(std::string* name) {
   }
   name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), name,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:infinity.NoteParam.name)
+  // @@protoc_insertion_point(field_set_allocated:org.infinity.idm.NoteParam.name)
 }
 
 // double vMax = 2;
@@ -316,7 +322,7 @@ inline double NoteParam::_internal_vmax() const {
   return vmax_;
 }
 inline double NoteParam::vmax() const {
-  // @@protoc_insertion_point(field_get:infinity.NoteParam.vMax)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.NoteParam.vMax)
   return _internal_vmax();
 }
 inline void NoteParam::_internal_set_vmax(double value) {
@@ -325,7 +331,7 @@ inline void NoteParam::_internal_set_vmax(double value) {
 }
 inline void NoteParam::set_vmax(double value) {
   _internal_set_vmax(value);
-  // @@protoc_insertion_point(field_set:infinity.NoteParam.vMax)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.NoteParam.vMax)
 }
 
 // double vMin = 3;
@@ -336,7 +342,7 @@ inline double NoteParam::_internal_vmin() const {
   return vmin_;
 }
 inline double NoteParam::vmin() const {
-  // @@protoc_insertion_point(field_get:infinity.NoteParam.vMin)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.NoteParam.vMin)
   return _internal_vmin();
 }
 inline void NoteParam::_internal_set_vmin(double value) {
@@ -345,7 +351,7 @@ inline void NoteParam::_internal_set_vmin(double value) {
 }
 inline void NoteParam::set_vmin(double value) {
   _internal_set_vmin(value);
-  // @@protoc_insertion_point(field_set:infinity.NoteParam.vMin)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.NoteParam.vMin)
 }
 
 // double vDefault = 4;
@@ -356,7 +362,7 @@ inline double NoteParam::_internal_vdefault() const {
   return vdefault_;
 }
 inline double NoteParam::vdefault() const {
-  // @@protoc_insertion_point(field_get:infinity.NoteParam.vDefault)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.NoteParam.vDefault)
   return _internal_vdefault();
 }
 inline void NoteParam::_internal_set_vdefault(double value) {
@@ -365,7 +371,7 @@ inline void NoteParam::_internal_set_vdefault(double value) {
 }
 inline void NoteParam::set_vdefault(double value) {
   _internal_set_vdefault(value);
-  // @@protoc_insertion_point(field_set:infinity.NoteParam.vDefault)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.NoteParam.vDefault)
 }
 
 // double value = 5;
@@ -376,7 +382,7 @@ inline double NoteParam::_internal_value() const {
   return value_;
 }
 inline double NoteParam::value() const {
-  // @@protoc_insertion_point(field_get:infinity.NoteParam.value)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.NoteParam.value)
   return _internal_value();
 }
 inline void NoteParam::_internal_set_value(double value) {
@@ -385,7 +391,7 @@ inline void NoteParam::_internal_set_value(double value) {
 }
 inline void NoteParam::set_value(double value) {
   _internal_set_value(value);
-  // @@protoc_insertion_point(field_set:infinity.NoteParam.value)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.NoteParam.value)
 }
 
 #ifdef __GNUC__
@@ -394,7 +400,9 @@ inline void NoteParam::set_value(double value) {
 
 // @@protoc_insertion_point(namespace_scope)
 
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 
 // @@protoc_insertion_point(global_scope)
 

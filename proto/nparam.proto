@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package infinity;
+package org.infinity.idm;
 
 message NoteParam {
     string name = 1;//参数名称

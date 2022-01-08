@@ -53,20 +53,26 @@ struct TableStruct_point_2eproto {
   static const ::PROTOBUF_NAMESPACE_ID::uint32 offsets[];
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_point_2eproto;
+namespace org {
 namespace infinity {
+namespace idm {
 class Point;
 struct PointDefaultTypeInternal;
 extern PointDefaultTypeInternal _Point_default_instance_;
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 PROTOBUF_NAMESPACE_OPEN
-template<> ::infinity::Point* Arena::CreateMaybeMessage<::infinity::Point>(Arena*);
+template<> ::org::infinity::idm::Point* Arena::CreateMaybeMessage<::org::infinity::idm::Point>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
+namespace org {
 namespace infinity {
+namespace idm {
 
 // ===================================================================
 
 class Point final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:infinity.Point) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:org.infinity.idm.Point) */ {
  public:
   inline Point() : Point(nullptr) {}
   ~Point() override;
@@ -160,7 +166,7 @@ class Point final :
   void InternalSwap(Point* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "infinity.Point";
+    return "org.infinity.idm.Point";
   }
   protected:
   explicit Point(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -209,7 +215,7 @@ class Point final :
   void _internal_set_y(double value);
   public:
 
-  // @@protoc_insertion_point(class_scope:infinity.Point)
+  // @@protoc_insertion_point(class_scope:org.infinity.idm.Point)
  private:
   class _Internal;
 
@@ -249,7 +255,7 @@ inline double Point::_internal_x() const {
   return x_;
 }
 inline double Point::x() const {
-  // @@protoc_insertion_point(field_get:infinity.Point.x)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Point.x)
   return _internal_x();
 }
 inline void Point::_internal_set_x(double value) {
@@ -258,7 +264,7 @@ inline void Point::_internal_set_x(double value) {
 }
 inline void Point::set_x(double value) {
   _internal_set_x(value);
-  // @@protoc_insertion_point(field_set:infinity.Point.x)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Point.x)
 }
 
 // optional double y = 2;
@@ -277,7 +283,7 @@ inline double Point::_internal_y() const {
   return y_;
 }
 inline double Point::y() const {
-  // @@protoc_insertion_point(field_get:infinity.Point.y)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Point.y)
   return _internal_y();
 }
 inline void Point::_internal_set_y(double value) {
@@ -286,7 +292,7 @@ inline void Point::_internal_set_y(double value) {
 }
 inline void Point::set_y(double value) {
   _internal_set_y(value);
-  // @@protoc_insertion_point(field_set:infinity.Point.y)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Point.y)
 }
 
 #ifdef __GNUC__
@@ -295,7 +301,9 @@ inline void Point::set_y(double value) {
 
 // @@protoc_insertion_point(namespace_scope)
 
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 
 // @@protoc_insertion_point(global_scope)
 

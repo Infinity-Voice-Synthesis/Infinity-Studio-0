@@ -16,7 +16,9 @@
 #include <google/protobuf/port_def.inc>
 
 PROTOBUF_PRAGMA_INIT_SEG
+namespace org {
 namespace infinity {
+namespace idm {
 constexpr NoteParam::NoteParam(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
@@ -33,39 +35,42 @@ struct NoteParamDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT NoteParamDefaultTypeInternal _NoteParam_default_instance_;
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_nparam_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_nparam_2eproto = nullptr;
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_nparam_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_nparam_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::infinity::NoteParam, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::NoteParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::infinity::NoteParam, name_),
-  PROTOBUF_FIELD_OFFSET(::infinity::NoteParam, vmax_),
-  PROTOBUF_FIELD_OFFSET(::infinity::NoteParam, vmin_),
-  PROTOBUF_FIELD_OFFSET(::infinity::NoteParam, vdefault_),
-  PROTOBUF_FIELD_OFFSET(::infinity::NoteParam, value_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::NoteParam, name_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::NoteParam, vmax_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::NoteParam, vmin_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::NoteParam, vdefault_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::NoteParam, value_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::infinity::NoteParam)},
+  { 0, -1, sizeof(::org::infinity::idm::NoteParam)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::infinity::_NoteParam_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::org::infinity::idm::_NoteParam_default_instance_),
 };
 
 const char descriptor_table_protodef_nparam_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\014nparam.proto\022\010infinity\"V\n\tNoteParam\022\014\n"
-  "\004name\030\001 \001(\t\022\014\n\004vMax\030\002 \001(\001\022\014\n\004vMin\030\003 \001(\001\022"
-  "\020\n\010vDefault\030\004 \001(\001\022\r\n\005value\030\005 \001(\001b\006proto3"
+  "\n\014nparam.proto\022\020org.infinity.idm\"V\n\tNote"
+  "Param\022\014\n\004name\030\001 \001(\t\022\014\n\004vMax\030\002 \001(\001\022\014\n\004vMi"
+  "n\030\003 \001(\001\022\020\n\010vDefault\030\004 \001(\001\022\r\n\005value\030\005 \001(\001"
+  "b\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_nparam_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_nparam_2eproto = {
-  false, false, 120, descriptor_table_protodef_nparam_2eproto, "nparam.proto", 
+  false, false, 128, descriptor_table_protodef_nparam_2eproto, "nparam.proto", 
   &descriptor_table_nparam_2eproto_once, nullptr, 0, 1,
   schemas, file_default_instances, TableStruct_nparam_2eproto::offsets,
   file_level_metadata_nparam_2eproto, file_level_enum_descriptors_nparam_2eproto, file_level_service_descriptors_nparam_2eproto,
@@ -76,7 +81,9 @@ PROTOBUF_ATTRIBUTE_WEAK const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable
 
 // Force running AddDescriptors() at dynamic initialization time.
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_nparam_2eproto(&descriptor_table_nparam_2eproto);
+namespace org {
 namespace infinity {
+namespace idm {
 
 // ===================================================================
 
@@ -91,7 +98,7 @@ NoteParam::NoteParam(::PROTOBUF_NAMESPACE_ID::Arena* arena,
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
   }
-  // @@protoc_insertion_point(arena_constructor:infinity.NoteParam)
+  // @@protoc_insertion_point(arena_constructor:org.infinity.idm.NoteParam)
 }
 NoteParam::NoteParam(const NoteParam& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
@@ -104,7 +111,7 @@ NoteParam::NoteParam(const NoteParam& from)
   ::memcpy(&vmax_, &from.vmax_,
     static_cast<size_t>(reinterpret_cast<char*>(&value_) -
     reinterpret_cast<char*>(&vmax_)) + sizeof(value_));
-  // @@protoc_insertion_point(copy_constructor:infinity.NoteParam)
+  // @@protoc_insertion_point(copy_constructor:org.infinity.idm.NoteParam)
 }
 
 inline void NoteParam::SharedCtor() {
@@ -116,7 +123,7 @@ name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlready
 }
 
 NoteParam::~NoteParam() {
-  // @@protoc_insertion_point(destructor:infinity.NoteParam)
+  // @@protoc_insertion_point(destructor:org.infinity.idm.NoteParam)
   if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -138,7 +145,7 @@ void NoteParam::SetCachedSize(int size) const {
 }
 
 void NoteParam::Clear() {
-// @@protoc_insertion_point(message_clear_start:infinity.NoteParam)
+// @@protoc_insertion_point(message_clear_start:org.infinity.idm.NoteParam)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -161,7 +168,7 @@ const char* NoteParam::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
           auto str = _internal_mutable_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "infinity.NoteParam.name"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "org.infinity.idm.NoteParam.name"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -218,7 +225,7 @@ failure:
 
 ::PROTOBUF_NAMESPACE_ID::uint8* NoteParam::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:infinity.NoteParam)
+  // @@protoc_insertion_point(serialize_to_array_start:org.infinity.idm.NoteParam)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -227,7 +234,7 @@ failure:
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "infinity.NoteParam.name");
+      "org.infinity.idm.NoteParam.name");
     target = stream->WriteStringMaybeAliased(
         1, this->_internal_name(), target);
   }
@@ -260,12 +267,12 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:infinity.NoteParam)
+  // @@protoc_insertion_point(serialize_to_array_end:org.infinity.idm.NoteParam)
   return target;
 }
 
 size_t NoteParam::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:infinity.NoteParam)
+// @@protoc_insertion_point(message_byte_size_start:org.infinity.idm.NoteParam)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -322,7 +329,7 @@ void NoteParam::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 
 
 void NoteParam::MergeFrom(const NoteParam& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:infinity.NoteParam)
+// @@protoc_insertion_point(class_specific_merge_from_start:org.infinity.idm.NoteParam)
   GOOGLE_DCHECK_NE(&from, this);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -346,7 +353,7 @@ void NoteParam::MergeFrom(const NoteParam& from) {
 }
 
 void NoteParam::CopyFrom(const NoteParam& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:infinity.NoteParam)
+// @@protoc_insertion_point(class_specific_copy_from_start:org.infinity.idm.NoteParam)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -379,10 +386,12 @@ void NoteParam::InternalSwap(NoteParam* other) {
 }
 
 // @@protoc_insertion_point(namespace_scope)
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::infinity::NoteParam* Arena::CreateMaybeMessage< ::infinity::NoteParam >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::infinity::NoteParam >(arena);
+template<> PROTOBUF_NOINLINE ::org::infinity::idm::NoteParam* Arena::CreateMaybeMessage< ::org::infinity::idm::NoteParam >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::org::infinity::idm::NoteParam >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

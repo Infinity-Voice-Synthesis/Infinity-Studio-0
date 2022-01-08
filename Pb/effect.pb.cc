@@ -16,7 +16,9 @@
 #include <google/protobuf/port_def.inc>
 
 PROTOBUF_PRAGMA_INIT_SEG
+namespace org {
 namespace infinity {
+namespace idm {
 constexpr Effector::Effector(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : params_()
@@ -32,42 +34,44 @@ struct EffectorDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT EffectorDefaultTypeInternal _Effector_default_instance_;
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_effect_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_effect_2eproto = nullptr;
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_effect_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_effect_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::infinity::Effector, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Effector, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::infinity::Effector, name_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Effector, ison_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Effector, mix_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Effector, params_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Effector, name_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Effector, ison_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Effector, mix_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Effector, params_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::infinity::Effector)},
+  { 0, -1, sizeof(::org::infinity::idm::Effector)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::infinity::_Effector_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::org::infinity::idm::_Effector_default_instance_),
 };
 
 const char descriptor_table_protodef_effect_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\014effect.proto\022\010infinity\032\014tparam.proto\"Y"
-  "\n\010Effector\022\014\n\004name\030\001 \001(\t\022\014\n\004isOn\030\002 \001(\010\022\013"
-  "\n\003mix\030\003 \001(\001\022$\n\006params\030\004 \003(\0132\024.infinity.T"
-  "rackParamb\006proto3"
+  "\n\014effect.proto\022\020org.infinity.idm\032\014tparam"
+  ".proto\"a\n\010Effector\022\014\n\004name\030\001 \001(\t\022\014\n\004isOn"
+  "\030\002 \001(\010\022\013\n\003mix\030\003 \001(\001\022,\n\006params\030\004 \003(\0132\034.or"
+  "g.infinity.idm.TrackParamb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_effect_2eproto_deps[1] = {
   &::descriptor_table_tparam_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_effect_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_effect_2eproto = {
-  false, false, 137, descriptor_table_protodef_effect_2eproto, "effect.proto", 
+  false, false, 153, descriptor_table_protodef_effect_2eproto, "effect.proto", 
   &descriptor_table_effect_2eproto_once, descriptor_table_effect_2eproto_deps, 1, 1,
   schemas, file_default_instances, TableStruct_effect_2eproto::offsets,
   file_level_metadata_effect_2eproto, file_level_enum_descriptors_effect_2eproto, file_level_service_descriptors_effect_2eproto,
@@ -78,7 +82,9 @@ PROTOBUF_ATTRIBUTE_WEAK const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable
 
 // Force running AddDescriptors() at dynamic initialization time.
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_effect_2eproto(&descriptor_table_effect_2eproto);
+namespace org {
 namespace infinity {
+namespace idm {
 
 // ===================================================================
 
@@ -97,7 +103,7 @@ Effector::Effector(::PROTOBUF_NAMESPACE_ID::Arena* arena,
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
   }
-  // @@protoc_insertion_point(arena_constructor:infinity.Effector)
+  // @@protoc_insertion_point(arena_constructor:org.infinity.idm.Effector)
 }
 Effector::Effector(const Effector& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
@@ -111,7 +117,7 @@ Effector::Effector(const Effector& from)
   ::memcpy(&mix_, &from.mix_,
     static_cast<size_t>(reinterpret_cast<char*>(&ison_) -
     reinterpret_cast<char*>(&mix_)) + sizeof(ison_));
-  // @@protoc_insertion_point(copy_constructor:infinity.Effector)
+  // @@protoc_insertion_point(copy_constructor:org.infinity.idm.Effector)
 }
 
 inline void Effector::SharedCtor() {
@@ -123,7 +129,7 @@ name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlready
 }
 
 Effector::~Effector() {
-  // @@protoc_insertion_point(destructor:infinity.Effector)
+  // @@protoc_insertion_point(destructor:org.infinity.idm.Effector)
   if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -145,7 +151,7 @@ void Effector::SetCachedSize(int size) const {
 }
 
 void Effector::Clear() {
-// @@protoc_insertion_point(message_clear_start:infinity.Effector)
+// @@protoc_insertion_point(message_clear_start:org.infinity.idm.Effector)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -169,7 +175,7 @@ const char* Effector::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::i
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
           auto str = _internal_mutable_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "infinity.Effector.name"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "org.infinity.idm.Effector.name"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -187,7 +193,7 @@ const char* Effector::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::i
           ptr += sizeof(double);
         } else goto handle_unusual;
         continue;
-      // repeated .infinity.TrackParam params = 4;
+      // repeated .org.infinity.idm.TrackParam params = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
           ptr -= 1;
@@ -224,7 +230,7 @@ failure:
 
 ::PROTOBUF_NAMESPACE_ID::uint8* Effector::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:infinity.Effector)
+  // @@protoc_insertion_point(serialize_to_array_start:org.infinity.idm.Effector)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -233,7 +239,7 @@ failure:
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "infinity.Effector.name");
+      "org.infinity.idm.Effector.name");
     target = stream->WriteStringMaybeAliased(
         1, this->_internal_name(), target);
   }
@@ -250,7 +256,7 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(3, this->_internal_mix(), target);
   }
 
-  // repeated .infinity.TrackParam params = 4;
+  // repeated .org.infinity.idm.TrackParam params = 4;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_params_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
@@ -262,19 +268,19 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:infinity.Effector)
+  // @@protoc_insertion_point(serialize_to_array_end:org.infinity.idm.Effector)
   return target;
 }
 
 size_t Effector::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:infinity.Effector)
+// @@protoc_insertion_point(message_byte_size_start:org.infinity.idm.Effector)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .infinity.TrackParam params = 4;
+  // repeated .org.infinity.idm.TrackParam params = 4;
   total_size += 1UL * this->_internal_params_size();
   for (const auto& msg : this->params_) {
     total_size +=
@@ -321,7 +327,7 @@ void Effector::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 
 
 void Effector::MergeFrom(const Effector& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:infinity.Effector)
+// @@protoc_insertion_point(class_specific_merge_from_start:org.infinity.idm.Effector)
   GOOGLE_DCHECK_NE(&from, this);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -340,7 +346,7 @@ void Effector::MergeFrom(const Effector& from) {
 }
 
 void Effector::CopyFrom(const Effector& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:infinity.Effector)
+// @@protoc_insertion_point(class_specific_copy_from_start:org.infinity.idm.Effector)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -374,10 +380,12 @@ void Effector::InternalSwap(Effector* other) {
 }
 
 // @@protoc_insertion_point(namespace_scope)
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::infinity::Effector* Arena::CreateMaybeMessage< ::infinity::Effector >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::infinity::Effector >(arena);
+template<> PROTOBUF_NOINLINE ::org::infinity::idm::Effector* Arena::CreateMaybeMessage< ::org::infinity::idm::Effector >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::org::infinity::idm::Effector >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

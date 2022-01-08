@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package infinity.utils;
+package org.infinity.idm.utils;
 
 message Pair {
     string key = 1;//键

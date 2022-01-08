@@ -1,8 +1,9 @@
 syntax = "proto3";
 
-package infinity;
+package org.infinity.idm;
 
 import "track.proto";
+import "pattern.proto";
 
 message Project {
     uint32 time = 1;//总时长
@@ -13,5 +14,6 @@ message Project {
     string editor = 5;//编辑器记录
     repeated string authors = 6;//作者编辑记录
 
-    repeated infinity.Track tracks = 7;//轨道
+    repeated org.infinity.idm.Track tracks = 7;//轨道
+    repeated org.infinity.idm.Pattern patterns = 8;//样式
 }

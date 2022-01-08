@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package infinity;
+package org.infinity.idm;
 
 message Point {
     optional double x = 1;//字面意思，不注释了

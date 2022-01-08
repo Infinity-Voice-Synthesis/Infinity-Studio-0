@@ -53,23 +53,29 @@ struct TableStruct_utils_2fpair_2eproto {
   static const ::PROTOBUF_NAMESPACE_ID::uint32 offsets[];
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_utils_2fpair_2eproto;
+namespace org {
 namespace infinity {
+namespace idm {
 namespace utils {
 class Pair;
 struct PairDefaultTypeInternal;
 extern PairDefaultTypeInternal _Pair_default_instance_;
 }  // namespace utils
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 PROTOBUF_NAMESPACE_OPEN
-template<> ::infinity::utils::Pair* Arena::CreateMaybeMessage<::infinity::utils::Pair>(Arena*);
+template<> ::org::infinity::idm::utils::Pair* Arena::CreateMaybeMessage<::org::infinity::idm::utils::Pair>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
+namespace org {
 namespace infinity {
+namespace idm {
 namespace utils {
 
 // ===================================================================
 
 class Pair final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:infinity.utils.Pair) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:org.infinity.idm.utils.Pair) */ {
  public:
   inline Pair() : Pair(nullptr) {}
   ~Pair() override;
@@ -163,7 +169,7 @@ class Pair final :
   void InternalSwap(Pair* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "infinity.utils.Pair";
+    return "org.infinity.idm.utils.Pair";
   }
   protected:
   explicit Pair(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -209,7 +215,7 @@ class Pair final :
   void _internal_set_value(::PROTOBUF_NAMESPACE_ID::int64 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:infinity.utils.Pair)
+  // @@protoc_insertion_point(class_scope:org.infinity.idm.utils.Pair)
  private:
   class _Internal;
 
@@ -237,7 +243,7 @@ inline void Pair::clear_key() {
   key_.ClearToEmpty();
 }
 inline const std::string& Pair::key() const {
-  // @@protoc_insertion_point(field_get:infinity.utils.Pair.key)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.utils.Pair.key)
   return _internal_key();
 }
 template <typename ArgT0, typename... ArgT>
@@ -245,11 +251,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void Pair::set_key(ArgT0&& arg0, ArgT... args) {
  
  key_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:infinity.utils.Pair.key)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.utils.Pair.key)
 }
 inline std::string* Pair::mutable_key() {
   std::string* _s = _internal_mutable_key();
-  // @@protoc_insertion_point(field_mutable:infinity.utils.Pair.key)
+  // @@protoc_insertion_point(field_mutable:org.infinity.idm.utils.Pair.key)
   return _s;
 }
 inline const std::string& Pair::_internal_key() const {
@@ -264,7 +270,7 @@ inline std::string* Pair::_internal_mutable_key() {
   return key_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
 inline std::string* Pair::release_key() {
-  // @@protoc_insertion_point(field_release:infinity.utils.Pair.key)
+  // @@protoc_insertion_point(field_release:org.infinity.idm.utils.Pair.key)
   return key_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
 inline void Pair::set_allocated_key(std::string* key) {
@@ -275,7 +281,7 @@ inline void Pair::set_allocated_key(std::string* key) {
   }
   key_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), key,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:infinity.utils.Pair.key)
+  // @@protoc_insertion_point(field_set_allocated:org.infinity.idm.utils.Pair.key)
 }
 
 // int64 value = 2;
@@ -286,7 +292,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int64 Pair::_internal_value() const {
   return value_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int64 Pair::value() const {
-  // @@protoc_insertion_point(field_get:infinity.utils.Pair.value)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.utils.Pair.value)
   return _internal_value();
 }
 inline void Pair::_internal_set_value(::PROTOBUF_NAMESPACE_ID::int64 value) {
@@ -295,7 +301,7 @@ inline void Pair::_internal_set_value(::PROTOBUF_NAMESPACE_ID::int64 value) {
 }
 inline void Pair::set_value(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _internal_set_value(value);
-  // @@protoc_insertion_point(field_set:infinity.utils.Pair.value)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.utils.Pair.value)
 }
 
 #ifdef __GNUC__
@@ -305,7 +311,9 @@ inline void Pair::set_value(::PROTOBUF_NAMESPACE_ID::int64 value) {
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace utils
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 
 // @@protoc_insertion_point(global_scope)
 

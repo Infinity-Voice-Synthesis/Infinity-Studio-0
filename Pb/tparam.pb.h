@@ -54,20 +54,26 @@ struct TableStruct_tparam_2eproto {
   static const ::PROTOBUF_NAMESPACE_ID::uint32 offsets[];
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_tparam_2eproto;
+namespace org {
 namespace infinity {
+namespace idm {
 class TrackParam;
 struct TrackParamDefaultTypeInternal;
 extern TrackParamDefaultTypeInternal _TrackParam_default_instance_;
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 PROTOBUF_NAMESPACE_OPEN
-template<> ::infinity::TrackParam* Arena::CreateMaybeMessage<::infinity::TrackParam>(Arena*);
+template<> ::org::infinity::idm::TrackParam* Arena::CreateMaybeMessage<::org::infinity::idm::TrackParam>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
+namespace org {
 namespace infinity {
+namespace idm {
 
 // ===================================================================
 
 class TrackParam final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:infinity.TrackParam) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:org.infinity.idm.TrackParam) */ {
  public:
   inline TrackParam() : TrackParam(nullptr) {}
   ~TrackParam() override;
@@ -161,7 +167,7 @@ class TrackParam final :
   void InternalSwap(TrackParam* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "infinity.TrackParam";
+    return "org.infinity.idm.TrackParam";
   }
   protected:
   explicit TrackParam(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -188,22 +194,22 @@ class TrackParam final :
     kVMinFieldNumber = 3,
     kVDefaultFieldNumber = 4,
   };
-  // repeated .infinity.ParamPattern patterns = 6;
+  // repeated .org.infinity.idm.ParamPattern patterns = 6;
   int patterns_size() const;
   private:
   int _internal_patterns_size() const;
   public:
   void clear_patterns();
-  ::infinity::ParamPattern* mutable_patterns(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::ParamPattern >*
+  ::org::infinity::idm::ParamPattern* mutable_patterns(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::ParamPattern >*
       mutable_patterns();
   private:
-  const ::infinity::ParamPattern& _internal_patterns(int index) const;
-  ::infinity::ParamPattern* _internal_add_patterns();
+  const ::org::infinity::idm::ParamPattern& _internal_patterns(int index) const;
+  ::org::infinity::idm::ParamPattern* _internal_add_patterns();
   public:
-  const ::infinity::ParamPattern& patterns(int index) const;
-  ::infinity::ParamPattern* add_patterns();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::ParamPattern >&
+  const ::org::infinity::idm::ParamPattern& patterns(int index) const;
+  ::org::infinity::idm::ParamPattern* add_patterns();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::ParamPattern >&
       patterns() const;
 
   // string name = 1;
@@ -261,14 +267,14 @@ class TrackParam final :
   void _internal_set_vdefault(double value);
   public:
 
-  // @@protoc_insertion_point(class_scope:infinity.TrackParam)
+  // @@protoc_insertion_point(class_scope:org.infinity.idm.TrackParam)
  private:
   class _Internal;
 
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::ParamPattern > patterns_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::ParamPattern > patterns_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr color_;
   double vmax_;
@@ -293,7 +299,7 @@ inline void TrackParam::clear_name() {
   name_.ClearToEmpty();
 }
 inline const std::string& TrackParam::name() const {
-  // @@protoc_insertion_point(field_get:infinity.TrackParam.name)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.TrackParam.name)
   return _internal_name();
 }
 template <typename ArgT0, typename... ArgT>
@@ -301,11 +307,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void TrackParam::set_name(ArgT0&& arg0, ArgT... args) {
  
  name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:infinity.TrackParam.name)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.TrackParam.name)
 }
 inline std::string* TrackParam::mutable_name() {
   std::string* _s = _internal_mutable_name();
-  // @@protoc_insertion_point(field_mutable:infinity.TrackParam.name)
+  // @@protoc_insertion_point(field_mutable:org.infinity.idm.TrackParam.name)
   return _s;
 }
 inline const std::string& TrackParam::_internal_name() const {
@@ -320,7 +326,7 @@ inline std::string* TrackParam::_internal_mutable_name() {
   return name_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
 inline std::string* TrackParam::release_name() {
-  // @@protoc_insertion_point(field_release:infinity.TrackParam.name)
+  // @@protoc_insertion_point(field_release:org.infinity.idm.TrackParam.name)
   return name_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
 inline void TrackParam::set_allocated_name(std::string* name) {
@@ -331,7 +337,7 @@ inline void TrackParam::set_allocated_name(std::string* name) {
   }
   name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), name,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:infinity.TrackParam.name)
+  // @@protoc_insertion_point(field_set_allocated:org.infinity.idm.TrackParam.name)
 }
 
 // double vMax = 2;
@@ -342,7 +348,7 @@ inline double TrackParam::_internal_vmax() const {
   return vmax_;
 }
 inline double TrackParam::vmax() const {
-  // @@protoc_insertion_point(field_get:infinity.TrackParam.vMax)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.TrackParam.vMax)
   return _internal_vmax();
 }
 inline void TrackParam::_internal_set_vmax(double value) {
@@ -351,7 +357,7 @@ inline void TrackParam::_internal_set_vmax(double value) {
 }
 inline void TrackParam::set_vmax(double value) {
   _internal_set_vmax(value);
-  // @@protoc_insertion_point(field_set:infinity.TrackParam.vMax)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.TrackParam.vMax)
 }
 
 // double vMin = 3;
@@ -362,7 +368,7 @@ inline double TrackParam::_internal_vmin() const {
   return vmin_;
 }
 inline double TrackParam::vmin() const {
-  // @@protoc_insertion_point(field_get:infinity.TrackParam.vMin)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.TrackParam.vMin)
   return _internal_vmin();
 }
 inline void TrackParam::_internal_set_vmin(double value) {
@@ -371,7 +377,7 @@ inline void TrackParam::_internal_set_vmin(double value) {
 }
 inline void TrackParam::set_vmin(double value) {
   _internal_set_vmin(value);
-  // @@protoc_insertion_point(field_set:infinity.TrackParam.vMin)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.TrackParam.vMin)
 }
 
 // double vDefault = 4;
@@ -382,7 +388,7 @@ inline double TrackParam::_internal_vdefault() const {
   return vdefault_;
 }
 inline double TrackParam::vdefault() const {
-  // @@protoc_insertion_point(field_get:infinity.TrackParam.vDefault)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.TrackParam.vDefault)
   return _internal_vdefault();
 }
 inline void TrackParam::_internal_set_vdefault(double value) {
@@ -391,7 +397,7 @@ inline void TrackParam::_internal_set_vdefault(double value) {
 }
 inline void TrackParam::set_vdefault(double value) {
   _internal_set_vdefault(value);
-  // @@protoc_insertion_point(field_set:infinity.TrackParam.vDefault)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.TrackParam.vDefault)
 }
 
 // string color = 5;
@@ -399,7 +405,7 @@ inline void TrackParam::clear_color() {
   color_.ClearToEmpty();
 }
 inline const std::string& TrackParam::color() const {
-  // @@protoc_insertion_point(field_get:infinity.TrackParam.color)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.TrackParam.color)
   return _internal_color();
 }
 template <typename ArgT0, typename... ArgT>
@@ -407,11 +413,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void TrackParam::set_color(ArgT0&& arg0, ArgT... args) {
  
  color_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:infinity.TrackParam.color)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.TrackParam.color)
 }
 inline std::string* TrackParam::mutable_color() {
   std::string* _s = _internal_mutable_color();
-  // @@protoc_insertion_point(field_mutable:infinity.TrackParam.color)
+  // @@protoc_insertion_point(field_mutable:org.infinity.idm.TrackParam.color)
   return _s;
 }
 inline const std::string& TrackParam::_internal_color() const {
@@ -426,7 +432,7 @@ inline std::string* TrackParam::_internal_mutable_color() {
   return color_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
 inline std::string* TrackParam::release_color() {
-  // @@protoc_insertion_point(field_release:infinity.TrackParam.color)
+  // @@protoc_insertion_point(field_release:org.infinity.idm.TrackParam.color)
   return color_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
 inline void TrackParam::set_allocated_color(std::string* color) {
@@ -437,43 +443,43 @@ inline void TrackParam::set_allocated_color(std::string* color) {
   }
   color_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), color,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:infinity.TrackParam.color)
+  // @@protoc_insertion_point(field_set_allocated:org.infinity.idm.TrackParam.color)
 }
 
-// repeated .infinity.ParamPattern patterns = 6;
+// repeated .org.infinity.idm.ParamPattern patterns = 6;
 inline int TrackParam::_internal_patterns_size() const {
   return patterns_.size();
 }
 inline int TrackParam::patterns_size() const {
   return _internal_patterns_size();
 }
-inline ::infinity::ParamPattern* TrackParam::mutable_patterns(int index) {
-  // @@protoc_insertion_point(field_mutable:infinity.TrackParam.patterns)
+inline ::org::infinity::idm::ParamPattern* TrackParam::mutable_patterns(int index) {
+  // @@protoc_insertion_point(field_mutable:org.infinity.idm.TrackParam.patterns)
   return patterns_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::ParamPattern >*
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::ParamPattern >*
 TrackParam::mutable_patterns() {
-  // @@protoc_insertion_point(field_mutable_list:infinity.TrackParam.patterns)
+  // @@protoc_insertion_point(field_mutable_list:org.infinity.idm.TrackParam.patterns)
   return &patterns_;
 }
-inline const ::infinity::ParamPattern& TrackParam::_internal_patterns(int index) const {
+inline const ::org::infinity::idm::ParamPattern& TrackParam::_internal_patterns(int index) const {
   return patterns_.Get(index);
 }
-inline const ::infinity::ParamPattern& TrackParam::patterns(int index) const {
-  // @@protoc_insertion_point(field_get:infinity.TrackParam.patterns)
+inline const ::org::infinity::idm::ParamPattern& TrackParam::patterns(int index) const {
+  // @@protoc_insertion_point(field_get:org.infinity.idm.TrackParam.patterns)
   return _internal_patterns(index);
 }
-inline ::infinity::ParamPattern* TrackParam::_internal_add_patterns() {
+inline ::org::infinity::idm::ParamPattern* TrackParam::_internal_add_patterns() {
   return patterns_.Add();
 }
-inline ::infinity::ParamPattern* TrackParam::add_patterns() {
-  ::infinity::ParamPattern* _add = _internal_add_patterns();
-  // @@protoc_insertion_point(field_add:infinity.TrackParam.patterns)
+inline ::org::infinity::idm::ParamPattern* TrackParam::add_patterns() {
+  ::org::infinity::idm::ParamPattern* _add = _internal_add_patterns();
+  // @@protoc_insertion_point(field_add:org.infinity.idm.TrackParam.patterns)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::ParamPattern >&
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::ParamPattern >&
 TrackParam::patterns() const {
-  // @@protoc_insertion_point(field_list:infinity.TrackParam.patterns)
+  // @@protoc_insertion_point(field_list:org.infinity.idm.TrackParam.patterns)
   return patterns_;
 }
 
@@ -483,7 +489,9 @@ TrackParam::patterns() const {
 
 // @@protoc_insertion_point(namespace_scope)
 
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 
 // @@protoc_insertion_point(global_scope)
 

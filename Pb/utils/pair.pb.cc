@@ -16,7 +16,9 @@
 #include <google/protobuf/port_def.inc>
 
 PROTOBUF_PRAGMA_INIT_SEG
+namespace org {
 namespace infinity {
+namespace idm {
 namespace utils {
 constexpr Pair::Pair(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
@@ -32,35 +34,38 @@ struct PairDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PairDefaultTypeInternal _Pair_default_instance_;
 }  // namespace utils
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_utils_2fpair_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_utils_2fpair_2eproto = nullptr;
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_utils_2fpair_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_utils_2fpair_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::infinity::utils::Pair, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::utils::Pair, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::infinity::utils::Pair, key_),
-  PROTOBUF_FIELD_OFFSET(::infinity::utils::Pair, value_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::utils::Pair, key_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::utils::Pair, value_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::infinity::utils::Pair)},
+  { 0, -1, sizeof(::org::infinity::idm::utils::Pair)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::infinity::utils::_Pair_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::org::infinity::idm::utils::_Pair_default_instance_),
 };
 
 const char descriptor_table_protodef_utils_2fpair_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\020utils/pair.proto\022\016infinity.utils\"\"\n\004Pa"
-  "ir\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\003b\006proto3"
+  "\n\020utils/pair.proto\022\026org.infinity.idm.uti"
+  "ls\"\"\n\004Pair\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\003b\006"
+  "proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_utils_2fpair_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_utils_2fpair_2eproto = {
-  false, false, 78, descriptor_table_protodef_utils_2fpair_2eproto, "utils/pair.proto", 
+  false, false, 86, descriptor_table_protodef_utils_2fpair_2eproto, "utils/pair.proto", 
   &descriptor_table_utils_2fpair_2eproto_once, nullptr, 0, 1,
   schemas, file_default_instances, TableStruct_utils_2fpair_2eproto::offsets,
   file_level_metadata_utils_2fpair_2eproto, file_level_enum_descriptors_utils_2fpair_2eproto, file_level_service_descriptors_utils_2fpair_2eproto,
@@ -71,7 +76,9 @@ PROTOBUF_ATTRIBUTE_WEAK const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable
 
 // Force running AddDescriptors() at dynamic initialization time.
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_utils_2fpair_2eproto(&descriptor_table_utils_2fpair_2eproto);
+namespace org {
 namespace infinity {
+namespace idm {
 namespace utils {
 
 // ===================================================================
@@ -87,7 +94,7 @@ Pair::Pair(::PROTOBUF_NAMESPACE_ID::Arena* arena,
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
   }
-  // @@protoc_insertion_point(arena_constructor:infinity.utils.Pair)
+  // @@protoc_insertion_point(arena_constructor:org.infinity.idm.utils.Pair)
 }
 Pair::Pair(const Pair& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
@@ -98,7 +105,7 @@ Pair::Pair(const Pair& from)
       GetArenaForAllocation());
   }
   value_ = from.value_;
-  // @@protoc_insertion_point(copy_constructor:infinity.utils.Pair)
+  // @@protoc_insertion_point(copy_constructor:org.infinity.idm.utils.Pair)
 }
 
 inline void Pair::SharedCtor() {
@@ -107,7 +114,7 @@ value_ = int64_t{0};
 }
 
 Pair::~Pair() {
-  // @@protoc_insertion_point(destructor:infinity.utils.Pair)
+  // @@protoc_insertion_point(destructor:org.infinity.idm.utils.Pair)
   if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -129,7 +136,7 @@ void Pair::SetCachedSize(int size) const {
 }
 
 void Pair::Clear() {
-// @@protoc_insertion_point(message_clear_start:infinity.utils.Pair)
+// @@protoc_insertion_point(message_clear_start:org.infinity.idm.utils.Pair)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -150,7 +157,7 @@ const char* Pair::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inter
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
           auto str = _internal_mutable_key();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "infinity.utils.Pair.key"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "org.infinity.idm.utils.Pair.key"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -186,7 +193,7 @@ failure:
 
 ::PROTOBUF_NAMESPACE_ID::uint8* Pair::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:infinity.utils.Pair)
+  // @@protoc_insertion_point(serialize_to_array_start:org.infinity.idm.utils.Pair)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -195,7 +202,7 @@ failure:
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_key().data(), static_cast<int>(this->_internal_key().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "infinity.utils.Pair.key");
+      "org.infinity.idm.utils.Pair.key");
     target = stream->WriteStringMaybeAliased(
         1, this->_internal_key(), target);
   }
@@ -210,12 +217,12 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:infinity.utils.Pair)
+  // @@protoc_insertion_point(serialize_to_array_end:org.infinity.idm.utils.Pair)
   return target;
 }
 
 size_t Pair::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:infinity.utils.Pair)
+// @@protoc_insertion_point(message_byte_size_start:org.infinity.idm.utils.Pair)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -259,7 +266,7 @@ void Pair::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 
 
 void Pair::MergeFrom(const Pair& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:infinity.utils.Pair)
+// @@protoc_insertion_point(class_specific_merge_from_start:org.infinity.idm.utils.Pair)
   GOOGLE_DCHECK_NE(&from, this);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -274,7 +281,7 @@ void Pair::MergeFrom(const Pair& from) {
 }
 
 void Pair::CopyFrom(const Pair& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:infinity.utils.Pair)
+// @@protoc_insertion_point(class_specific_copy_from_start:org.infinity.idm.utils.Pair)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -303,10 +310,12 @@ void Pair::InternalSwap(Pair* other) {
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace utils
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::infinity::utils::Pair* Arena::CreateMaybeMessage< ::infinity::utils::Pair >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::infinity::utils::Pair >(arena);
+template<> PROTOBUF_NOINLINE ::org::infinity::idm::utils::Pair* Arena::CreateMaybeMessage< ::org::infinity::idm::utils::Pair >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::org::infinity::idm::utils::Pair >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

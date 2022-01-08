@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package infinity;
+package org.infinity.idm;
 
 import "ppatt.proto";
 
@@ -12,5 +12,5 @@ message TrackParam {
 
     string color = 5;//参数颜色
 
-    repeated infinity.ParamPattern patterns = 6;//片段
+    repeated org.infinity.idm.ParamPattern patterns = 6;//片段
 }

@@ -16,11 +16,14 @@
 #include <google/protobuf/port_def.inc>
 
 PROTOBUF_PRAGMA_INIT_SEG
+namespace org {
 namespace infinity {
+namespace idm {
 constexpr Project::Project(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : authors_()
   , tracks_()
+  , patterns_()
   , editor_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , time_(0u)
   , beat_(0u)
@@ -35,47 +38,53 @@ struct ProjectDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ProjectDefaultTypeInternal _Project_default_instance_;
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_project_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_project_2eproto = nullptr;
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_project_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_project_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::infinity::Project, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Project, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::infinity::Project, time_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Project, beat_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Project, tempo_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Project, srate_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Project, editor_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Project, authors_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Project, tracks_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Project, time_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Project, beat_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Project, tempo_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Project, srate_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Project, editor_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Project, authors_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Project, tracks_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Project, patterns_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::infinity::Project)},
+  { 0, -1, sizeof(::org::infinity::idm::Project)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::infinity::_Project_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::org::infinity::idm::_Project_default_instance_),
 };
 
 const char descriptor_table_protodef_project_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\rproject.proto\022\010infinity\032\013track.proto\"\205"
-  "\001\n\007Project\022\014\n\004time\030\001 \001(\r\022\014\n\004beat\030\002 \001(\r\022\r"
-  "\n\005tempo\030\003 \001(\001\022\r\n\005sRate\030\004 \001(\004\022\016\n\006editor\030\005"
-  " \001(\t\022\017\n\007authors\030\006 \003(\t\022\037\n\006tracks\030\007 \003(\0132\017."
-  "infinity.Trackb\006proto3"
+  "\n\rproject.proto\022\020org.infinity.idm\032\013track"
+  ".proto\032\rpattern.proto\"\272\001\n\007Project\022\014\n\004tim"
+  "e\030\001 \001(\r\022\014\n\004beat\030\002 \001(\r\022\r\n\005tempo\030\003 \001(\001\022\r\n\005"
+  "sRate\030\004 \001(\004\022\016\n\006editor\030\005 \001(\t\022\017\n\007authors\030\006"
+  " \003(\t\022\'\n\006tracks\030\007 \003(\0132\027.org.infinity.idm."
+  "Track\022+\n\010patterns\030\010 \003(\0132\031.org.infinity.i"
+  "dm.Patternb\006proto3"
   ;
-static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_project_2eproto_deps[1] = {
+static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_project_2eproto_deps[2] = {
+  &::descriptor_table_pattern_2eproto,
   &::descriptor_table_track_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_project_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_project_2eproto = {
-  false, false, 182, descriptor_table_protodef_project_2eproto, "project.proto", 
-  &descriptor_table_project_2eproto_once, descriptor_table_project_2eproto_deps, 1, 1,
+  false, false, 258, descriptor_table_protodef_project_2eproto, "project.proto", 
+  &descriptor_table_project_2eproto_once, descriptor_table_project_2eproto_deps, 2, 1,
   schemas, file_default_instances, TableStruct_project_2eproto::offsets,
   file_level_metadata_project_2eproto, file_level_enum_descriptors_project_2eproto, file_level_service_descriptors_project_2eproto,
 };
@@ -85,7 +94,9 @@ PROTOBUF_ATTRIBUTE_WEAK const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable
 
 // Force running AddDescriptors() at dynamic initialization time.
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_project_2eproto(&descriptor_table_project_2eproto);
+namespace org {
 namespace infinity {
+namespace idm {
 
 // ===================================================================
 
@@ -96,21 +107,26 @@ class Project::_Internal {
 void Project::clear_tracks() {
   tracks_.Clear();
 }
+void Project::clear_patterns() {
+  patterns_.Clear();
+}
 Project::Project(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
   authors_(arena),
-  tracks_(arena) {
+  tracks_(arena),
+  patterns_(arena) {
   SharedCtor();
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
   }
-  // @@protoc_insertion_point(arena_constructor:infinity.Project)
+  // @@protoc_insertion_point(arena_constructor:org.infinity.idm.Project)
 }
 Project::Project(const Project& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       authors_(from.authors_),
-      tracks_(from.tracks_) {
+      tracks_(from.tracks_),
+      patterns_(from.patterns_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   editor_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_editor().empty()) {
@@ -120,7 +136,7 @@ Project::Project(const Project& from)
   ::memcpy(&time_, &from.time_,
     static_cast<size_t>(reinterpret_cast<char*>(&srate_) -
     reinterpret_cast<char*>(&time_)) + sizeof(srate_));
-  // @@protoc_insertion_point(copy_constructor:infinity.Project)
+  // @@protoc_insertion_point(copy_constructor:org.infinity.idm.Project)
 }
 
 inline void Project::SharedCtor() {
@@ -132,7 +148,7 @@ editor_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlrea
 }
 
 Project::~Project() {
-  // @@protoc_insertion_point(destructor:infinity.Project)
+  // @@protoc_insertion_point(destructor:org.infinity.idm.Project)
   if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -154,13 +170,14 @@ void Project::SetCachedSize(int size) const {
 }
 
 void Project::Clear() {
-// @@protoc_insertion_point(message_clear_start:infinity.Project)
+// @@protoc_insertion_point(message_clear_start:org.infinity.idm.Project)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   authors_.Clear();
   tracks_.Clear();
+  patterns_.Clear();
   editor_.ClearToEmpty();
   ::memset(&time_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&srate_) -
@@ -207,7 +224,7 @@ const char* Project::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
           auto str = _internal_mutable_editor();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "infinity.Project.editor"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "org.infinity.idm.Project.editor"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -219,13 +236,13 @@ const char* Project::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
             ptr += 1;
             auto str = _internal_add_authors();
             ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-            CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "infinity.Project.authors"));
+            CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "org.infinity.idm.Project.authors"));
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<50>(ptr));
         } else goto handle_unusual;
         continue;
-      // repeated .infinity.Track tracks = 7;
+      // repeated .org.infinity.idm.Track tracks = 7;
       case 7:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
           ptr -= 1;
@@ -235,6 +252,18 @@ const char* Project::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<58>(ptr));
+        } else goto handle_unusual;
+        continue;
+      // repeated .org.infinity.idm.Pattern patterns = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 66)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_patterns(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<66>(ptr));
         } else goto handle_unusual;
         continue;
       default: {
@@ -262,7 +291,7 @@ failure:
 
 ::PROTOBUF_NAMESPACE_ID::uint8* Project::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:infinity.Project)
+  // @@protoc_insertion_point(serialize_to_array_start:org.infinity.idm.Project)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -295,7 +324,7 @@ failure:
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_editor().data(), static_cast<int>(this->_internal_editor().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "infinity.Project.editor");
+      "org.infinity.idm.Project.editor");
     target = stream->WriteStringMaybeAliased(
         5, this->_internal_editor(), target);
   }
@@ -306,11 +335,11 @@ failure:
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       s.data(), static_cast<int>(s.length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "infinity.Project.authors");
+      "org.infinity.idm.Project.authors");
     target = stream->WriteString(6, s, target);
   }
 
-  // repeated .infinity.Track tracks = 7;
+  // repeated .org.infinity.idm.Track tracks = 7;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_tracks_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
@@ -318,16 +347,24 @@ failure:
       InternalWriteMessage(7, this->_internal_tracks(i), target, stream);
   }
 
+  // repeated .org.infinity.idm.Pattern patterns = 8;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_patterns_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(8, this->_internal_patterns(i), target, stream);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:infinity.Project)
+  // @@protoc_insertion_point(serialize_to_array_end:org.infinity.idm.Project)
   return target;
 }
 
 size_t Project::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:infinity.Project)
+// @@protoc_insertion_point(message_byte_size_start:org.infinity.idm.Project)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -342,9 +379,16 @@ size_t Project::ByteSizeLong() const {
       authors_.Get(i));
   }
 
-  // repeated .infinity.Track tracks = 7;
+  // repeated .org.infinity.idm.Track tracks = 7;
   total_size += 1UL * this->_internal_tracks_size();
   for (const auto& msg : this->tracks_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // repeated .org.infinity.idm.Pattern patterns = 8;
+  total_size += 1UL * this->_internal_patterns_size();
+  for (const auto& msg : this->patterns_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
@@ -405,13 +449,14 @@ void Project::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 
 
 void Project::MergeFrom(const Project& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:infinity.Project)
+// @@protoc_insertion_point(class_specific_merge_from_start:org.infinity.idm.Project)
   GOOGLE_DCHECK_NE(&from, this);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   authors_.MergeFrom(from.authors_);
   tracks_.MergeFrom(from.tracks_);
+  patterns_.MergeFrom(from.patterns_);
   if (!from._internal_editor().empty()) {
     _internal_set_editor(from._internal_editor());
   }
@@ -431,7 +476,7 @@ void Project::MergeFrom(const Project& from) {
 }
 
 void Project::CopyFrom(const Project& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:infinity.Project)
+// @@protoc_insertion_point(class_specific_copy_from_start:org.infinity.idm.Project)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -446,6 +491,7 @@ void Project::InternalSwap(Project* other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   authors_.InternalSwap(&other->authors_);
   tracks_.InternalSwap(&other->tracks_);
+  patterns_.InternalSwap(&other->patterns_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       &editor_, GetArenaForAllocation(),
@@ -466,10 +512,12 @@ void Project::InternalSwap(Project* other) {
 }
 
 // @@protoc_insertion_point(namespace_scope)
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::infinity::Project* Arena::CreateMaybeMessage< ::infinity::Project >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::infinity::Project >(arena);
+template<> PROTOBUF_NOINLINE ::org::infinity::idm::Project* Arena::CreateMaybeMessage< ::org::infinity::idm::Project >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::org::infinity::idm::Project >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

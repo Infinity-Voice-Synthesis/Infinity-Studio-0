@@ -32,6 +32,7 @@
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/unknown_field_set.h>
 #include "track.pb.h"
+#include "pattern.pb.h"
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_project_2eproto
@@ -54,20 +55,26 @@ struct TableStruct_project_2eproto {
   static const ::PROTOBUF_NAMESPACE_ID::uint32 offsets[];
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_project_2eproto;
+namespace org {
 namespace infinity {
+namespace idm {
 class Project;
 struct ProjectDefaultTypeInternal;
 extern ProjectDefaultTypeInternal _Project_default_instance_;
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 PROTOBUF_NAMESPACE_OPEN
-template<> ::infinity::Project* Arena::CreateMaybeMessage<::infinity::Project>(Arena*);
+template<> ::org::infinity::idm::Project* Arena::CreateMaybeMessage<::org::infinity::idm::Project>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
+namespace org {
 namespace infinity {
+namespace idm {
 
 // ===================================================================
 
 class Project final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:infinity.Project) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:org.infinity.idm.Project) */ {
  public:
   inline Project() : Project(nullptr) {}
   ~Project() override;
@@ -161,7 +168,7 @@ class Project final :
   void InternalSwap(Project* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "infinity.Project";
+    return "org.infinity.idm.Project";
   }
   protected:
   explicit Project(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -183,6 +190,7 @@ class Project final :
   enum : int {
     kAuthorsFieldNumber = 6,
     kTracksFieldNumber = 7,
+    kPatternsFieldNumber = 8,
     kEditorFieldNumber = 5,
     kTimeFieldNumber = 1,
     kBeatFieldNumber = 2,
@@ -213,23 +221,41 @@ class Project final :
   std::string* _internal_add_authors();
   public:
 
-  // repeated .infinity.Track tracks = 7;
+  // repeated .org.infinity.idm.Track tracks = 7;
   int tracks_size() const;
   private:
   int _internal_tracks_size() const;
   public:
   void clear_tracks();
-  ::infinity::Track* mutable_tracks(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::Track >*
+  ::org::infinity::idm::Track* mutable_tracks(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Track >*
       mutable_tracks();
   private:
-  const ::infinity::Track& _internal_tracks(int index) const;
-  ::infinity::Track* _internal_add_tracks();
+  const ::org::infinity::idm::Track& _internal_tracks(int index) const;
+  ::org::infinity::idm::Track* _internal_add_tracks();
   public:
-  const ::infinity::Track& tracks(int index) const;
-  ::infinity::Track* add_tracks();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::Track >&
+  const ::org::infinity::idm::Track& tracks(int index) const;
+  ::org::infinity::idm::Track* add_tracks();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Track >&
       tracks() const;
+
+  // repeated .org.infinity.idm.Pattern patterns = 8;
+  int patterns_size() const;
+  private:
+  int _internal_patterns_size() const;
+  public:
+  void clear_patterns();
+  ::org::infinity::idm::Pattern* mutable_patterns(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Pattern >*
+      mutable_patterns();
+  private:
+  const ::org::infinity::idm::Pattern& _internal_patterns(int index) const;
+  ::org::infinity::idm::Pattern* _internal_add_patterns();
+  public:
+  const ::org::infinity::idm::Pattern& patterns(int index) const;
+  ::org::infinity::idm::Pattern* add_patterns();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Pattern >&
+      patterns() const;
 
   // string editor = 5;
   void clear_editor();
@@ -281,7 +307,7 @@ class Project final :
   void _internal_set_srate(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:infinity.Project)
+  // @@protoc_insertion_point(class_scope:org.infinity.idm.Project)
  private:
   class _Internal;
 
@@ -289,7 +315,8 @@ class Project final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> authors_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::Track > tracks_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Track > tracks_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Pattern > patterns_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr editor_;
   ::PROTOBUF_NAMESPACE_ID::uint32 time_;
   ::PROTOBUF_NAMESPACE_ID::uint32 beat_;
@@ -317,7 +344,7 @@ inline ::PROTOBUF_NAMESPACE_ID::uint32 Project::_internal_time() const {
   return time_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint32 Project::time() const {
-  // @@protoc_insertion_point(field_get:infinity.Project.time)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Project.time)
   return _internal_time();
 }
 inline void Project::_internal_set_time(::PROTOBUF_NAMESPACE_ID::uint32 value) {
@@ -326,7 +353,7 @@ inline void Project::_internal_set_time(::PROTOBUF_NAMESPACE_ID::uint32 value) {
 }
 inline void Project::set_time(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   _internal_set_time(value);
-  // @@protoc_insertion_point(field_set:infinity.Project.time)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Project.time)
 }
 
 // uint32 beat = 2;
@@ -337,7 +364,7 @@ inline ::PROTOBUF_NAMESPACE_ID::uint32 Project::_internal_beat() const {
   return beat_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint32 Project::beat() const {
-  // @@protoc_insertion_point(field_get:infinity.Project.beat)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Project.beat)
   return _internal_beat();
 }
 inline void Project::_internal_set_beat(::PROTOBUF_NAMESPACE_ID::uint32 value) {
@@ -346,7 +373,7 @@ inline void Project::_internal_set_beat(::PROTOBUF_NAMESPACE_ID::uint32 value) {
 }
 inline void Project::set_beat(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   _internal_set_beat(value);
-  // @@protoc_insertion_point(field_set:infinity.Project.beat)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Project.beat)
 }
 
 // double tempo = 3;
@@ -357,7 +384,7 @@ inline double Project::_internal_tempo() const {
   return tempo_;
 }
 inline double Project::tempo() const {
-  // @@protoc_insertion_point(field_get:infinity.Project.tempo)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Project.tempo)
   return _internal_tempo();
 }
 inline void Project::_internal_set_tempo(double value) {
@@ -366,7 +393,7 @@ inline void Project::_internal_set_tempo(double value) {
 }
 inline void Project::set_tempo(double value) {
   _internal_set_tempo(value);
-  // @@protoc_insertion_point(field_set:infinity.Project.tempo)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Project.tempo)
 }
 
 // uint64 sRate = 4;
@@ -377,7 +404,7 @@ inline ::PROTOBUF_NAMESPACE_ID::uint64 Project::_internal_srate() const {
   return srate_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint64 Project::srate() const {
-  // @@protoc_insertion_point(field_get:infinity.Project.sRate)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Project.sRate)
   return _internal_srate();
 }
 inline void Project::_internal_set_srate(::PROTOBUF_NAMESPACE_ID::uint64 value) {
@@ -386,7 +413,7 @@ inline void Project::_internal_set_srate(::PROTOBUF_NAMESPACE_ID::uint64 value) 
 }
 inline void Project::set_srate(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   _internal_set_srate(value);
-  // @@protoc_insertion_point(field_set:infinity.Project.sRate)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Project.sRate)
 }
 
 // string editor = 5;
@@ -394,7 +421,7 @@ inline void Project::clear_editor() {
   editor_.ClearToEmpty();
 }
 inline const std::string& Project::editor() const {
-  // @@protoc_insertion_point(field_get:infinity.Project.editor)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Project.editor)
   return _internal_editor();
 }
 template <typename ArgT0, typename... ArgT>
@@ -402,11 +429,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void Project::set_editor(ArgT0&& arg0, ArgT... args) {
  
  editor_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:infinity.Project.editor)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Project.editor)
 }
 inline std::string* Project::mutable_editor() {
   std::string* _s = _internal_mutable_editor();
-  // @@protoc_insertion_point(field_mutable:infinity.Project.editor)
+  // @@protoc_insertion_point(field_mutable:org.infinity.idm.Project.editor)
   return _s;
 }
 inline const std::string& Project::_internal_editor() const {
@@ -421,7 +448,7 @@ inline std::string* Project::_internal_mutable_editor() {
   return editor_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
 inline std::string* Project::release_editor() {
-  // @@protoc_insertion_point(field_release:infinity.Project.editor)
+  // @@protoc_insertion_point(field_release:org.infinity.idm.Project.editor)
   return editor_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
 inline void Project::set_allocated_editor(std::string* editor) {
@@ -432,7 +459,7 @@ inline void Project::set_allocated_editor(std::string* editor) {
   }
   editor_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), editor,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:infinity.Project.editor)
+  // @@protoc_insertion_point(field_set_allocated:org.infinity.idm.Project.editor)
 }
 
 // repeated string authors = 6;
@@ -447,104 +474,141 @@ inline void Project::clear_authors() {
 }
 inline std::string* Project::add_authors() {
   std::string* _s = _internal_add_authors();
-  // @@protoc_insertion_point(field_add_mutable:infinity.Project.authors)
+  // @@protoc_insertion_point(field_add_mutable:org.infinity.idm.Project.authors)
   return _s;
 }
 inline const std::string& Project::_internal_authors(int index) const {
   return authors_.Get(index);
 }
 inline const std::string& Project::authors(int index) const {
-  // @@protoc_insertion_point(field_get:infinity.Project.authors)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Project.authors)
   return _internal_authors(index);
 }
 inline std::string* Project::mutable_authors(int index) {
-  // @@protoc_insertion_point(field_mutable:infinity.Project.authors)
+  // @@protoc_insertion_point(field_mutable:org.infinity.idm.Project.authors)
   return authors_.Mutable(index);
 }
 inline void Project::set_authors(int index, const std::string& value) {
   authors_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set:infinity.Project.authors)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Project.authors)
 }
 inline void Project::set_authors(int index, std::string&& value) {
   authors_.Mutable(index)->assign(std::move(value));
-  // @@protoc_insertion_point(field_set:infinity.Project.authors)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Project.authors)
 }
 inline void Project::set_authors(int index, const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   authors_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:infinity.Project.authors)
+  // @@protoc_insertion_point(field_set_char:org.infinity.idm.Project.authors)
 }
 inline void Project::set_authors(int index, const char* value, size_t size) {
   authors_.Mutable(index)->assign(
     reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:infinity.Project.authors)
+  // @@protoc_insertion_point(field_set_pointer:org.infinity.idm.Project.authors)
 }
 inline std::string* Project::_internal_add_authors() {
   return authors_.Add();
 }
 inline void Project::add_authors(const std::string& value) {
   authors_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:infinity.Project.authors)
+  // @@protoc_insertion_point(field_add:org.infinity.idm.Project.authors)
 }
 inline void Project::add_authors(std::string&& value) {
   authors_.Add(std::move(value));
-  // @@protoc_insertion_point(field_add:infinity.Project.authors)
+  // @@protoc_insertion_point(field_add:org.infinity.idm.Project.authors)
 }
 inline void Project::add_authors(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   authors_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:infinity.Project.authors)
+  // @@protoc_insertion_point(field_add_char:org.infinity.idm.Project.authors)
 }
 inline void Project::add_authors(const char* value, size_t size) {
   authors_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:infinity.Project.authors)
+  // @@protoc_insertion_point(field_add_pointer:org.infinity.idm.Project.authors)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
 Project::authors() const {
-  // @@protoc_insertion_point(field_list:infinity.Project.authors)
+  // @@protoc_insertion_point(field_list:org.infinity.idm.Project.authors)
   return authors_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
 Project::mutable_authors() {
-  // @@protoc_insertion_point(field_mutable_list:infinity.Project.authors)
+  // @@protoc_insertion_point(field_mutable_list:org.infinity.idm.Project.authors)
   return &authors_;
 }
 
-// repeated .infinity.Track tracks = 7;
+// repeated .org.infinity.idm.Track tracks = 7;
 inline int Project::_internal_tracks_size() const {
   return tracks_.size();
 }
 inline int Project::tracks_size() const {
   return _internal_tracks_size();
 }
-inline ::infinity::Track* Project::mutable_tracks(int index) {
-  // @@protoc_insertion_point(field_mutable:infinity.Project.tracks)
+inline ::org::infinity::idm::Track* Project::mutable_tracks(int index) {
+  // @@protoc_insertion_point(field_mutable:org.infinity.idm.Project.tracks)
   return tracks_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::Track >*
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Track >*
 Project::mutable_tracks() {
-  // @@protoc_insertion_point(field_mutable_list:infinity.Project.tracks)
+  // @@protoc_insertion_point(field_mutable_list:org.infinity.idm.Project.tracks)
   return &tracks_;
 }
-inline const ::infinity::Track& Project::_internal_tracks(int index) const {
+inline const ::org::infinity::idm::Track& Project::_internal_tracks(int index) const {
   return tracks_.Get(index);
 }
-inline const ::infinity::Track& Project::tracks(int index) const {
-  // @@protoc_insertion_point(field_get:infinity.Project.tracks)
+inline const ::org::infinity::idm::Track& Project::tracks(int index) const {
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Project.tracks)
   return _internal_tracks(index);
 }
-inline ::infinity::Track* Project::_internal_add_tracks() {
+inline ::org::infinity::idm::Track* Project::_internal_add_tracks() {
   return tracks_.Add();
 }
-inline ::infinity::Track* Project::add_tracks() {
-  ::infinity::Track* _add = _internal_add_tracks();
-  // @@protoc_insertion_point(field_add:infinity.Project.tracks)
+inline ::org::infinity::idm::Track* Project::add_tracks() {
+  ::org::infinity::idm::Track* _add = _internal_add_tracks();
+  // @@protoc_insertion_point(field_add:org.infinity.idm.Project.tracks)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::Track >&
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Track >&
 Project::tracks() const {
-  // @@protoc_insertion_point(field_list:infinity.Project.tracks)
+  // @@protoc_insertion_point(field_list:org.infinity.idm.Project.tracks)
   return tracks_;
+}
+
+// repeated .org.infinity.idm.Pattern patterns = 8;
+inline int Project::_internal_patterns_size() const {
+  return patterns_.size();
+}
+inline int Project::patterns_size() const {
+  return _internal_patterns_size();
+}
+inline ::org::infinity::idm::Pattern* Project::mutable_patterns(int index) {
+  // @@protoc_insertion_point(field_mutable:org.infinity.idm.Project.patterns)
+  return patterns_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Pattern >*
+Project::mutable_patterns() {
+  // @@protoc_insertion_point(field_mutable_list:org.infinity.idm.Project.patterns)
+  return &patterns_;
+}
+inline const ::org::infinity::idm::Pattern& Project::_internal_patterns(int index) const {
+  return patterns_.Get(index);
+}
+inline const ::org::infinity::idm::Pattern& Project::patterns(int index) const {
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Project.patterns)
+  return _internal_patterns(index);
+}
+inline ::org::infinity::idm::Pattern* Project::_internal_add_patterns() {
+  return patterns_.Add();
+}
+inline ::org::infinity::idm::Pattern* Project::add_patterns() {
+  ::org::infinity::idm::Pattern* _add = _internal_add_patterns();
+  // @@protoc_insertion_point(field_add:org.infinity.idm.Project.patterns)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Pattern >&
+Project::patterns() const {
+  // @@protoc_insertion_point(field_list:org.infinity.idm.Project.patterns)
+  return patterns_;
 }
 
 #ifdef __GNUC__
@@ -553,7 +617,9 @@ Project::tracks() const {
 
 // @@protoc_insertion_point(namespace_scope)
 
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 
 // @@protoc_insertion_point(global_scope)
 

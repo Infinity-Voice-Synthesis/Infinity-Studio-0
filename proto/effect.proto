@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package infinity;
+package org.infinity.idm;
 
 import "tparam.proto";
 
@@ -9,5 +9,5 @@ message Effector {
     bool isOn = 2;//开启
     double mix = 3;//混合系数
 
-    repeated infinity.TrackParam params = 4;//参数
+    repeated org.infinity.idm.TrackParam params = 4;//参数
 }

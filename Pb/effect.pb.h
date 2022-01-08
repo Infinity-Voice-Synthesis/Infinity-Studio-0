@@ -54,20 +54,26 @@ struct TableStruct_effect_2eproto {
   static const ::PROTOBUF_NAMESPACE_ID::uint32 offsets[];
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_effect_2eproto;
+namespace org {
 namespace infinity {
+namespace idm {
 class Effector;
 struct EffectorDefaultTypeInternal;
 extern EffectorDefaultTypeInternal _Effector_default_instance_;
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 PROTOBUF_NAMESPACE_OPEN
-template<> ::infinity::Effector* Arena::CreateMaybeMessage<::infinity::Effector>(Arena*);
+template<> ::org::infinity::idm::Effector* Arena::CreateMaybeMessage<::org::infinity::idm::Effector>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
+namespace org {
 namespace infinity {
+namespace idm {
 
 // ===================================================================
 
 class Effector final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:infinity.Effector) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:org.infinity.idm.Effector) */ {
  public:
   inline Effector() : Effector(nullptr) {}
   ~Effector() override;
@@ -161,7 +167,7 @@ class Effector final :
   void InternalSwap(Effector* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "infinity.Effector";
+    return "org.infinity.idm.Effector";
   }
   protected:
   explicit Effector(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -186,22 +192,22 @@ class Effector final :
     kMixFieldNumber = 3,
     kIsOnFieldNumber = 2,
   };
-  // repeated .infinity.TrackParam params = 4;
+  // repeated .org.infinity.idm.TrackParam params = 4;
   int params_size() const;
   private:
   int _internal_params_size() const;
   public:
   void clear_params();
-  ::infinity::TrackParam* mutable_params(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::TrackParam >*
+  ::org::infinity::idm::TrackParam* mutable_params(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::TrackParam >*
       mutable_params();
   private:
-  const ::infinity::TrackParam& _internal_params(int index) const;
-  ::infinity::TrackParam* _internal_add_params();
+  const ::org::infinity::idm::TrackParam& _internal_params(int index) const;
+  ::org::infinity::idm::TrackParam* _internal_add_params();
   public:
-  const ::infinity::TrackParam& params(int index) const;
-  ::infinity::TrackParam* add_params();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::TrackParam >&
+  const ::org::infinity::idm::TrackParam& params(int index) const;
+  ::org::infinity::idm::TrackParam* add_params();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::TrackParam >&
       params() const;
 
   // string name = 1;
@@ -236,14 +242,14 @@ class Effector final :
   void _internal_set_ison(bool value);
   public:
 
-  // @@protoc_insertion_point(class_scope:infinity.Effector)
+  // @@protoc_insertion_point(class_scope:org.infinity.idm.Effector)
  private:
   class _Internal;
 
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::TrackParam > params_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::TrackParam > params_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
   double mix_;
   bool ison_;
@@ -266,7 +272,7 @@ inline void Effector::clear_name() {
   name_.ClearToEmpty();
 }
 inline const std::string& Effector::name() const {
-  // @@protoc_insertion_point(field_get:infinity.Effector.name)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Effector.name)
   return _internal_name();
 }
 template <typename ArgT0, typename... ArgT>
@@ -274,11 +280,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void Effector::set_name(ArgT0&& arg0, ArgT... args) {
  
  name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:infinity.Effector.name)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Effector.name)
 }
 inline std::string* Effector::mutable_name() {
   std::string* _s = _internal_mutable_name();
-  // @@protoc_insertion_point(field_mutable:infinity.Effector.name)
+  // @@protoc_insertion_point(field_mutable:org.infinity.idm.Effector.name)
   return _s;
 }
 inline const std::string& Effector::_internal_name() const {
@@ -293,7 +299,7 @@ inline std::string* Effector::_internal_mutable_name() {
   return name_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
 inline std::string* Effector::release_name() {
-  // @@protoc_insertion_point(field_release:infinity.Effector.name)
+  // @@protoc_insertion_point(field_release:org.infinity.idm.Effector.name)
   return name_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
 inline void Effector::set_allocated_name(std::string* name) {
@@ -304,7 +310,7 @@ inline void Effector::set_allocated_name(std::string* name) {
   }
   name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), name,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:infinity.Effector.name)
+  // @@protoc_insertion_point(field_set_allocated:org.infinity.idm.Effector.name)
 }
 
 // bool isOn = 2;
@@ -315,7 +321,7 @@ inline bool Effector::_internal_ison() const {
   return ison_;
 }
 inline bool Effector::ison() const {
-  // @@protoc_insertion_point(field_get:infinity.Effector.isOn)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Effector.isOn)
   return _internal_ison();
 }
 inline void Effector::_internal_set_ison(bool value) {
@@ -324,7 +330,7 @@ inline void Effector::_internal_set_ison(bool value) {
 }
 inline void Effector::set_ison(bool value) {
   _internal_set_ison(value);
-  // @@protoc_insertion_point(field_set:infinity.Effector.isOn)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Effector.isOn)
 }
 
 // double mix = 3;
@@ -335,7 +341,7 @@ inline double Effector::_internal_mix() const {
   return mix_;
 }
 inline double Effector::mix() const {
-  // @@protoc_insertion_point(field_get:infinity.Effector.mix)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Effector.mix)
   return _internal_mix();
 }
 inline void Effector::_internal_set_mix(double value) {
@@ -344,43 +350,43 @@ inline void Effector::_internal_set_mix(double value) {
 }
 inline void Effector::set_mix(double value) {
   _internal_set_mix(value);
-  // @@protoc_insertion_point(field_set:infinity.Effector.mix)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Effector.mix)
 }
 
-// repeated .infinity.TrackParam params = 4;
+// repeated .org.infinity.idm.TrackParam params = 4;
 inline int Effector::_internal_params_size() const {
   return params_.size();
 }
 inline int Effector::params_size() const {
   return _internal_params_size();
 }
-inline ::infinity::TrackParam* Effector::mutable_params(int index) {
-  // @@protoc_insertion_point(field_mutable:infinity.Effector.params)
+inline ::org::infinity::idm::TrackParam* Effector::mutable_params(int index) {
+  // @@protoc_insertion_point(field_mutable:org.infinity.idm.Effector.params)
   return params_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::TrackParam >*
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::TrackParam >*
 Effector::mutable_params() {
-  // @@protoc_insertion_point(field_mutable_list:infinity.Effector.params)
+  // @@protoc_insertion_point(field_mutable_list:org.infinity.idm.Effector.params)
   return &params_;
 }
-inline const ::infinity::TrackParam& Effector::_internal_params(int index) const {
+inline const ::org::infinity::idm::TrackParam& Effector::_internal_params(int index) const {
   return params_.Get(index);
 }
-inline const ::infinity::TrackParam& Effector::params(int index) const {
-  // @@protoc_insertion_point(field_get:infinity.Effector.params)
+inline const ::org::infinity::idm::TrackParam& Effector::params(int index) const {
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Effector.params)
   return _internal_params(index);
 }
-inline ::infinity::TrackParam* Effector::_internal_add_params() {
+inline ::org::infinity::idm::TrackParam* Effector::_internal_add_params() {
   return params_.Add();
 }
-inline ::infinity::TrackParam* Effector::add_params() {
-  ::infinity::TrackParam* _add = _internal_add_params();
-  // @@protoc_insertion_point(field_add:infinity.Effector.params)
+inline ::org::infinity::idm::TrackParam* Effector::add_params() {
+  ::org::infinity::idm::TrackParam* _add = _internal_add_params();
+  // @@protoc_insertion_point(field_add:org.infinity.idm.Effector.params)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::TrackParam >&
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::TrackParam >&
 Effector::params() const {
-  // @@protoc_insertion_point(field_list:infinity.Effector.params)
+  // @@protoc_insertion_point(field_list:org.infinity.idm.Effector.params)
   return params_;
 }
 
@@ -390,7 +396,9 @@ Effector::params() const {
 
 // @@protoc_insertion_point(namespace_scope)
 
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 
 // @@protoc_insertion_point(global_scope)
 

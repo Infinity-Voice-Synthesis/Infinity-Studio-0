@@ -16,7 +16,9 @@
 #include <google/protobuf/port_def.inc>
 
 PROTOBUF_PRAGMA_INIT_SEG
+namespace org {
 namespace infinity {
+namespace idm {
 constexpr TrackParam::TrackParam(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : patterns_()
@@ -34,45 +36,47 @@ struct TrackParamDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT TrackParamDefaultTypeInternal _TrackParam_default_instance_;
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_tparam_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_tparam_2eproto = nullptr;
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_tparam_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_tparam_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::infinity::TrackParam, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::TrackParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::infinity::TrackParam, name_),
-  PROTOBUF_FIELD_OFFSET(::infinity::TrackParam, vmax_),
-  PROTOBUF_FIELD_OFFSET(::infinity::TrackParam, vmin_),
-  PROTOBUF_FIELD_OFFSET(::infinity::TrackParam, vdefault_),
-  PROTOBUF_FIELD_OFFSET(::infinity::TrackParam, color_),
-  PROTOBUF_FIELD_OFFSET(::infinity::TrackParam, patterns_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::TrackParam, name_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::TrackParam, vmax_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::TrackParam, vmin_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::TrackParam, vdefault_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::TrackParam, color_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::TrackParam, patterns_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::infinity::TrackParam)},
+  { 0, -1, sizeof(::org::infinity::idm::TrackParam)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::infinity::_TrackParam_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::org::infinity::idm::_TrackParam_default_instance_),
 };
 
 const char descriptor_table_protodef_tparam_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\014tparam.proto\022\010infinity\032\013ppatt.proto\"\201\001"
-  "\n\nTrackParam\022\014\n\004name\030\001 \001(\t\022\014\n\004vMax\030\002 \001(\001"
-  "\022\014\n\004vMin\030\003 \001(\001\022\020\n\010vDefault\030\004 \001(\001\022\r\n\005colo"
-  "r\030\005 \001(\t\022(\n\010patterns\030\006 \003(\0132\026.infinity.Par"
-  "amPatternb\006proto3"
+  "\n\014tparam.proto\022\020org.infinity.idm\032\013ppatt."
+  "proto\"\211\001\n\nTrackParam\022\014\n\004name\030\001 \001(\t\022\014\n\004vM"
+  "ax\030\002 \001(\001\022\014\n\004vMin\030\003 \001(\001\022\020\n\010vDefault\030\004 \001(\001"
+  "\022\r\n\005color\030\005 \001(\t\0220\n\010patterns\030\006 \003(\0132\036.org."
+  "infinity.idm.ParamPatternb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_tparam_2eproto_deps[1] = {
   &::descriptor_table_ppatt_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_tparam_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_tparam_2eproto = {
-  false, false, 177, descriptor_table_protodef_tparam_2eproto, "tparam.proto", 
+  false, false, 193, descriptor_table_protodef_tparam_2eproto, "tparam.proto", 
   &descriptor_table_tparam_2eproto_once, descriptor_table_tparam_2eproto_deps, 1, 1,
   schemas, file_default_instances, TableStruct_tparam_2eproto::offsets,
   file_level_metadata_tparam_2eproto, file_level_enum_descriptors_tparam_2eproto, file_level_service_descriptors_tparam_2eproto,
@@ -83,7 +87,9 @@ PROTOBUF_ATTRIBUTE_WEAK const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable
 
 // Force running AddDescriptors() at dynamic initialization time.
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_tparam_2eproto(&descriptor_table_tparam_2eproto);
+namespace org {
 namespace infinity {
+namespace idm {
 
 // ===================================================================
 
@@ -102,7 +108,7 @@ TrackParam::TrackParam(::PROTOBUF_NAMESPACE_ID::Arena* arena,
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
   }
-  // @@protoc_insertion_point(arena_constructor:infinity.TrackParam)
+  // @@protoc_insertion_point(arena_constructor:org.infinity.idm.TrackParam)
 }
 TrackParam::TrackParam(const TrackParam& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
@@ -121,7 +127,7 @@ TrackParam::TrackParam(const TrackParam& from)
   ::memcpy(&vmax_, &from.vmax_,
     static_cast<size_t>(reinterpret_cast<char*>(&vdefault_) -
     reinterpret_cast<char*>(&vmax_)) + sizeof(vdefault_));
-  // @@protoc_insertion_point(copy_constructor:infinity.TrackParam)
+  // @@protoc_insertion_point(copy_constructor:org.infinity.idm.TrackParam)
 }
 
 inline void TrackParam::SharedCtor() {
@@ -134,7 +140,7 @@ color_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlread
 }
 
 TrackParam::~TrackParam() {
-  // @@protoc_insertion_point(destructor:infinity.TrackParam)
+  // @@protoc_insertion_point(destructor:org.infinity.idm.TrackParam)
   if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -157,7 +163,7 @@ void TrackParam::SetCachedSize(int size) const {
 }
 
 void TrackParam::Clear() {
-// @@protoc_insertion_point(message_clear_start:infinity.TrackParam)
+// @@protoc_insertion_point(message_clear_start:org.infinity.idm.TrackParam)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -182,7 +188,7 @@ const char* TrackParam::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
           auto str = _internal_mutable_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "infinity.TrackParam.name"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "org.infinity.idm.TrackParam.name"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -212,11 +218,11 @@ const char* TrackParam::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
           auto str = _internal_mutable_color();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "infinity.TrackParam.color"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "org.infinity.idm.TrackParam.color"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // repeated .infinity.ParamPattern patterns = 6;
+      // repeated .org.infinity.idm.ParamPattern patterns = 6;
       case 6:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
           ptr -= 1;
@@ -253,7 +259,7 @@ failure:
 
 ::PROTOBUF_NAMESPACE_ID::uint8* TrackParam::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:infinity.TrackParam)
+  // @@protoc_insertion_point(serialize_to_array_start:org.infinity.idm.TrackParam)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -262,7 +268,7 @@ failure:
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "infinity.TrackParam.name");
+      "org.infinity.idm.TrackParam.name");
     target = stream->WriteStringMaybeAliased(
         1, this->_internal_name(), target);
   }
@@ -290,12 +296,12 @@ failure:
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_color().data(), static_cast<int>(this->_internal_color().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "infinity.TrackParam.color");
+      "org.infinity.idm.TrackParam.color");
     target = stream->WriteStringMaybeAliased(
         5, this->_internal_color(), target);
   }
 
-  // repeated .infinity.ParamPattern patterns = 6;
+  // repeated .org.infinity.idm.ParamPattern patterns = 6;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_patterns_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
@@ -307,19 +313,19 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:infinity.TrackParam)
+  // @@protoc_insertion_point(serialize_to_array_end:org.infinity.idm.TrackParam)
   return target;
 }
 
 size_t TrackParam::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:infinity.TrackParam)
+// @@protoc_insertion_point(message_byte_size_start:org.infinity.idm.TrackParam)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .infinity.ParamPattern patterns = 6;
+  // repeated .org.infinity.idm.ParamPattern patterns = 6;
   total_size += 1UL * this->_internal_patterns_size();
   for (const auto& msg : this->patterns_) {
     total_size +=
@@ -378,7 +384,7 @@ void TrackParam::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 
 
 void TrackParam::MergeFrom(const TrackParam& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:infinity.TrackParam)
+// @@protoc_insertion_point(class_specific_merge_from_start:org.infinity.idm.TrackParam)
   GOOGLE_DCHECK_NE(&from, this);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -403,7 +409,7 @@ void TrackParam::MergeFrom(const TrackParam& from) {
 }
 
 void TrackParam::CopyFrom(const TrackParam& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:infinity.TrackParam)
+// @@protoc_insertion_point(class_specific_copy_from_start:org.infinity.idm.TrackParam)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -442,10 +448,12 @@ void TrackParam::InternalSwap(TrackParam* other) {
 }
 
 // @@protoc_insertion_point(namespace_scope)
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::infinity::TrackParam* Arena::CreateMaybeMessage< ::infinity::TrackParam >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::infinity::TrackParam >(arena);
+template<> PROTOBUF_NOINLINE ::org::infinity::idm::TrackParam* Arena::CreateMaybeMessage< ::org::infinity::idm::TrackParam >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::org::infinity::idm::TrackParam >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

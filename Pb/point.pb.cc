@@ -16,7 +16,9 @@
 #include <google/protobuf/port_def.inc>
 
 PROTOBUF_PRAGMA_INIT_SEG
+namespace org {
 namespace infinity {
+namespace idm {
 constexpr Point::Point(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : x_(0)
@@ -30,38 +32,40 @@ struct PointDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PointDefaultTypeInternal _Point_default_instance_;
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_point_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_point_2eproto = nullptr;
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_point_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_point_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  PROTOBUF_FIELD_OFFSET(::infinity::Point, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Point, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Point, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Point, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::infinity::Point, x_),
-  PROTOBUF_FIELD_OFFSET(::infinity::Point, y_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Point, x_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Point, y_),
   0,
   1,
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 7, sizeof(::infinity::Point)},
+  { 0, 7, sizeof(::org::infinity::idm::Point)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::infinity::_Point_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::org::infinity::idm::_Point_default_instance_),
 };
 
 const char descriptor_table_protodef_point_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\013point.proto\022\010infinity\"3\n\005Point\022\016\n\001x\030\001 "
-  "\001(\001H\000\210\001\001\022\016\n\001y\030\002 \001(\001H\001\210\001\001B\004\n\002_xB\004\n\002_yb\006pr"
-  "oto3"
+  "\n\013point.proto\022\020org.infinity.idm\"3\n\005Point"
+  "\022\016\n\001x\030\001 \001(\001H\000\210\001\001\022\016\n\001y\030\002 \001(\001H\001\210\001\001B\004\n\002_xB\004"
+  "\n\002_yb\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_point_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_point_2eproto = {
-  false, false, 84, descriptor_table_protodef_point_2eproto, "point.proto", 
+  false, false, 92, descriptor_table_protodef_point_2eproto, "point.proto", 
   &descriptor_table_point_2eproto_once, nullptr, 0, 1,
   schemas, file_default_instances, TableStruct_point_2eproto::offsets,
   file_level_metadata_point_2eproto, file_level_enum_descriptors_point_2eproto, file_level_service_descriptors_point_2eproto,
@@ -72,7 +76,9 @@ PROTOBUF_ATTRIBUTE_WEAK const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable
 
 // Force running AddDescriptors() at dynamic initialization time.
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_point_2eproto(&descriptor_table_point_2eproto);
+namespace org {
 namespace infinity {
+namespace idm {
 
 // ===================================================================
 
@@ -94,7 +100,7 @@ Point::Point(::PROTOBUF_NAMESPACE_ID::Arena* arena,
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
   }
-  // @@protoc_insertion_point(arena_constructor:infinity.Point)
+  // @@protoc_insertion_point(arena_constructor:org.infinity.idm.Point)
 }
 Point::Point(const Point& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
@@ -103,7 +109,7 @@ Point::Point(const Point& from)
   ::memcpy(&x_, &from.x_,
     static_cast<size_t>(reinterpret_cast<char*>(&y_) -
     reinterpret_cast<char*>(&x_)) + sizeof(y_));
-  // @@protoc_insertion_point(copy_constructor:infinity.Point)
+  // @@protoc_insertion_point(copy_constructor:org.infinity.idm.Point)
 }
 
 inline void Point::SharedCtor() {
@@ -114,7 +120,7 @@ inline void Point::SharedCtor() {
 }
 
 Point::~Point() {
-  // @@protoc_insertion_point(destructor:infinity.Point)
+  // @@protoc_insertion_point(destructor:org.infinity.idm.Point)
   if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -135,7 +141,7 @@ void Point::SetCachedSize(int size) const {
 }
 
 void Point::Clear() {
-// @@protoc_insertion_point(message_clear_start:infinity.Point)
+// @@protoc_insertion_point(message_clear_start:org.infinity.idm.Point)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -199,7 +205,7 @@ failure:
 
 ::PROTOBUF_NAMESPACE_ID::uint8* Point::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:infinity.Point)
+  // @@protoc_insertion_point(serialize_to_array_start:org.infinity.idm.Point)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -219,12 +225,12 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:infinity.Point)
+  // @@protoc_insertion_point(serialize_to_array_end:org.infinity.idm.Point)
   return target;
 }
 
 size_t Point::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:infinity.Point)
+// @@protoc_insertion_point(message_byte_size_start:org.infinity.idm.Point)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -267,7 +273,7 @@ void Point::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 
 
 void Point::MergeFrom(const Point& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:infinity.Point)
+// @@protoc_insertion_point(class_specific_merge_from_start:org.infinity.idm.Point)
   GOOGLE_DCHECK_NE(&from, this);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -286,7 +292,7 @@ void Point::MergeFrom(const Point& from) {
 }
 
 void Point::CopyFrom(const Point& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:infinity.Point)
+// @@protoc_insertion_point(class_specific_copy_from_start:org.infinity.idm.Point)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -315,10 +321,12 @@ void Point::InternalSwap(Point* other) {
 }
 
 // @@protoc_insertion_point(namespace_scope)
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::infinity::Point* Arena::CreateMaybeMessage< ::infinity::Point >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::infinity::Point >(arena);
+template<> PROTOBUF_NOINLINE ::org::infinity::idm::Point* Arena::CreateMaybeMessage< ::org::infinity::idm::Point >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::org::infinity::idm::Point >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

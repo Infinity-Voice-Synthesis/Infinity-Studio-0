@@ -55,20 +55,26 @@ struct TableStruct_note_2eproto {
   static const ::PROTOBUF_NAMESPACE_ID::uint32 offsets[];
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_note_2eproto;
+namespace org {
 namespace infinity {
+namespace idm {
 class Note;
 struct NoteDefaultTypeInternal;
 extern NoteDefaultTypeInternal _Note_default_instance_;
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 PROTOBUF_NAMESPACE_OPEN
-template<> ::infinity::Note* Arena::CreateMaybeMessage<::infinity::Note>(Arena*);
+template<> ::org::infinity::idm::Note* Arena::CreateMaybeMessage<::org::infinity::idm::Note>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
+namespace org {
 namespace infinity {
+namespace idm {
 
 // ===================================================================
 
 class Note final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:infinity.Note) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:org.infinity.idm.Note) */ {
  public:
   inline Note() : Note(nullptr) {}
   ~Note() override;
@@ -162,7 +168,7 @@ class Note final :
   void InternalSwap(Note* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "infinity.Note";
+    return "org.infinity.idm.Note";
   }
   protected:
   explicit Note(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -192,42 +198,41 @@ class Note final :
     kLengthFieldNumber = 3,
     kPitchFieldNumber = 4,
     kConsonantFieldNumber = 9,
-    kGroupFieldNumber = 11,
   };
-  // repeated .infinity.utils.Pair phonemes = 7;
+  // repeated .org.infinity.idm.utils.Pair phonemes = 7;
   int phonemes_size() const;
   private:
   int _internal_phonemes_size() const;
   public:
   void clear_phonemes();
-  ::infinity::utils::Pair* mutable_phonemes(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::utils::Pair >*
+  ::org::infinity::idm::utils::Pair* mutable_phonemes(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::utils::Pair >*
       mutable_phonemes();
   private:
-  const ::infinity::utils::Pair& _internal_phonemes(int index) const;
-  ::infinity::utils::Pair* _internal_add_phonemes();
+  const ::org::infinity::idm::utils::Pair& _internal_phonemes(int index) const;
+  ::org::infinity::idm::utils::Pair* _internal_add_phonemes();
   public:
-  const ::infinity::utils::Pair& phonemes(int index) const;
-  ::infinity::utils::Pair* add_phonemes();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::utils::Pair >&
+  const ::org::infinity::idm::utils::Pair& phonemes(int index) const;
+  ::org::infinity::idm::utils::Pair* add_phonemes();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::utils::Pair >&
       phonemes() const;
 
-  // repeated .infinity.NoteParam params = 10;
+  // repeated .org.infinity.idm.NoteParam params = 10;
   int params_size() const;
   private:
   int _internal_params_size() const;
   public:
   void clear_params();
-  ::infinity::NoteParam* mutable_params(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::NoteParam >*
+  ::org::infinity::idm::NoteParam* mutable_params(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::NoteParam >*
       mutable_params();
   private:
-  const ::infinity::NoteParam& _internal_params(int index) const;
-  ::infinity::NoteParam* _internal_add_params();
+  const ::org::infinity::idm::NoteParam& _internal_params(int index) const;
+  ::org::infinity::idm::NoteParam* _internal_add_params();
   public:
-  const ::infinity::NoteParam& params(int index) const;
-  ::infinity::NoteParam* add_params();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::NoteParam >&
+  const ::org::infinity::idm::NoteParam& params(int index) const;
+  ::org::infinity::idm::NoteParam* add_params();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::NoteParam >&
       params() const;
 
   // string name = 5;
@@ -317,24 +322,15 @@ class Note final :
   void _internal_set_consonant(bool value);
   public:
 
-  // int32 group = 11;
-  void clear_group();
-  ::PROTOBUF_NAMESPACE_ID::int32 group() const;
-  void set_group(::PROTOBUF_NAMESPACE_ID::int32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_group() const;
-  void _internal_set_group(::PROTOBUF_NAMESPACE_ID::int32 value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:infinity.Note)
+  // @@protoc_insertion_point(class_scope:org.infinity.idm.Note)
  private:
   class _Internal;
 
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::utils::Pair > phonemes_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::NoteParam > params_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::utils::Pair > phonemes_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::NoteParam > params_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr timbre_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr flags_;
@@ -343,7 +339,6 @@ class Note final :
   ::PROTOBUF_NAMESPACE_ID::uint64 length_;
   ::PROTOBUF_NAMESPACE_ID::uint32 pitch_;
   bool consonant_;
-  ::PROTOBUF_NAMESPACE_ID::int32 group_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_note_2eproto;
 };
@@ -366,7 +361,7 @@ inline ::PROTOBUF_NAMESPACE_ID::uint32 Note::_internal_startbeat() const {
   return startbeat_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint32 Note::startbeat() const {
-  // @@protoc_insertion_point(field_get:infinity.Note.startBeat)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Note.startBeat)
   return _internal_startbeat();
 }
 inline void Note::_internal_set_startbeat(::PROTOBUF_NAMESPACE_ID::uint32 value) {
@@ -375,7 +370,7 @@ inline void Note::_internal_set_startbeat(::PROTOBUF_NAMESPACE_ID::uint32 value)
 }
 inline void Note::set_startbeat(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   _internal_set_startbeat(value);
-  // @@protoc_insertion_point(field_set:infinity.Note.startBeat)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Note.startBeat)
 }
 
 // uint32 startTick = 2;
@@ -386,7 +381,7 @@ inline ::PROTOBUF_NAMESPACE_ID::uint32 Note::_internal_starttick() const {
   return starttick_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint32 Note::starttick() const {
-  // @@protoc_insertion_point(field_get:infinity.Note.startTick)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Note.startTick)
   return _internal_starttick();
 }
 inline void Note::_internal_set_starttick(::PROTOBUF_NAMESPACE_ID::uint32 value) {
@@ -395,7 +390,7 @@ inline void Note::_internal_set_starttick(::PROTOBUF_NAMESPACE_ID::uint32 value)
 }
 inline void Note::set_starttick(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   _internal_set_starttick(value);
-  // @@protoc_insertion_point(field_set:infinity.Note.startTick)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Note.startTick)
 }
 
 // uint64 length = 3;
@@ -406,7 +401,7 @@ inline ::PROTOBUF_NAMESPACE_ID::uint64 Note::_internal_length() const {
   return length_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint64 Note::length() const {
-  // @@protoc_insertion_point(field_get:infinity.Note.length)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Note.length)
   return _internal_length();
 }
 inline void Note::_internal_set_length(::PROTOBUF_NAMESPACE_ID::uint64 value) {
@@ -415,7 +410,7 @@ inline void Note::_internal_set_length(::PROTOBUF_NAMESPACE_ID::uint64 value) {
 }
 inline void Note::set_length(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   _internal_set_length(value);
-  // @@protoc_insertion_point(field_set:infinity.Note.length)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Note.length)
 }
 
 // uint32 pitch = 4;
@@ -426,7 +421,7 @@ inline ::PROTOBUF_NAMESPACE_ID::uint32 Note::_internal_pitch() const {
   return pitch_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint32 Note::pitch() const {
-  // @@protoc_insertion_point(field_get:infinity.Note.pitch)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Note.pitch)
   return _internal_pitch();
 }
 inline void Note::_internal_set_pitch(::PROTOBUF_NAMESPACE_ID::uint32 value) {
@@ -435,7 +430,7 @@ inline void Note::_internal_set_pitch(::PROTOBUF_NAMESPACE_ID::uint32 value) {
 }
 inline void Note::set_pitch(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   _internal_set_pitch(value);
-  // @@protoc_insertion_point(field_set:infinity.Note.pitch)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Note.pitch)
 }
 
 // string name = 5;
@@ -443,7 +438,7 @@ inline void Note::clear_name() {
   name_.ClearToEmpty();
 }
 inline const std::string& Note::name() const {
-  // @@protoc_insertion_point(field_get:infinity.Note.name)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Note.name)
   return _internal_name();
 }
 template <typename ArgT0, typename... ArgT>
@@ -451,11 +446,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void Note::set_name(ArgT0&& arg0, ArgT... args) {
  
  name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:infinity.Note.name)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Note.name)
 }
 inline std::string* Note::mutable_name() {
   std::string* _s = _internal_mutable_name();
-  // @@protoc_insertion_point(field_mutable:infinity.Note.name)
+  // @@protoc_insertion_point(field_mutable:org.infinity.idm.Note.name)
   return _s;
 }
 inline const std::string& Note::_internal_name() const {
@@ -470,7 +465,7 @@ inline std::string* Note::_internal_mutable_name() {
   return name_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
 inline std::string* Note::release_name() {
-  // @@protoc_insertion_point(field_release:infinity.Note.name)
+  // @@protoc_insertion_point(field_release:org.infinity.idm.Note.name)
   return name_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
 inline void Note::set_allocated_name(std::string* name) {
@@ -481,7 +476,7 @@ inline void Note::set_allocated_name(std::string* name) {
   }
   name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), name,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:infinity.Note.name)
+  // @@protoc_insertion_point(field_set_allocated:org.infinity.idm.Note.name)
 }
 
 // string timbre = 6;
@@ -489,7 +484,7 @@ inline void Note::clear_timbre() {
   timbre_.ClearToEmpty();
 }
 inline const std::string& Note::timbre() const {
-  // @@protoc_insertion_point(field_get:infinity.Note.timbre)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Note.timbre)
   return _internal_timbre();
 }
 template <typename ArgT0, typename... ArgT>
@@ -497,11 +492,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void Note::set_timbre(ArgT0&& arg0, ArgT... args) {
  
  timbre_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:infinity.Note.timbre)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Note.timbre)
 }
 inline std::string* Note::mutable_timbre() {
   std::string* _s = _internal_mutable_timbre();
-  // @@protoc_insertion_point(field_mutable:infinity.Note.timbre)
+  // @@protoc_insertion_point(field_mutable:org.infinity.idm.Note.timbre)
   return _s;
 }
 inline const std::string& Note::_internal_timbre() const {
@@ -516,7 +511,7 @@ inline std::string* Note::_internal_mutable_timbre() {
   return timbre_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
 inline std::string* Note::release_timbre() {
-  // @@protoc_insertion_point(field_release:infinity.Note.timbre)
+  // @@protoc_insertion_point(field_release:org.infinity.idm.Note.timbre)
   return timbre_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
 inline void Note::set_allocated_timbre(std::string* timbre) {
@@ -527,43 +522,43 @@ inline void Note::set_allocated_timbre(std::string* timbre) {
   }
   timbre_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), timbre,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:infinity.Note.timbre)
+  // @@protoc_insertion_point(field_set_allocated:org.infinity.idm.Note.timbre)
 }
 
-// repeated .infinity.utils.Pair phonemes = 7;
+// repeated .org.infinity.idm.utils.Pair phonemes = 7;
 inline int Note::_internal_phonemes_size() const {
   return phonemes_.size();
 }
 inline int Note::phonemes_size() const {
   return _internal_phonemes_size();
 }
-inline ::infinity::utils::Pair* Note::mutable_phonemes(int index) {
-  // @@protoc_insertion_point(field_mutable:infinity.Note.phonemes)
+inline ::org::infinity::idm::utils::Pair* Note::mutable_phonemes(int index) {
+  // @@protoc_insertion_point(field_mutable:org.infinity.idm.Note.phonemes)
   return phonemes_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::utils::Pair >*
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::utils::Pair >*
 Note::mutable_phonemes() {
-  // @@protoc_insertion_point(field_mutable_list:infinity.Note.phonemes)
+  // @@protoc_insertion_point(field_mutable_list:org.infinity.idm.Note.phonemes)
   return &phonemes_;
 }
-inline const ::infinity::utils::Pair& Note::_internal_phonemes(int index) const {
+inline const ::org::infinity::idm::utils::Pair& Note::_internal_phonemes(int index) const {
   return phonemes_.Get(index);
 }
-inline const ::infinity::utils::Pair& Note::phonemes(int index) const {
-  // @@protoc_insertion_point(field_get:infinity.Note.phonemes)
+inline const ::org::infinity::idm::utils::Pair& Note::phonemes(int index) const {
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Note.phonemes)
   return _internal_phonemes(index);
 }
-inline ::infinity::utils::Pair* Note::_internal_add_phonemes() {
+inline ::org::infinity::idm::utils::Pair* Note::_internal_add_phonemes() {
   return phonemes_.Add();
 }
-inline ::infinity::utils::Pair* Note::add_phonemes() {
-  ::infinity::utils::Pair* _add = _internal_add_phonemes();
-  // @@protoc_insertion_point(field_add:infinity.Note.phonemes)
+inline ::org::infinity::idm::utils::Pair* Note::add_phonemes() {
+  ::org::infinity::idm::utils::Pair* _add = _internal_add_phonemes();
+  // @@protoc_insertion_point(field_add:org.infinity.idm.Note.phonemes)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::utils::Pair >&
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::utils::Pair >&
 Note::phonemes() const {
-  // @@protoc_insertion_point(field_list:infinity.Note.phonemes)
+  // @@protoc_insertion_point(field_list:org.infinity.idm.Note.phonemes)
   return phonemes_;
 }
 
@@ -572,7 +567,7 @@ inline void Note::clear_flags() {
   flags_.ClearToEmpty();
 }
 inline const std::string& Note::flags() const {
-  // @@protoc_insertion_point(field_get:infinity.Note.flags)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Note.flags)
   return _internal_flags();
 }
 template <typename ArgT0, typename... ArgT>
@@ -580,11 +575,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void Note::set_flags(ArgT0&& arg0, ArgT... args) {
  
  flags_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:infinity.Note.flags)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Note.flags)
 }
 inline std::string* Note::mutable_flags() {
   std::string* _s = _internal_mutable_flags();
-  // @@protoc_insertion_point(field_mutable:infinity.Note.flags)
+  // @@protoc_insertion_point(field_mutable:org.infinity.idm.Note.flags)
   return _s;
 }
 inline const std::string& Note::_internal_flags() const {
@@ -599,7 +594,7 @@ inline std::string* Note::_internal_mutable_flags() {
   return flags_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
 inline std::string* Note::release_flags() {
-  // @@protoc_insertion_point(field_release:infinity.Note.flags)
+  // @@protoc_insertion_point(field_release:org.infinity.idm.Note.flags)
   return flags_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
 inline void Note::set_allocated_flags(std::string* flags) {
@@ -610,7 +605,7 @@ inline void Note::set_allocated_flags(std::string* flags) {
   }
   flags_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), flags,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:infinity.Note.flags)
+  // @@protoc_insertion_point(field_set_allocated:org.infinity.idm.Note.flags)
 }
 
 // bool consonant = 9;
@@ -621,7 +616,7 @@ inline bool Note::_internal_consonant() const {
   return consonant_;
 }
 inline bool Note::consonant() const {
-  // @@protoc_insertion_point(field_get:infinity.Note.consonant)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Note.consonant)
   return _internal_consonant();
 }
 inline void Note::_internal_set_consonant(bool value) {
@@ -630,64 +625,44 @@ inline void Note::_internal_set_consonant(bool value) {
 }
 inline void Note::set_consonant(bool value) {
   _internal_set_consonant(value);
-  // @@protoc_insertion_point(field_set:infinity.Note.consonant)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Note.consonant)
 }
 
-// repeated .infinity.NoteParam params = 10;
+// repeated .org.infinity.idm.NoteParam params = 10;
 inline int Note::_internal_params_size() const {
   return params_.size();
 }
 inline int Note::params_size() const {
   return _internal_params_size();
 }
-inline ::infinity::NoteParam* Note::mutable_params(int index) {
-  // @@protoc_insertion_point(field_mutable:infinity.Note.params)
+inline ::org::infinity::idm::NoteParam* Note::mutable_params(int index) {
+  // @@protoc_insertion_point(field_mutable:org.infinity.idm.Note.params)
   return params_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::NoteParam >*
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::NoteParam >*
 Note::mutable_params() {
-  // @@protoc_insertion_point(field_mutable_list:infinity.Note.params)
+  // @@protoc_insertion_point(field_mutable_list:org.infinity.idm.Note.params)
   return &params_;
 }
-inline const ::infinity::NoteParam& Note::_internal_params(int index) const {
+inline const ::org::infinity::idm::NoteParam& Note::_internal_params(int index) const {
   return params_.Get(index);
 }
-inline const ::infinity::NoteParam& Note::params(int index) const {
-  // @@protoc_insertion_point(field_get:infinity.Note.params)
+inline const ::org::infinity::idm::NoteParam& Note::params(int index) const {
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Note.params)
   return _internal_params(index);
 }
-inline ::infinity::NoteParam* Note::_internal_add_params() {
+inline ::org::infinity::idm::NoteParam* Note::_internal_add_params() {
   return params_.Add();
 }
-inline ::infinity::NoteParam* Note::add_params() {
-  ::infinity::NoteParam* _add = _internal_add_params();
-  // @@protoc_insertion_point(field_add:infinity.Note.params)
+inline ::org::infinity::idm::NoteParam* Note::add_params() {
+  ::org::infinity::idm::NoteParam* _add = _internal_add_params();
+  // @@protoc_insertion_point(field_add:org.infinity.idm.Note.params)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::NoteParam >&
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::NoteParam >&
 Note::params() const {
-  // @@protoc_insertion_point(field_list:infinity.Note.params)
+  // @@protoc_insertion_point(field_list:org.infinity.idm.Note.params)
   return params_;
-}
-
-// int32 group = 11;
-inline void Note::clear_group() {
-  group_ = 0;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 Note::_internal_group() const {
-  return group_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 Note::group() const {
-  // @@protoc_insertion_point(field_get:infinity.Note.group)
-  return _internal_group();
-}
-inline void Note::_internal_set_group(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  
-  group_ = value;
-}
-inline void Note::set_group(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_group(value);
-  // @@protoc_insertion_point(field_set:infinity.Note.group)
 }
 
 #ifdef __GNUC__
@@ -696,7 +671,9 @@ inline void Note::set_group(::PROTOBUF_NAMESPACE_ID::int32 value) {
 
 // @@protoc_insertion_point(namespace_scope)
 
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 
 // @@protoc_insertion_point(global_scope)
 

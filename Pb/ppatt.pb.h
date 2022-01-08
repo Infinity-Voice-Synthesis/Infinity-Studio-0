@@ -54,20 +54,26 @@ struct TableStruct_ppatt_2eproto {
   static const ::PROTOBUF_NAMESPACE_ID::uint32 offsets[];
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_ppatt_2eproto;
+namespace org {
 namespace infinity {
+namespace idm {
 class ParamPattern;
 struct ParamPatternDefaultTypeInternal;
 extern ParamPatternDefaultTypeInternal _ParamPattern_default_instance_;
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 PROTOBUF_NAMESPACE_OPEN
-template<> ::infinity::ParamPattern* Arena::CreateMaybeMessage<::infinity::ParamPattern>(Arena*);
+template<> ::org::infinity::idm::ParamPattern* Arena::CreateMaybeMessage<::org::infinity::idm::ParamPattern>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
+namespace org {
 namespace infinity {
+namespace idm {
 
 // ===================================================================
 
 class ParamPattern final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:infinity.ParamPattern) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:org.infinity.idm.ParamPattern) */ {
  public:
   inline ParamPattern() : ParamPattern(nullptr) {}
   ~ParamPattern() override;
@@ -161,7 +167,7 @@ class ParamPattern final :
   void InternalSwap(ParamPattern* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "infinity.ParamPattern";
+    return "org.infinity.idm.ParamPattern";
   }
   protected:
   explicit ParamPattern(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -186,22 +192,22 @@ class ParamPattern final :
     kStartTickFieldNumber = 2,
     kLengthFieldNumber = 3,
   };
-  // repeated .infinity.Point points = 4;
+  // repeated .org.infinity.idm.Point points = 4;
   int points_size() const;
   private:
   int _internal_points_size() const;
   public:
   void clear_points();
-  ::infinity::Point* mutable_points(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::Point >*
+  ::org::infinity::idm::Point* mutable_points(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Point >*
       mutable_points();
   private:
-  const ::infinity::Point& _internal_points(int index) const;
-  ::infinity::Point* _internal_add_points();
+  const ::org::infinity::idm::Point& _internal_points(int index) const;
+  ::org::infinity::idm::Point* _internal_add_points();
   public:
-  const ::infinity::Point& points(int index) const;
-  ::infinity::Point* add_points();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::Point >&
+  const ::org::infinity::idm::Point& points(int index) const;
+  ::org::infinity::idm::Point* add_points();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Point >&
       points() const;
 
   // uint32 startBeat = 1;
@@ -231,14 +237,14 @@ class ParamPattern final :
   void _internal_set_length(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:infinity.ParamPattern)
+  // @@protoc_insertion_point(class_scope:org.infinity.idm.ParamPattern)
  private:
   class _Internal;
 
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::Point > points_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Point > points_;
   ::PROTOBUF_NAMESPACE_ID::uint32 startbeat_;
   ::PROTOBUF_NAMESPACE_ID::uint32 starttick_;
   ::PROTOBUF_NAMESPACE_ID::uint64 length_;
@@ -264,7 +270,7 @@ inline ::PROTOBUF_NAMESPACE_ID::uint32 ParamPattern::_internal_startbeat() const
   return startbeat_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint32 ParamPattern::startbeat() const {
-  // @@protoc_insertion_point(field_get:infinity.ParamPattern.startBeat)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.ParamPattern.startBeat)
   return _internal_startbeat();
 }
 inline void ParamPattern::_internal_set_startbeat(::PROTOBUF_NAMESPACE_ID::uint32 value) {
@@ -273,7 +279,7 @@ inline void ParamPattern::_internal_set_startbeat(::PROTOBUF_NAMESPACE_ID::uint3
 }
 inline void ParamPattern::set_startbeat(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   _internal_set_startbeat(value);
-  // @@protoc_insertion_point(field_set:infinity.ParamPattern.startBeat)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.ParamPattern.startBeat)
 }
 
 // uint32 startTick = 2;
@@ -284,7 +290,7 @@ inline ::PROTOBUF_NAMESPACE_ID::uint32 ParamPattern::_internal_starttick() const
   return starttick_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint32 ParamPattern::starttick() const {
-  // @@protoc_insertion_point(field_get:infinity.ParamPattern.startTick)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.ParamPattern.startTick)
   return _internal_starttick();
 }
 inline void ParamPattern::_internal_set_starttick(::PROTOBUF_NAMESPACE_ID::uint32 value) {
@@ -293,7 +299,7 @@ inline void ParamPattern::_internal_set_starttick(::PROTOBUF_NAMESPACE_ID::uint3
 }
 inline void ParamPattern::set_starttick(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   _internal_set_starttick(value);
-  // @@protoc_insertion_point(field_set:infinity.ParamPattern.startTick)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.ParamPattern.startTick)
 }
 
 // uint64 length = 3;
@@ -304,7 +310,7 @@ inline ::PROTOBUF_NAMESPACE_ID::uint64 ParamPattern::_internal_length() const {
   return length_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint64 ParamPattern::length() const {
-  // @@protoc_insertion_point(field_get:infinity.ParamPattern.length)
+  // @@protoc_insertion_point(field_get:org.infinity.idm.ParamPattern.length)
   return _internal_length();
 }
 inline void ParamPattern::_internal_set_length(::PROTOBUF_NAMESPACE_ID::uint64 value) {
@@ -313,43 +319,43 @@ inline void ParamPattern::_internal_set_length(::PROTOBUF_NAMESPACE_ID::uint64 v
 }
 inline void ParamPattern::set_length(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   _internal_set_length(value);
-  // @@protoc_insertion_point(field_set:infinity.ParamPattern.length)
+  // @@protoc_insertion_point(field_set:org.infinity.idm.ParamPattern.length)
 }
 
-// repeated .infinity.Point points = 4;
+// repeated .org.infinity.idm.Point points = 4;
 inline int ParamPattern::_internal_points_size() const {
   return points_.size();
 }
 inline int ParamPattern::points_size() const {
   return _internal_points_size();
 }
-inline ::infinity::Point* ParamPattern::mutable_points(int index) {
-  // @@protoc_insertion_point(field_mutable:infinity.ParamPattern.points)
+inline ::org::infinity::idm::Point* ParamPattern::mutable_points(int index) {
+  // @@protoc_insertion_point(field_mutable:org.infinity.idm.ParamPattern.points)
   return points_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::Point >*
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Point >*
 ParamPattern::mutable_points() {
-  // @@protoc_insertion_point(field_mutable_list:infinity.ParamPattern.points)
+  // @@protoc_insertion_point(field_mutable_list:org.infinity.idm.ParamPattern.points)
   return &points_;
 }
-inline const ::infinity::Point& ParamPattern::_internal_points(int index) const {
+inline const ::org::infinity::idm::Point& ParamPattern::_internal_points(int index) const {
   return points_.Get(index);
 }
-inline const ::infinity::Point& ParamPattern::points(int index) const {
-  // @@protoc_insertion_point(field_get:infinity.ParamPattern.points)
+inline const ::org::infinity::idm::Point& ParamPattern::points(int index) const {
+  // @@protoc_insertion_point(field_get:org.infinity.idm.ParamPattern.points)
   return _internal_points(index);
 }
-inline ::infinity::Point* ParamPattern::_internal_add_points() {
+inline ::org::infinity::idm::Point* ParamPattern::_internal_add_points() {
   return points_.Add();
 }
-inline ::infinity::Point* ParamPattern::add_points() {
-  ::infinity::Point* _add = _internal_add_points();
-  // @@protoc_insertion_point(field_add:infinity.ParamPattern.points)
+inline ::org::infinity::idm::Point* ParamPattern::add_points() {
+  ::org::infinity::idm::Point* _add = _internal_add_points();
+  // @@protoc_insertion_point(field_add:org.infinity.idm.ParamPattern.points)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::infinity::Point >&
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Point >&
 ParamPattern::points() const {
-  // @@protoc_insertion_point(field_list:infinity.ParamPattern.points)
+  // @@protoc_insertion_point(field_list:org.infinity.idm.ParamPattern.points)
   return points_;
 }
 
@@ -359,7 +365,9 @@ ParamPattern::points() const {
 
 // @@protoc_insertion_point(namespace_scope)
 
+}  // namespace idm
 }  // namespace infinity
+}  // namespace org
 
 // @@protoc_insertion_point(global_scope)
 

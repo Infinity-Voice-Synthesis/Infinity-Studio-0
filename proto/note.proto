@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package infinity;
+package org.infinity.idm;
 
 import "utils/pair.proto";
 import "nparam.proto";
@@ -13,13 +13,11 @@ message Note {
 
     string name = 5;//音符名称
     string timbre = 6;//声库音色
-    repeated infinity.utils.Pair phonemes = 7;//音素列表
+    repeated org.infinity.idm.utils.Pair phonemes = 7;//音素列表
 
     string flags = 8;//字符型参数，向UTAU兼容
 
     bool consonant = 9;//开头辅音
 
-    repeated infinity.NoteParam params = 10;//参数
-
-    int32 group = 11;//渲染组,-1为问题组，不渲染
+    repeated org.infinity.idm.NoteParam params = 10;//参数
 }
