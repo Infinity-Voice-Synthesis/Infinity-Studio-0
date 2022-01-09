@@ -28,7 +28,8 @@ constexpr Project::Project(
   , time_(0u)
   , beat_(0u)
   , tempo_(0)
-  , srate_(uint64_t{0u}){}
+  , srate_(uint64_t{0u})
+  , bit_(0u){}
 struct ProjectDefaultTypeInternal {
   constexpr ProjectDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -55,6 +56,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_project_2eproto::offsets[] PRO
   PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Project, beat_),
   PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Project, tempo_),
   PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Project, srate_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Project, bit_),
   PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Project, editor_),
   PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Project, authors_),
   PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Project, tracks_),
@@ -70,12 +72,12 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_project_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\rproject.proto\022\020org.infinity.idm\032\013track"
-  ".proto\032\rpattern.proto\"\272\001\n\007Project\022\014\n\004tim"
+  ".proto\032\rpattern.proto\"\307\001\n\007Project\022\014\n\004tim"
   "e\030\001 \001(\r\022\014\n\004beat\030\002 \001(\r\022\r\n\005tempo\030\003 \001(\001\022\r\n\005"
-  "sRate\030\004 \001(\004\022\016\n\006editor\030\005 \001(\t\022\017\n\007authors\030\006"
-  " \003(\t\022\'\n\006tracks\030\007 \003(\0132\027.org.infinity.idm."
-  "Track\022+\n\010patterns\030\010 \003(\0132\031.org.infinity.i"
-  "dm.Patternb\006proto3"
+  "sRate\030\004 \001(\004\022\013\n\003bit\030\005 \001(\r\022\016\n\006editor\030\006 \001(\t"
+  "\022\017\n\007authors\030\007 \003(\t\022\'\n\006tracks\030\010 \003(\0132\027.org."
+  "infinity.idm.Track\022+\n\010patterns\030\t \003(\0132\031.o"
+  "rg.infinity.idm.Patternb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_project_2eproto_deps[2] = {
   &::descriptor_table_pattern_2eproto,
@@ -83,7 +85,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_project_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_project_2eproto = {
-  false, false, 258, descriptor_table_protodef_project_2eproto, "project.proto", 
+  false, false, 271, descriptor_table_protodef_project_2eproto, "project.proto", 
   &descriptor_table_project_2eproto_once, descriptor_table_project_2eproto_deps, 2, 1,
   schemas, file_default_instances, TableStruct_project_2eproto::offsets,
   file_level_metadata_project_2eproto, file_level_enum_descriptors_project_2eproto, file_level_service_descriptors_project_2eproto,
@@ -134,8 +136,8 @@ Project::Project(const Project& from)
       GetArenaForAllocation());
   }
   ::memcpy(&time_, &from.time_,
-    static_cast<size_t>(reinterpret_cast<char*>(&srate_) -
-    reinterpret_cast<char*>(&time_)) + sizeof(srate_));
+    static_cast<size_t>(reinterpret_cast<char*>(&bit_) -
+    reinterpret_cast<char*>(&time_)) + sizeof(bit_));
   // @@protoc_insertion_point(copy_constructor:org.infinity.idm.Project)
 }
 
@@ -143,8 +145,8 @@ inline void Project::SharedCtor() {
 editor_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&time_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&srate_) -
-    reinterpret_cast<char*>(&time_)) + sizeof(srate_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&bit_) -
+    reinterpret_cast<char*>(&time_)) + sizeof(bit_));
 }
 
 Project::~Project() {
@@ -180,8 +182,8 @@ void Project::Clear() {
   patterns_.Clear();
   editor_.ClearToEmpty();
   ::memset(&time_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&srate_) -
-      reinterpret_cast<char*>(&time_)) + sizeof(srate_));
+      reinterpret_cast<char*>(&bit_) -
+      reinterpret_cast<char*>(&time_)) + sizeof(bit_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -219,18 +221,25 @@ const char* Project::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string editor = 5;
+      // uint32 bit = 5;
       case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
+          bit_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string editor = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
           auto str = _internal_mutable_editor();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "org.infinity.idm.Project.editor"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // repeated string authors = 6;
-      case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
+      // repeated string authors = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -239,31 +248,31 @@ const char* Project::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
             CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "org.infinity.idm.Project.authors"));
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<50>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<58>(ptr));
         } else goto handle_unusual;
         continue;
-      // repeated .org.infinity.idm.Track tracks = 7;
-      case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
+      // repeated .org.infinity.idm.Track tracks = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 66)) {
           ptr -= 1;
           do {
             ptr += 1;
             ptr = ctx->ParseMessage(_internal_add_tracks(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<58>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<66>(ptr));
         } else goto handle_unusual;
         continue;
-      // repeated .org.infinity.idm.Pattern patterns = 8;
-      case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 66)) {
+      // repeated .org.infinity.idm.Pattern patterns = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 74)) {
           ptr -= 1;
           do {
             ptr += 1;
             ptr = ctx->ParseMessage(_internal_add_patterns(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<66>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<74>(ptr));
         } else goto handle_unusual;
         continue;
       default: {
@@ -319,40 +328,46 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(4, this->_internal_srate(), target);
   }
 
-  // string editor = 5;
+  // uint32 bit = 5;
+  if (this->_internal_bit() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(5, this->_internal_bit(), target);
+  }
+
+  // string editor = 6;
   if (!this->_internal_editor().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_editor().data(), static_cast<int>(this->_internal_editor().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "org.infinity.idm.Project.editor");
     target = stream->WriteStringMaybeAliased(
-        5, this->_internal_editor(), target);
+        6, this->_internal_editor(), target);
   }
 
-  // repeated string authors = 6;
+  // repeated string authors = 7;
   for (int i = 0, n = this->_internal_authors_size(); i < n; i++) {
     const auto& s = this->_internal_authors(i);
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       s.data(), static_cast<int>(s.length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "org.infinity.idm.Project.authors");
-    target = stream->WriteString(6, s, target);
+    target = stream->WriteString(7, s, target);
   }
 
-  // repeated .org.infinity.idm.Track tracks = 7;
+  // repeated .org.infinity.idm.Track tracks = 8;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_tracks_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(7, this->_internal_tracks(i), target, stream);
+      InternalWriteMessage(8, this->_internal_tracks(i), target, stream);
   }
 
-  // repeated .org.infinity.idm.Pattern patterns = 8;
+  // repeated .org.infinity.idm.Pattern patterns = 9;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_patterns_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(8, this->_internal_patterns(i), target, stream);
+      InternalWriteMessage(9, this->_internal_patterns(i), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -371,7 +386,7 @@ size_t Project::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated string authors = 6;
+  // repeated string authors = 7;
   total_size += 1 *
       ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(authors_.size());
   for (int i = 0, n = authors_.size(); i < n; i++) {
@@ -379,21 +394,21 @@ size_t Project::ByteSizeLong() const {
       authors_.Get(i));
   }
 
-  // repeated .org.infinity.idm.Track tracks = 7;
+  // repeated .org.infinity.idm.Track tracks = 8;
   total_size += 1UL * this->_internal_tracks_size();
   for (const auto& msg : this->tracks_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // repeated .org.infinity.idm.Pattern patterns = 8;
+  // repeated .org.infinity.idm.Pattern patterns = 9;
   total_size += 1UL * this->_internal_patterns_size();
   for (const auto& msg : this->patterns_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // string editor = 5;
+  // string editor = 6;
   if (!this->_internal_editor().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
@@ -424,6 +439,13 @@ size_t Project::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
         this->_internal_srate());
+  }
+
+  // uint32 bit = 5;
+  if (this->_internal_bit() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_bit());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -472,6 +494,9 @@ void Project::MergeFrom(const Project& from) {
   if (from._internal_srate() != 0) {
     _internal_set_srate(from._internal_srate());
   }
+  if (from._internal_bit() != 0) {
+    _internal_set_bit(from._internal_bit());
+  }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -498,8 +523,8 @@ void Project::InternalSwap(Project* other) {
       &other->editor_, other->GetArenaForAllocation()
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Project, srate_)
-      + sizeof(Project::srate_)
+      PROTOBUF_FIELD_OFFSET(Project, bit_)
+      + sizeof(Project::bit_)
       - PROTOBUF_FIELD_OFFSET(Project, time_)>(
           reinterpret_cast<char*>(&time_),
           reinterpret_cast<char*>(&other->time_));

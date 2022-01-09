@@ -188,16 +188,17 @@ class Project final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kAuthorsFieldNumber = 6,
-    kTracksFieldNumber = 7,
-    kPatternsFieldNumber = 8,
-    kEditorFieldNumber = 5,
+    kAuthorsFieldNumber = 7,
+    kTracksFieldNumber = 8,
+    kPatternsFieldNumber = 9,
+    kEditorFieldNumber = 6,
     kTimeFieldNumber = 1,
     kBeatFieldNumber = 2,
     kTempoFieldNumber = 3,
     kSRateFieldNumber = 4,
+    kBitFieldNumber = 5,
   };
-  // repeated string authors = 6;
+  // repeated string authors = 7;
   int authors_size() const;
   private:
   int _internal_authors_size() const;
@@ -221,7 +222,7 @@ class Project final :
   std::string* _internal_add_authors();
   public:
 
-  // repeated .org.infinity.idm.Track tracks = 7;
+  // repeated .org.infinity.idm.Track tracks = 8;
   int tracks_size() const;
   private:
   int _internal_tracks_size() const;
@@ -239,7 +240,7 @@ class Project final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Track >&
       tracks() const;
 
-  // repeated .org.infinity.idm.Pattern patterns = 8;
+  // repeated .org.infinity.idm.Pattern patterns = 9;
   int patterns_size() const;
   private:
   int _internal_patterns_size() const;
@@ -257,7 +258,7 @@ class Project final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Pattern >&
       patterns() const;
 
-  // string editor = 5;
+  // string editor = 6;
   void clear_editor();
   const std::string& editor() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -307,6 +308,15 @@ class Project final :
   void _internal_set_srate(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
+  // uint32 bit = 5;
+  void clear_bit();
+  ::PROTOBUF_NAMESPACE_ID::uint32 bit() const;
+  void set_bit(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_bit() const;
+  void _internal_set_bit(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:org.infinity.idm.Project)
  private:
   class _Internal;
@@ -322,6 +332,7 @@ class Project final :
   ::PROTOBUF_NAMESPACE_ID::uint32 beat_;
   double tempo_;
   ::PROTOBUF_NAMESPACE_ID::uint64 srate_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 bit_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_project_2eproto;
 };
@@ -416,7 +427,27 @@ inline void Project::set_srate(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   // @@protoc_insertion_point(field_set:org.infinity.idm.Project.sRate)
 }
 
-// string editor = 5;
+// uint32 bit = 5;
+inline void Project::clear_bit() {
+  bit_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Project::_internal_bit() const {
+  return bit_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Project::bit() const {
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Project.bit)
+  return _internal_bit();
+}
+inline void Project::_internal_set_bit(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  bit_ = value;
+}
+inline void Project::set_bit(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_bit(value);
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Project.bit)
+}
+
+// string editor = 6;
 inline void Project::clear_editor() {
   editor_.ClearToEmpty();
 }
@@ -462,7 +493,7 @@ inline void Project::set_allocated_editor(std::string* editor) {
   // @@protoc_insertion_point(field_set_allocated:org.infinity.idm.Project.editor)
 }
 
-// repeated string authors = 6;
+// repeated string authors = 7;
 inline int Project::_internal_authors_size() const {
   return authors_.size();
 }
@@ -537,7 +568,7 @@ Project::mutable_authors() {
   return &authors_;
 }
 
-// repeated .org.infinity.idm.Track tracks = 7;
+// repeated .org.infinity.idm.Track tracks = 8;
 inline int Project::_internal_tracks_size() const {
   return tracks_.size();
 }
@@ -574,7 +605,7 @@ Project::tracks() const {
   return tracks_;
 }
 
-// repeated .org.infinity.idm.Pattern patterns = 8;
+// repeated .org.infinity.idm.Pattern patterns = 9;
 inline int Project::_internal_patterns_size() const {
   return patterns_.size();
 }
