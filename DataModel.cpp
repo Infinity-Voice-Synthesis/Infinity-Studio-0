@@ -9,6 +9,7 @@ DataModel& DataModel::getModel()
 
 DataModel::DataModel()
 {
+	this->modelMutex.lock();
 	project = new(std::nothrow) org::infinity::idm::Project;
 	if (project == nullptr) {
 		exit(-1);
@@ -20,6 +21,7 @@ DataModel::DataModel()
 	project->set_srate(48000);
 	project->set_bit(16);
 	project->set_editor("Infinity Studio 0");
+	this->modelMutex.unlock();
 }
 
 DataModel::~DataModel()
@@ -30,6 +32,7 @@ DataModel::~DataModel()
 
 void DataModel::setProjectTime()
 {
+	this->modelMutex.lock();
 	uint32_t minTime = 0;
 	for (auto& i : this->project->tracks()) {
 		if (i.containers_size() > 0) {
@@ -48,41 +51,62 @@ void DataModel::setProjectTime()
 		}
 	}
 	if (minTime == this->project->time()) {
+		this->modelMutex.unlock();
 		return;
 	}
 	this->project->set_time(minTime);//time永远与最后元素齐平
+
+	this->modelMutex.unlock();
+
 	this->viewFunc();
 }
 
 uint32_t DataModel::getProjectTime()
 {
-	return this->project->time();
+	this->modelMutex.lock();
+	auto&& time = this->project->time();
+	this->modelMutex.unlock();
+	return time;
 }
 
 void DataModel::setProjectBeat(uint32_t beat)
 {
 	if (beat > 0) {
+		this->modelMutex.lock();
 		if (beat == this->project->beat()) {
+			this->modelMutex.unlock();
 			return;
 		}
 		this->project->set_beat(beat);
+		this->modelMutex.unlock();
+
 		this->viewFunc();
 	}
 }
 
 uint32_t DataModel::getProjectBeat()
 {
-	return this->project->beat();
+	this->modelMutex.lock();
+	auto&& beat = this->project->beat();
+	this->modelMutex.unlock();
+	return beat;
 }
 
 void DataModel::setProjectTempo(double tempo)
 {
 	if (tempo > 0) {
+		this->modelMutex.lock();
 		if (tempo == this->project->tempo()) {
+			this->modelMutex.unlock();
 			return;
 		}
 		this->project->set_tempo(tempo);
-		for (int i = 0; i < this->project->patterns_size(); i++) {
+
+		int patterns_size = this->project->patterns_size();
+
+		this->modelMutex.unlock();
+
+		for (int i = 0; i < patterns_size; i++) {
 			this->renderFunc(i);
 		}
 		this->viewFunc();
@@ -91,17 +115,27 @@ void DataModel::setProjectTempo(double tempo)
 
 double DataModel::getProjectTempo()
 {
-	return this->project->tempo();
+	this->modelMutex.lock();
+	auto&& tempo = this->project->tempo();
+	this->modelMutex.unlock();
+	return tempo;
 }
 
 void DataModel::setProjectSRate(uint64_t sRate)
 {
 	if (sRate > 0) {
+		this->modelMutex.lock();
 		if (sRate == this->project->srate()) {
+			this->modelMutex.unlock();
 			return;
 		}
 		this->project->set_srate(sRate);
-		for (int i = 0; i < this->project->patterns_size(); i++) {
+
+		int patterns_size = this->project->patterns_size();
+
+		this->modelMutex.unlock();
+
+		for (int i = 0; i < patterns_size; i++) {
 			this->renderFunc(i);
 		}
 		this->viewFunc();
@@ -110,17 +144,27 @@ void DataModel::setProjectSRate(uint64_t sRate)
 
 uint64_t DataModel::getProjectSRate()
 {
-	return this->project->srate();
+	this->modelMutex.lock();
+	auto&& sRate = this->project->srate();
+	this->modelMutex.unlock();
+	return sRate;
 }
 
 void DataModel::setProjectBit(uint32_t bit)
 {
 	if (bit > 0) {
+		this->modelMutex.lock();
 		if (bit == this->project->bit()) {
+			this->modelMutex.unlock();
 			return;
 		}
 		this->project->set_bit(bit);
-		for (int i = 0; i < this->project->patterns_size(); i++) {
+
+		int patterns_size = this->project->patterns_size();
+
+		this->modelMutex.unlock();
+
+		for (int i = 0; i < patterns_size; i++) {
 			this->renderFunc(i);
 		}
 		this->viewFunc();
@@ -129,204 +173,541 @@ void DataModel::setProjectBit(uint32_t bit)
 
 uint32_t DataModel::getProjectBit()
 {
-	return this->project->bit();
+	this->modelMutex.lock();
+	auto&& bit = this->project->bit();
+	this->modelMutex.unlock();
+	return bit;
 }
 
 void DataModel::setProjectEditor(std::string editor)
 {
 	if (!editor.empty()) {
+		this->modelMutex.lock();
 		this->project->set_editor(editor);
+		this->modelMutex.unlock();
 	}
 }
 
 std::string DataModel::getProjectEditor()
 {
-	return this->project->editor();
+	this->modelMutex.lock();
+	auto&& editor = this->project->editor();
+	this->modelMutex.unlock();
+	return editor;
 }
 
 void DataModel::addProjectAuthor(std::string author)
 {
 	if (!author.empty()) {
+		this->modelMutex.lock();
 		if (this->project->authors_size() > 0) {
 			if (this->project->authors(this->project->authors_size() - 1) == author) {
+				this->modelMutex.unlock();
 				return;
 			}
 		}
 		this->project->add_authors(author);
+		this->modelMutex.unlock();
 	}
 }
 
 std::list<std::string> DataModel::getProjectAuthors()
 {
+	this->modelMutex.lock();
 	std::list<std::string> result(this->project->authors().begin(), this->project->authors().end());
+	this->modelMutex.unlock();
 	return result;
 }
 
-//void DataModel::addVoiceTrack(std::string name, std::string color, std::string library)
-//{
-//	if (name.empty()) {
-//		return;
-//	}
-//	if (color.empty()) {
-//		return;
-//	}
-//	if (library.empty()) {
-//		return;
-//	}
-//	{
-//		bool flag = false;
-//		for (auto& i : Package::getPackage().getLibraryAvailable()) {
-//			if (i == library) {
-//				flag = true;
-//				break;
-//			}
-//		}
-//		if (!flag) {
-//			return;
-//		}
-//	}
-//	std::string dictionary = Package::getPackage().getLibraryDictionaryDefault(library);
-//	{
-//		bool flag = false;
-//		for (auto& i : Package::getPackage().getDictionaryAvailable()) {
-//			if (i == dictionary) {
-//				flag = true;
-//				break;
-//			}
-//		}
-//		if (!flag) {
-//			return;
-//		}
-//	}
-//	std::string engine = Package::getPackage().getEngineName(library);
-//	{
-//		bool flag = false;
-//		for (auto& i : Package::getPackage().getEngineAvailable()) {
-//			if (i == engine) {
-//				flag = true;
-//				break;
-//			}
-//		}
-//		if (!flag) {
-//			return;
-//		}
-//	}
-//
-//	std::string timbre = Package::getPackage().getLibraryTimbreDefault(library);
-//
-//	bool haveSolo = false;
-//	for (auto& t : this->project->tracks()) {
-//		if (t.solo()) {
-//			haveSolo = true;
-//			break;
-//		}
-//	}
-//
-//	org::infinity::idm::Track* track = this->project->add_tracks();
-//	track->set_name(name);
-//	track->set_color(color);
-//	track->set_library(library);
-//	track->set_dictionary(dictionary);
-//	track->set_timbrea(timbre);
-//	track->set_timbreb(timbre);
-//	track->set_isvoice(true);
-//	track->set_solo(false);
-//	track->set_mute(!haveSolo);
-//
-//	for (auto& p : Package::getPackage().getEngineParam(engine)) {
-//		org::infinity::idm::TrackParam* param = track->add_params();
-//		param->set_name(p.name);
-//		param->set_vmax(p.vMax);
-//		param->set_vmin(p.vMin);
-//		param->set_vdefault(p.vDefault);
-//
-//		param->set_color(color);
-//	}
-//
-//	this->viewFunc();
-//}
-//
-//void DataModel::addWaveTrack(std::string name, std::string color)
-//{
-//	if (name.empty()) {
-//		return;
-//	}
-//	if (color.empty()) {
-//		return;
-//	}
-//	bool haveSolo = false;
-//	for (auto& t : this->project->tracks()) {
-//		if (t.solo()) {
-//			haveSolo = true;
-//			break;
-//		}
-//	}
-//
-//	org::infinity::idm::Track* track = this->project->add_tracks();
-//	track->set_name(name);
-//	track->set_color(color);
-//	track->set_isvoice(false);
-//	track->set_solo(false);
-//	track->set_mute(!haveSolo);
-//
-//	this->viewFunc();
-//}
-//
-//void DataModel::removeTrack(int trackIndex)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (this->project->tracks_size() == 1) {
-//			return;
-//		}
-//		auto it = this->project->mutable_tracks()->begin() + trackIndex;
-//		this->project->mutable_tracks()->erase(it);
-//	}
-//	this->viewFunc();
-//}
-//
-//int DataModel::countTrack()
-//{
-//	return this->project->tracks_size();
-//}
-//
-//void DataModel::setTrackName(int trackIndex, std::string name)
-//{
-//	if (name.empty()) {
-//		return;
-//	}
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		this->project->mutable_tracks(trackIndex)->set_name(name);
-//		this->viewFunc();
-//	}
-//}
-//
-//std::string DataModel::getTrackName(int trackIndex)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		return this->project->tracks(trackIndex).name();
-//	}
-//	return std::string();
-//}
-//
-//void DataModel::setTrackColor(int trackIndex, std::string color)
-//{
-//	if (color.empty()) {
-//		return;
-//	}
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		this->project->mutable_tracks(trackIndex)->set_color(color);
-//		this->viewFunc();
-//	}
-//}
-//
-//std::string DataModel::getTrackColor(int trackIndex)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		return this->project->tracks(trackIndex).color();
-//	}
-//	return std::string();
-//}
-//
+void DataModel::addTrack(std::string name, std::string color)
+{
+	if (name.empty()) {
+		return;
+	}
+	if (color.empty()) {
+		return;
+	}
+	this->modelMutex.lock();
+
+	bool haveSolo = false;
+	for (auto& t : this->project->tracks()) {
+		if (t.solo()) {
+			haveSolo = true;
+			break;
+		}
+	}
+
+	org::infinity::idm::Track* track = this->project->add_tracks();
+	track->set_name(name);
+	track->set_color(color);
+	track->set_solo(false);
+	track->set_mute(!haveSolo);
+
+	this->modelMutex.unlock();
+
+	this->viewFunc();
+}
+
+void DataModel::removeTrack(int trackIndex)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (this->project->tracks_size() == 1) {
+			this->modelMutex.unlock();
+			return;
+		}
+
+		bool solo = this->project->tracks(trackIndex).solo();
+
+		auto it = this->project->mutable_tracks()->begin() + trackIndex;
+		this->project->mutable_tracks()->erase(it);
+
+		if (solo) {
+			bool haveSolo = false;
+			for (auto& t : this->project->tracks()) {
+				if (t.solo()) {
+					haveSolo = true;
+					break;
+				}
+			}//判断是否还存在solo
+			if (!haveSolo) {
+				for (int i = 0; i < this->project->tracks_size(); i++) {
+					if (this->project->tracks(i).mute()) {
+						this->project->mutable_tracks(i)->set_mute(false);
+					}
+				}
+			}//无solo，所有轨取消mute
+		}
+
+		this->modelMutex.unlock();
+		this->viewFunc();
+		return;
+	}
+	this->modelMutex.unlock();
+}
+
+int DataModel::countTrack()
+{
+	this->modelMutex.lock();
+	auto&& tracks_size = this->project->tracks_size();
+	this->modelMutex.unlock();
+	return tracks_size;
+}
+
+void DataModel::setTrackName(int trackIndex, std::string name)
+{
+	if (name.empty()) {
+		return;
+	}
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		this->project->mutable_tracks(trackIndex)->set_name(name);
+		this->modelMutex.unlock();
+		this->viewFunc();
+		return;
+	}
+	this->modelMutex.unlock();
+}
+
+std::string DataModel::getTrackName(int trackIndex)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		auto&& name = this->project->tracks(trackIndex).name();
+		this->modelMutex.unlock();
+		return name;
+	}
+	this->modelMutex.unlock();
+	return std::string();
+}
+
+void DataModel::setTrackColor(int trackIndex, std::string color)
+{
+	if (color.empty()) {
+		return;
+	}
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		this->project->mutable_tracks(trackIndex)->set_color(color);
+		this->modelMutex.unlock();
+		this->viewFunc();
+		return;
+	}
+	this->modelMutex.unlock();
+}
+
+std::string DataModel::getTrackColor(int trackIndex)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		auto&& color = this->project->tracks(trackIndex).color();
+		this->modelMutex.unlock();
+		return color;
+	}
+	this->modelMutex.unlock();
+	return std::string();
+}
+
+void DataModel::setTrackMute(int trackIndex, bool mute)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (mute == this->project->tracks(trackIndex).mute()) {
+			this->modelMutex.unlock();
+			return;
+		}//未作改动
+		if (this->project->tracks(trackIndex).solo()) {
+			this->modelMutex.unlock();
+			return;
+		}//当前轨solo，mute不可改动，必为false
+		if (!mute) {
+			for (auto& t : this->project->tracks()) {
+				if (t.solo()) {
+					this->modelMutex.unlock();
+					return;
+				}
+			}
+		}//存在其他轨solo，当前mute不可改动，必为true
+		this->project->mutable_tracks(trackIndex)->set_mute(mute);
+
+		this->modelMutex.unlock();
+		this->viewFunc();
+		return;
+	}
+	this->modelMutex.unlock();
+}
+
+bool DataModel::getTrackMute(int trackIndex)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		auto&& mute = this->project->tracks(trackIndex).mute();
+		this->modelMutex.unlock();
+		return mute;
+	}
+	this->modelMutex.unlock();
+	return false;
+}
+
+void DataModel::setTrackSolo(int trackIndex, bool solo)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (solo == this->project->tracks(trackIndex).solo()) {
+			this->modelMutex.unlock();
+			return;
+		}//未作改动
+		this->project->mutable_tracks(trackIndex)->set_solo(solo);
+		if (solo) {
+			this->project->mutable_tracks(trackIndex)->set_mute(false);//关闭当前轨mute
+			for (int i = 0; i < this->project->tracks_size(); i++) {
+				if (!this->project->tracks(i).solo()) {
+					this->project->mutable_tracks(i)->set_mute(true);
+				}
+			}//将所有非solo轨设为mute
+		}
+		else {
+			bool haveSolo = false;
+			for (auto& t : this->project->tracks()) {
+				if (t.solo()) {
+					haveSolo = true;
+					break;
+				}
+			}//判断是否还存在solo
+			if (haveSolo) {
+				this->project->mutable_tracks(trackIndex)->set_mute(true);
+			}//有solo，当前轨设为mute
+			else {
+				for (int i = 0; i < this->project->tracks_size(); i++) {
+					if (this->project->tracks(i).mute()) {
+						this->project->mutable_tracks(i)->set_mute(false);
+					}
+				}
+			}//无solo，所有轨取消mute
+		}
+
+		this->modelMutex.unlock();
+		this->viewFunc();
+		return;
+	}
+	this->modelMutex.unlock();
+}
+
+bool DataModel::getTrackSolo(int trackIndex)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		auto&& solo = this->project->tracks(trackIndex).solo();
+		this->modelMutex.unlock();
+		return solo;
+	}
+	this->modelMutex.unlock();
+	return false;
+}
+
+void DataModel::addContainer(int trackIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pattern)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (length == 0) {
+			this->modelMutex.unlock();
+			return;
+		}
+		if (startTick >= 480) {
+			startBeat += startTick / 480;
+			startTick %= 480;
+		}
+		if (pattern >= 0 && pattern < this->project->patterns_size()) {
+			uint64_t ST = DataModel::Utils::getTick(startBeat, startTick);
+			std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, length);
+			uint64_t ET = DataModel::Utils::getTick(EP.first, EP.second);
+
+			for (auto& c : this->project->tracks(trackIndex).containers()) {
+				uint64_t STC = DataModel::Utils::getTick(c.startbeat(), c.starttick());
+				std::pair<uint32_t, uint32_t> EPC = DataModel::Utils::getEP(c.startbeat(), c.starttick(), c.length());
+				uint64_t ETC = DataModel::Utils::getTick(EPC.first, EPC.second);
+				if (ET > STC && ETC > ST) {
+					this->modelMutex.unlock();
+					return;
+				}
+			}
+
+			org::infinity::idm::Container* container = nullptr;
+			if (this->project->tracks(trackIndex).containers_size() > 0) {
+				if (DataModel::Utils::getTick(startBeat, startTick) < DataModel::Utils::getTick(this->project->tracks(trackIndex).containers(0).startbeat(), this->project->tracks(trackIndex).containers(0).starttick())) {
+					this->project->mutable_tracks(trackIndex)->mutable_containers()->Add();//末尾建立空element
+					for (int i = this->project->tracks(trackIndex).containers_size() - 2; i >= 0; i--) {
+						this->project->mutable_tracks(trackIndex)->mutable_containers(i + 1)->CopyFrom(this->project->tracks(trackIndex).containers(i));
+					}//element集体后移
+					container = this->project->mutable_tracks(trackIndex)->mutable_containers(0);//腾出头element
+				}
+				else if (DataModel::Utils::getTick(startBeat, startTick) >= DataModel::Utils::getTick(this->project->tracks(trackIndex).containers(this->project->tracks(trackIndex).containers_size() - 1).startbeat(), this->project->tracks(trackIndex).containers(this->project->tracks(trackIndex).containers_size() - 1).starttick())) {
+					container = this->project->mutable_tracks(trackIndex)->mutable_containers()->Add();//末尾
+				}
+				else {
+					this->project->mutable_tracks(trackIndex)->mutable_containers()->Add();//末尾建立空element
+					for (int i = this->project->tracks(trackIndex).containers_size() - 2; i > 0; i--) {
+						this->project->mutable_tracks(trackIndex)->mutable_containers(i + 1)->CopyFrom(this->project->tracks(trackIndex).containers(i));//element后移
+						if (
+							DataModel::Utils::getTick(startBeat, startTick) >= DataModel::Utils::getTick(this->project->tracks(trackIndex).containers(i - 1).startbeat(), this->project->tracks(trackIndex).containers(i - 1).starttick()) &&
+							DataModel::Utils::getTick(startBeat, startTick) < DataModel::Utils::getTick(this->project->tracks(trackIndex).containers(i + 1).startbeat(), this->project->tracks(trackIndex).containers(i + 1).starttick())
+							) {//如果当前element符合要求
+							container = this->project->mutable_tracks(trackIndex)->mutable_containers(i);//移动element空出位置即是插入位置
+						}
+					}
+				}
+			}
+			else {
+				container = this->project->mutable_tracks(trackIndex)->mutable_containers()->Add();//唯一一个
+			}
+
+			container->set_startbeat(startBeat);
+			container->set_starttick(startTick);
+			container->set_length(length);
+			container->set_pattern(pattern);
+
+			this->modelMutex.unlock();
+
+			this->setProjectTime();
+			this->viewFunc();
+			return;
+		}
+	}
+	this->modelMutex.unlock();
+}
+
+void DataModel::removeContainer(int trackIndex, int containerIndex)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (containerIndex >= 0 && containerIndex < this->project->tracks(trackIndex).containers_size()) {
+			auto it = this->project->mutable_tracks(trackIndex)->mutable_containers()->begin() + containerIndex;
+			this->project->mutable_tracks(trackIndex)->mutable_containers()->erase(it);
+
+			this->modelMutex.unlock();
+
+			this->setProjectTime();
+			this->viewFunc();
+			return;
+		}
+	}
+	this->modelMutex.unlock();
+}
+
+int DataModel::countContainer(int trackIndex)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		auto&& containers_size = this->project->tracks(trackIndex).containers_size();
+		this->modelMutex.unlock();
+		return containers_size;
+	}
+	this->modelMutex.unlock();
+	return -1;
+}
+
+void DataModel::setContainerPlace(int trackIndex, int containerIndex, uint32_t startBeat, uint32_t startTick, uint64_t length)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (containerIndex >= 0 && containerIndex < this->project->tracks(trackIndex).containers_size()) {
+			if (length == 0) {
+				this->modelMutex.unlock();
+				return;
+			}
+			if (startTick >= 480) {
+				startBeat += startTick / 480;
+				startTick %= 480;
+			}
+			if (
+				startBeat == this->project->tracks(trackIndex).containers(containerIndex).startbeat() &&
+				startTick == this->project->tracks(trackIndex).containers(containerIndex).starttick() &&
+				length == this->project->tracks(trackIndex).containers(containerIndex).length()
+				) {
+				this->modelMutex.unlock();
+				return;
+			}
+
+			uint64_t ST = DataModel::Utils::getTick(startBeat, startTick);
+			std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, length);
+			uint64_t ET = DataModel::Utils::getTick(EP.first, EP.second);
+
+			for (int i = 0; i < this->project->tracks(trackIndex).containers_size(); i++) {
+				if (i == containerIndex) {
+					continue;
+				}//非当前容器
+				auto&& cont = this->project->tracks(trackIndex).containers(i);
+				uint64_t STC = DataModel::Utils::getTick(cont.startbeat(), cont.starttick());
+				std::pair<uint32_t, uint32_t> EPC = DataModel::Utils::getEP(cont.startbeat(), cont.starttick(), cont.length());
+				uint64_t ETC = DataModel::Utils::getTick(EPC.first, EPC.second);
+				if (ET > STC && ETC > ST) {
+					this->modelMutex.unlock();
+					return;
+				}
+			}//判断是否存在重叠容器
+
+			org::infinity::idm::Container cTemp(this->project->tracks(trackIndex).containers(containerIndex));
+			auto it = this->project->mutable_tracks(trackIndex)->mutable_containers()->begin() + containerIndex;
+			this->project->mutable_tracks(trackIndex)->mutable_containers()->erase(it);//抽取当前容器
+
+			org::infinity::idm::Container* container = nullptr;
+			if (this->project->tracks(trackIndex).containers_size() > 0) {
+				if (DataModel::Utils::getTick(startBeat, startTick) < DataModel::Utils::getTick(this->project->tracks(trackIndex).containers(0).startbeat(), this->project->tracks(trackIndex).containers(0).starttick())) {
+					this->project->mutable_tracks(trackIndex)->mutable_containers()->Add();//末尾建立空element
+					for (int i = this->project->tracks(trackIndex).containers_size() - 2; i >= 0; i--) {
+						this->project->mutable_tracks(trackIndex)->mutable_containers(i + 1)->CopyFrom(this->project->tracks(trackIndex).containers(i));
+					}//element集体后移
+					container = this->project->mutable_tracks(trackIndex)->mutable_containers(0);//腾出头element
+				}
+				else if (DataModel::Utils::getTick(startBeat, startTick) >= DataModel::Utils::getTick(this->project->tracks(trackIndex).containers(this->project->tracks(trackIndex).containers_size() - 1).startbeat(), this->project->tracks(trackIndex).containers(this->project->tracks(trackIndex).containers_size() - 1).starttick())) {
+					container = this->project->mutable_tracks(trackIndex)->mutable_containers()->Add();//末尾
+				}
+				else {
+					this->project->mutable_tracks(trackIndex)->mutable_containers()->Add();//末尾建立空element
+					for (int i = this->project->tracks(trackIndex).containers_size() - 2; i > 0; i--) {
+						this->project->mutable_tracks(trackIndex)->mutable_containers(i + 1)->CopyFrom(this->project->tracks(trackIndex).containers(i));//element后移
+						if (
+							DataModel::Utils::getTick(startBeat, startTick) >= DataModel::Utils::getTick(this->project->tracks(trackIndex).containers(i - 1).startbeat(), this->project->tracks(trackIndex).containers(i - 1).starttick()) &&
+							DataModel::Utils::getTick(startBeat, startTick) < DataModel::Utils::getTick(this->project->tracks(trackIndex).containers(i + 1).startbeat(), this->project->tracks(trackIndex).containers(i + 1).starttick())
+							) {//如果当前element符合要求
+							container = this->project->mutable_tracks(trackIndex)->mutable_containers(i);//移动element空出位置即是插入位置
+						}
+					}
+				}
+			}
+			else {
+				container = this->project->mutable_tracks(trackIndex)->mutable_containers()->Add();//唯一一个
+			}
+
+			cTemp.set_startbeat(startBeat);
+			cTemp.set_starttick(startTick);
+			cTemp.set_length(length);
+			container->CopyFrom(cTemp);
+
+			this->modelMutex.unlock();
+
+			this->setProjectTime();
+			this->viewFunc();
+			return;
+		}
+	}
+	this->modelMutex.unlock();
+}
+
+uint32_t DataModel::getContainerStartBeat(int trackIndex, int containerIndex)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (containerIndex >= 0 && containerIndex < this->project->tracks(trackIndex).containers_size()) {
+			auto&& startbeat = this->project->tracks(trackIndex).containers(containerIndex).startbeat();
+			this->modelMutex.unlock();
+			return startbeat;
+		}
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
+uint32_t DataModel::getContainerStartTick(int trackIndex, int containerIndex)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (containerIndex >= 0 && containerIndex < this->project->tracks(trackIndex).containers_size()) {
+			auto&& starttick = this->project->tracks(trackIndex).containers(containerIndex).starttick();
+			this->modelMutex.unlock();
+			return starttick;
+		}
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
+uint64_t DataModel::getContainerLength(int trackIndex, int containerIndex)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (containerIndex >= 0 && containerIndex < this->project->tracks(trackIndex).containers_size()) {
+			auto&& length = this->project->tracks(trackIndex).containers(containerIndex).length();
+			this->modelMutex.unlock();
+			return length;
+		}
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
+void DataModel::setContainerPattern(int trackIndex, int containerIndex, uint32_t pattern)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (containerIndex >= 0 && containerIndex < this->project->tracks(trackIndex).containers_size()) {
+			if (pattern >= 0 && pattern < this->project->patterns_size()) {
+				this->project->mutable_tracks(trackIndex)->mutable_containers(containerIndex)->set_pattern(pattern);
+
+				this->modelMutex.unlock();
+
+				this->viewFunc();
+				return;
+			}
+		}
+	}
+	this->modelMutex.unlock();
+}
+
+uint32_t DataModel::getContainerPattern(int trackIndex, int containerIndex)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (containerIndex >= 0 && containerIndex < this->project->tracks(trackIndex).containers_size()) {
+			auto&& pattern = this->project->tracks(trackIndex).containers(containerIndex).pattern();
+			this->modelMutex.unlock();
+			return pattern;
+		}
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
 //void DataModel::setTrackLibrary(int trackIndex, std::string library)
 //{
 //	if (library.empty()) {
@@ -651,84 +1032,6 @@ std::list<std::string> DataModel::getProjectAuthors()
 //		return this->project->tracks(trackIndex).timbreb();
 //	}
 //	return std::string();
-//}
-//
-//void DataModel::setTrackMute(int trackIndex, bool mute)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (mute == this->project->tracks(trackIndex).mute()) {
-//			return;
-//		}//未作改动
-//		if (this->project->tracks(trackIndex).solo()) {
-//			return;
-//		}//当前轨solo，mute不可改动，必为false
-//		if (!mute) {
-//			bool haveSolo = false;
-//			for (auto& t : this->project->tracks()) {
-//				if (t.solo()) {
-//					haveSolo = true;
-//					return;
-//				}
-//			}
-//		}//存在其他轨solo，当前mute不可改动，必为true
-//		this->project->mutable_tracks(trackIndex)->set_mute(mute);
-//
-//		this->viewFunc();
-//	}
-//}
-//
-//bool DataModel::getTrackMute(int trackIndex)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		return this->project->tracks(trackIndex).mute();
-//	}
-//	return false;
-//}
-//
-//void DataModel::setTrackSolo(int trackIndex, bool solo)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (solo == this->project->tracks(trackIndex).solo()) {
-//			return;
-//		}//未作改动
-//		this->project->mutable_tracks(trackIndex)->set_solo(solo);
-//		if (solo) {
-//			this->project->mutable_tracks(trackIndex)->set_mute(false);//关闭当前轨mute
-//			for (int i = 0; i < this->project->tracks_size(); i++) {
-//				if (!this->project->tracks(i).solo()) {
-//					this->project->mutable_tracks(i)->set_mute(true);
-//				}
-//			}//将所有非solo轨设为mute
-//		}
-//		else  {
-//			bool haveSolo = false;
-//			for (auto& t : this->project->tracks()) {
-//				if (t.solo()) {
-//					haveSolo = true;
-//					break;
-//				}
-//			}//判断是否还存在solo
-//			if (haveSolo) {
-//				this->project->mutable_tracks(trackIndex)->set_mute(true);
-//			}//有solo，当前轨设为mute
-//			else {
-//				for (int i = 0; i < this->project->tracks_size(); i++) {
-//					if (this->project->tracks(i).mute()) {
-//						this->project->mutable_tracks(i)->set_mute(false);
-//					}
-//				}
-//			}//无solo，所有轨取消mute
-//		}
-//		this->viewFunc();
-//	}
-//}
-//
-//bool DataModel::getTrackSolo(int trackIndex)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		return this->project->tracks(trackIndex).solo();
-//	}
-//	return false;
 //}
 //
 //void DataModel::addNote(int trackIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pitch, std::string name)

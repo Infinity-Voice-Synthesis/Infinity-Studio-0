@@ -5,6 +5,7 @@
 #include <list>
 #include <functional>
 #include <set>
+#include <mutex>
 
 #include "Package.h"
 
@@ -36,16 +37,34 @@ public:
 	std::list<std::string> getProjectAuthors();
 	//项目属性
 
-	//void addVoiceTrack(std::string name, std::string color, std::string library);
-	//void addWaveTrack(std::string name, std::string color);
-	//void removeTrack(int trackIndex);
-	//int countTrack();
-	////轨道数量
+	void addTrack(std::string name, std::string color);
+	void removeTrack(int trackIndex);
+	int countTrack();
+	//轨道数量
 
-	//void setTrackName(int trackIndex, std::string name);
-	//std::string getTrackName(int trackIndex);
-	//void setTrackColor(int trackIndex, std::string color);
-	//std::string getTrackColor(int trackIndex);
+	void setTrackName(int trackIndex, std::string name);
+	std::string getTrackName(int trackIndex);
+	void setTrackColor(int trackIndex, std::string color);
+	std::string getTrackColor(int trackIndex);
+	void setTrackMute(int trackIndex, bool mute);
+	bool getTrackMute(int trackIndex);
+	void setTrackSolo(int trackIndex, bool solo);
+	bool getTrackSolo(int trackIndex);
+	//轨道属性
+
+	void addContainer(int trackIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pattern);
+	void removeContainer(int trackIndex, int containerIndex);
+	int countContainer(int trackIndex);
+	//容器数量
+
+	void setContainerPlace(int trackIndex, int containerIndex, uint32_t startBeat, uint32_t startTick, uint64_t length);
+	uint32_t getContainerStartBeat(int trackIndex, int containerIndex);
+	uint32_t getContainerStartTick(int trackIndex, int containerIndex);
+	uint64_t getContainerLength(int trackIndex, int containerIndex);
+	void setContainerPattern(int trackIndex, int containerIndex, uint32_t pattern);
+	uint32_t getContainerPattern(int trackIndex, int containerIndex);
+	//容器属性
+	
 	//void setTrackLibrary(int trackIndex, std::string library);
 	//std::string getTrackLibrary(int trackIndex);
 	//void setTrackDictionary(int trackIndex, std::string dictionary);
@@ -54,10 +73,7 @@ public:
 	//std::string getTrackTimbreA(int trackIndex);
 	//void setTrackTimbreB(int trackIndex, std::string timbre);
 	//std::string getTrackTimbreB(int trackIndex);
-	//void setTrackMute(int trackIndex, bool mute);
-	//bool getTrackMute(int trackIndex);
-	//void setTrackSolo(int trackIndex, bool solo);
-	//bool getTrackSolo(int trackIndex);
+	
 	////轨道属性
 
 	//void addNote(int trackIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pitch, std::string name);
@@ -88,6 +104,7 @@ public:
 	//删除参数样式时需检查当前参数是否属于当前引擎，如不属于，则删除参数且该参数不渲染
 private:
 	org::infinity::idm::Project* project = nullptr;
+	std::mutex modelMutex;
 
 	class Utils {
 	public:
