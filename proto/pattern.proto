@@ -7,8 +7,9 @@ import "tparam.proto";
 
 message Pattern {
     enum Type {
-        MIDI = 0;//midi片段
-        WAVE = 1;//波形片段
+        EMPTY = 0;//空片段
+        MIDI = 1;//midi片段
+        WAVE = 2;//波形片段
     }
 
     Type type = 1;//类型

@@ -73,13 +73,14 @@ namespace infinity {
 namespace idm {
 
 enum Pattern_Type : int {
-  Pattern_Type_MIDI = 0,
-  Pattern_Type_WAVE = 1,
+  Pattern_Type_EMPTY = 0,
+  Pattern_Type_MIDI = 1,
+  Pattern_Type_WAVE = 2,
   Pattern_Type_Pattern_Type_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   Pattern_Type_Pattern_Type_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool Pattern_Type_IsValid(int value);
-constexpr Pattern_Type Pattern_Type_Type_MIN = Pattern_Type_MIDI;
+constexpr Pattern_Type Pattern_Type_Type_MIN = Pattern_Type_EMPTY;
 constexpr Pattern_Type Pattern_Type_Type_MAX = Pattern_Type_WAVE;
 constexpr int Pattern_Type_Type_ARRAYSIZE = Pattern_Type_Type_MAX + 1;
 
@@ -212,6 +213,8 @@ class Pattern final :
   // nested types ----------------------------------------------------
 
   typedef Pattern_Type Type;
+  static constexpr Type EMPTY =
+    Pattern_Type_EMPTY;
   static constexpr Type MIDI =
     Pattern_Type_MIDI;
   static constexpr Type WAVE =

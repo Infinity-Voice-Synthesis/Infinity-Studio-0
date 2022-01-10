@@ -73,14 +73,14 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_pattern_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\rpattern.proto\022\020org.infinity.idm\032\nnote."
-  "proto\032\014tparam.proto\"\220\002\n\007Pattern\022,\n\004type\030"
+  "proto\032\014tparam.proto\"\233\002\n\007Pattern\022,\n\004type\030"
   "\001 \001(\0162\036.org.infinity.idm.Pattern.Type\022\014\n"
   "\004file\030\002 \001(\t\022\021\n\tdeviation\030\003 \001(\004\022\017\n\007librar"
   "y\030\004 \001(\t\022\022\n\ndictionary\030\005 \001(\t\022\017\n\007timbreA\030\006"
   " \001(\t\022\017\n\007timbreB\030\007 \001(\t\022%\n\005notes\030\010 \003(\0132\026.o"
   "rg.infinity.idm.Note\022,\n\006params\030\t \003(\0132\034.o"
-  "rg.infinity.idm.TrackParam\"\032\n\004Type\022\010\n\004MI"
-  "DI\020\000\022\010\n\004WAVE\020\001b\006proto3"
+  "rg.infinity.idm.TrackParam\"%\n\004Type\022\t\n\005EM"
+  "PTY\020\000\022\010\n\004MIDI\020\001\022\010\n\004WAVE\020\002b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_pattern_2eproto_deps[2] = {
   &::descriptor_table_note_2eproto,
@@ -88,7 +88,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_pattern_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_pattern_2eproto = {
-  false, false, 342, descriptor_table_protodef_pattern_2eproto, "pattern.proto", 
+  false, false, 353, descriptor_table_protodef_pattern_2eproto, "pattern.proto", 
   &descriptor_table_pattern_2eproto_once, descriptor_table_pattern_2eproto_deps, 2, 1,
   schemas, file_default_instances, TableStruct_pattern_2eproto::offsets,
   file_level_metadata_pattern_2eproto, file_level_enum_descriptors_pattern_2eproto, file_level_service_descriptors_pattern_2eproto,
@@ -110,6 +110,7 @@ bool Pattern_Type_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
+    case 2:
       return true;
     default:
       return false;
@@ -117,6 +118,7 @@ bool Pattern_Type_IsValid(int value) {
 }
 
 #if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+constexpr Pattern_Type Pattern::EMPTY;
 constexpr Pattern_Type Pattern::MIDI;
 constexpr Pattern_Type Pattern::WAVE;
 constexpr Pattern_Type Pattern::Type_MIN;
