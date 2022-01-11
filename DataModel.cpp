@@ -328,7 +328,24 @@ void DataModel::setTrackColor(int trackIndex, std::string color)
 	}
 	this->modelMutex.lock();
 	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+
+		std::string currentColor = this->project->tracks(trackIndex).color();
+
 		this->project->mutable_tracks(trackIndex)->set_color(color);
+
+		for (auto& c : this->project->tracks(trackIndex).containers()) {
+			auto&& pattern = c.pattern();
+			if (pattern >= 0 && pattern <= this->project->patterns_size()) {
+				auto p = this->project->mutable_patterns(pattern);
+				for (int i = 0; i < p->params_size(); i++) {
+					auto pp = p->mutable_params(i);
+					if (pp->color() == currentColor) {
+						pp->set_color(color);
+					}
+				}
+			}
+		}//将默认颜色的参数改色
+
 		this->modelMutex.unlock();
 		this->viewFunc();
 		return;

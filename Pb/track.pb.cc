@@ -22,11 +22,13 @@ namespace idm {
 constexpr Track::Track(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : containers_()
-  , effectors_()
   , name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , color_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , mute_(false)
-  , solo_(false){}
+  , solo_(false)
+  , gain_(0)
+  , pan_(0)
+  , mix_(0){}
 struct TrackDefaultTypeInternal {
   constexpr TrackDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -53,8 +55,10 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_track_2eproto::offsets[] PROTO
   PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Track, color_),
   PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Track, mute_),
   PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Track, solo_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Track, gain_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Track, pan_),
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Track, mix_),
   PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Track, containers_),
-  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Track, effectors_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::org::infinity::idm::Track)},
@@ -66,20 +70,19 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_track_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\013track.proto\022\020org.infinity.idm\032\017contain"
-  "er.proto\032\014effect.proto\"\240\001\n\005Track\022\014\n\004name"
-  "\030\001 \001(\t\022\r\n\005color\030\002 \001(\t\022\014\n\004mute\030\010 \001(\010\022\014\n\004s"
-  "olo\030\t \001(\010\022/\n\ncontainers\030\n \003(\0132\033.org.infi"
-  "nity.idm.Container\022-\n\teffectors\030\014 \003(\0132\032."
-  "org.infinity.idm.Effectorb\006proto3"
+  "er.proto\"\231\001\n\005Track\022\014\n\004name\030\001 \001(\t\022\r\n\005colo"
+  "r\030\002 \001(\t\022\014\n\004mute\030\010 \001(\010\022\014\n\004solo\030\t \001(\010\022\014\n\004g"
+  "ain\030\n \001(\001\022\013\n\003pan\030\013 \001(\001\022\013\n\003mix\030\014 \001(\001\022/\n\nc"
+  "ontainers\030\r \003(\0132\033.org.infinity.idm.Conta"
+  "inerb\006proto3"
   ;
-static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_track_2eproto_deps[2] = {
+static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_track_2eproto_deps[1] = {
   &::descriptor_table_container_2eproto,
-  &::descriptor_table_effect_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_track_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_track_2eproto = {
-  false, false, 233, descriptor_table_protodef_track_2eproto, "track.proto", 
-  &descriptor_table_track_2eproto_once, descriptor_table_track_2eproto_deps, 2, 1,
+  false, false, 212, descriptor_table_protodef_track_2eproto, "track.proto", 
+  &descriptor_table_track_2eproto_once, descriptor_table_track_2eproto_deps, 1, 1,
   schemas, file_default_instances, TableStruct_track_2eproto::offsets,
   file_level_metadata_track_2eproto, file_level_enum_descriptors_track_2eproto, file_level_service_descriptors_track_2eproto,
 };
@@ -102,14 +105,10 @@ class Track::_Internal {
 void Track::clear_containers() {
   containers_.Clear();
 }
-void Track::clear_effectors() {
-  effectors_.Clear();
-}
 Track::Track(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
-  containers_(arena),
-  effectors_(arena) {
+  containers_(arena) {
   SharedCtor();
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
@@ -118,8 +117,7 @@ Track::Track(::PROTOBUF_NAMESPACE_ID::Arena* arena,
 }
 Track::Track(const Track& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      containers_(from.containers_),
-      effectors_(from.effectors_) {
+      containers_(from.containers_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_name().empty()) {
@@ -132,8 +130,8 @@ Track::Track(const Track& from)
       GetArenaForAllocation());
   }
   ::memcpy(&mute_, &from.mute_,
-    static_cast<size_t>(reinterpret_cast<char*>(&solo_) -
-    reinterpret_cast<char*>(&mute_)) + sizeof(solo_));
+    static_cast<size_t>(reinterpret_cast<char*>(&mix_) -
+    reinterpret_cast<char*>(&mute_)) + sizeof(mix_));
   // @@protoc_insertion_point(copy_constructor:org.infinity.idm.Track)
 }
 
@@ -142,8 +140,8 @@ name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlready
 color_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&mute_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&solo_) -
-    reinterpret_cast<char*>(&mute_)) + sizeof(solo_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&mix_) -
+    reinterpret_cast<char*>(&mute_)) + sizeof(mix_));
 }
 
 Track::~Track() {
@@ -176,12 +174,11 @@ void Track::Clear() {
   (void) cached_has_bits;
 
   containers_.Clear();
-  effectors_.Clear();
   name_.ClearToEmpty();
   color_.ClearToEmpty();
   ::memset(&mute_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&solo_) -
-      reinterpret_cast<char*>(&mute_)) + sizeof(solo_));
+      reinterpret_cast<char*>(&mix_) -
+      reinterpret_cast<char*>(&mute_)) + sizeof(mix_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -223,28 +220,37 @@ const char* Track::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inte
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // repeated .org.infinity.idm.Container containers = 10;
+      // double gain = 10;
       case 10:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 82)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 81)) {
+          gain_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else goto handle_unusual;
+        continue;
+      // double pan = 11;
+      case 11:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 89)) {
+          pan_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else goto handle_unusual;
+        continue;
+      // double mix = 12;
+      case 12:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 97)) {
+          mix_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else goto handle_unusual;
+        continue;
+      // repeated .org.infinity.idm.Container containers = 13;
+      case 13:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 106)) {
           ptr -= 1;
           do {
             ptr += 1;
             ptr = ctx->ParseMessage(_internal_add_containers(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<82>(ptr));
-        } else goto handle_unusual;
-        continue;
-      // repeated .org.infinity.idm.Effector effectors = 12;
-      case 12:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 98)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_effectors(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<98>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<106>(ptr));
         } else goto handle_unusual;
         continue;
       default: {
@@ -308,20 +314,30 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(9, this->_internal_solo(), target);
   }
 
-  // repeated .org.infinity.idm.Container containers = 10;
+  // double gain = 10;
+  if (!(this->_internal_gain() <= 0 && this->_internal_gain() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(10, this->_internal_gain(), target);
+  }
+
+  // double pan = 11;
+  if (!(this->_internal_pan() <= 0 && this->_internal_pan() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(11, this->_internal_pan(), target);
+  }
+
+  // double mix = 12;
+  if (!(this->_internal_mix() <= 0 && this->_internal_mix() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(12, this->_internal_mix(), target);
+  }
+
+  // repeated .org.infinity.idm.Container containers = 13;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_containers_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(10, this->_internal_containers(i), target, stream);
-  }
-
-  // repeated .org.infinity.idm.Effector effectors = 12;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->_internal_effectors_size()); i < n; i++) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(12, this->_internal_effectors(i), target, stream);
+      InternalWriteMessage(13, this->_internal_containers(i), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -340,16 +356,9 @@ size_t Track::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .org.infinity.idm.Container containers = 10;
+  // repeated .org.infinity.idm.Container containers = 13;
   total_size += 1UL * this->_internal_containers_size();
   for (const auto& msg : this->containers_) {
-    total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
-  }
-
-  // repeated .org.infinity.idm.Effector effectors = 12;
-  total_size += 1UL * this->_internal_effectors_size();
-  for (const auto& msg : this->effectors_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
@@ -376,6 +385,21 @@ size_t Track::ByteSizeLong() const {
   // bool solo = 9;
   if (this->_internal_solo() != 0) {
     total_size += 1 + 1;
+  }
+
+  // double gain = 10;
+  if (!(this->_internal_gain() <= 0 && this->_internal_gain() >= 0)) {
+    total_size += 1 + 8;
+  }
+
+  // double pan = 11;
+  if (!(this->_internal_pan() <= 0 && this->_internal_pan() >= 0)) {
+    total_size += 1 + 8;
+  }
+
+  // double mix = 12;
+  if (!(this->_internal_mix() <= 0 && this->_internal_mix() >= 0)) {
+    total_size += 1 + 8;
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -407,7 +431,6 @@ void Track::MergeFrom(const Track& from) {
   (void) cached_has_bits;
 
   containers_.MergeFrom(from.containers_);
-  effectors_.MergeFrom(from.effectors_);
   if (!from._internal_name().empty()) {
     _internal_set_name(from._internal_name());
   }
@@ -419,6 +442,15 @@ void Track::MergeFrom(const Track& from) {
   }
   if (from._internal_solo() != 0) {
     _internal_set_solo(from._internal_solo());
+  }
+  if (!(from._internal_gain() <= 0 && from._internal_gain() >= 0)) {
+    _internal_set_gain(from._internal_gain());
+  }
+  if (!(from._internal_pan() <= 0 && from._internal_pan() >= 0)) {
+    _internal_set_pan(from._internal_pan());
+  }
+  if (!(from._internal_mix() <= 0 && from._internal_mix() >= 0)) {
+    _internal_set_mix(from._internal_mix());
   }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -438,7 +470,6 @@ void Track::InternalSwap(Track* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   containers_.InternalSwap(&other->containers_);
-  effectors_.InternalSwap(&other->effectors_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       &name_, GetArenaForAllocation(),
@@ -450,8 +481,8 @@ void Track::InternalSwap(Track* other) {
       &other->color_, other->GetArenaForAllocation()
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Track, solo_)
-      + sizeof(Track::solo_)
+      PROTOBUF_FIELD_OFFSET(Track, mix_)
+      + sizeof(Track::mix_)
       - PROTOBUF_FIELD_OFFSET(Track, mute_)>(
           reinterpret_cast<char*>(&mute_),
           reinterpret_cast<char*>(&other->mute_));

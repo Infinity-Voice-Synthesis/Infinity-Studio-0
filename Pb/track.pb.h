@@ -32,7 +32,6 @@
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/unknown_field_set.h>
 #include "container.pb.h"
-#include "effect.pb.h"
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_track_2eproto
@@ -188,14 +187,16 @@ class Track final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kContainersFieldNumber = 10,
-    kEffectorsFieldNumber = 12,
+    kContainersFieldNumber = 13,
     kNameFieldNumber = 1,
     kColorFieldNumber = 2,
     kMuteFieldNumber = 8,
     kSoloFieldNumber = 9,
+    kGainFieldNumber = 10,
+    kPanFieldNumber = 11,
+    kMixFieldNumber = 12,
   };
-  // repeated .org.infinity.idm.Container containers = 10;
+  // repeated .org.infinity.idm.Container containers = 13;
   int containers_size() const;
   private:
   int _internal_containers_size() const;
@@ -212,24 +213,6 @@ class Track final :
   ::org::infinity::idm::Container* add_containers();
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Container >&
       containers() const;
-
-  // repeated .org.infinity.idm.Effector effectors = 12;
-  int effectors_size() const;
-  private:
-  int _internal_effectors_size() const;
-  public:
-  void clear_effectors();
-  ::org::infinity::idm::Effector* mutable_effectors(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Effector >*
-      mutable_effectors();
-  private:
-  const ::org::infinity::idm::Effector& _internal_effectors(int index) const;
-  ::org::infinity::idm::Effector* _internal_add_effectors();
-  public:
-  const ::org::infinity::idm::Effector& effectors(int index) const;
-  ::org::infinity::idm::Effector* add_effectors();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Effector >&
-      effectors() const;
 
   // string name = 1;
   void clear_name();
@@ -277,6 +260,33 @@ class Track final :
   void _internal_set_solo(bool value);
   public:
 
+  // double gain = 10;
+  void clear_gain();
+  double gain() const;
+  void set_gain(double value);
+  private:
+  double _internal_gain() const;
+  void _internal_set_gain(double value);
+  public:
+
+  // double pan = 11;
+  void clear_pan();
+  double pan() const;
+  void set_pan(double value);
+  private:
+  double _internal_pan() const;
+  void _internal_set_pan(double value);
+  public:
+
+  // double mix = 12;
+  void clear_mix();
+  double mix() const;
+  void set_mix(double value);
+  private:
+  double _internal_mix() const;
+  void _internal_set_mix(double value);
+  public:
+
   // @@protoc_insertion_point(class_scope:org.infinity.idm.Track)
  private:
   class _Internal;
@@ -285,11 +295,13 @@ class Track final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Container > containers_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Effector > effectors_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr color_;
   bool mute_;
   bool solo_;
+  double gain_;
+  double pan_;
+  double mix_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_track_2eproto;
 };
@@ -436,7 +448,67 @@ inline void Track::set_solo(bool value) {
   // @@protoc_insertion_point(field_set:org.infinity.idm.Track.solo)
 }
 
-// repeated .org.infinity.idm.Container containers = 10;
+// double gain = 10;
+inline void Track::clear_gain() {
+  gain_ = 0;
+}
+inline double Track::_internal_gain() const {
+  return gain_;
+}
+inline double Track::gain() const {
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Track.gain)
+  return _internal_gain();
+}
+inline void Track::_internal_set_gain(double value) {
+  
+  gain_ = value;
+}
+inline void Track::set_gain(double value) {
+  _internal_set_gain(value);
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Track.gain)
+}
+
+// double pan = 11;
+inline void Track::clear_pan() {
+  pan_ = 0;
+}
+inline double Track::_internal_pan() const {
+  return pan_;
+}
+inline double Track::pan() const {
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Track.pan)
+  return _internal_pan();
+}
+inline void Track::_internal_set_pan(double value) {
+  
+  pan_ = value;
+}
+inline void Track::set_pan(double value) {
+  _internal_set_pan(value);
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Track.pan)
+}
+
+// double mix = 12;
+inline void Track::clear_mix() {
+  mix_ = 0;
+}
+inline double Track::_internal_mix() const {
+  return mix_;
+}
+inline double Track::mix() const {
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Track.mix)
+  return _internal_mix();
+}
+inline void Track::_internal_set_mix(double value) {
+  
+  mix_ = value;
+}
+inline void Track::set_mix(double value) {
+  _internal_set_mix(value);
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Track.mix)
+}
+
+// repeated .org.infinity.idm.Container containers = 13;
 inline int Track::_internal_containers_size() const {
   return containers_.size();
 }
@@ -471,43 +543,6 @@ inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Co
 Track::containers() const {
   // @@protoc_insertion_point(field_list:org.infinity.idm.Track.containers)
   return containers_;
-}
-
-// repeated .org.infinity.idm.Effector effectors = 12;
-inline int Track::_internal_effectors_size() const {
-  return effectors_.size();
-}
-inline int Track::effectors_size() const {
-  return _internal_effectors_size();
-}
-inline ::org::infinity::idm::Effector* Track::mutable_effectors(int index) {
-  // @@protoc_insertion_point(field_mutable:org.infinity.idm.Track.effectors)
-  return effectors_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Effector >*
-Track::mutable_effectors() {
-  // @@protoc_insertion_point(field_mutable_list:org.infinity.idm.Track.effectors)
-  return &effectors_;
-}
-inline const ::org::infinity::idm::Effector& Track::_internal_effectors(int index) const {
-  return effectors_.Get(index);
-}
-inline const ::org::infinity::idm::Effector& Track::effectors(int index) const {
-  // @@protoc_insertion_point(field_get:org.infinity.idm.Track.effectors)
-  return _internal_effectors(index);
-}
-inline ::org::infinity::idm::Effector* Track::_internal_add_effectors() {
-  return effectors_.Add();
-}
-inline ::org::infinity::idm::Effector* Track::add_effectors() {
-  ::org::infinity::idm::Effector* _add = _internal_add_effectors();
-  // @@protoc_insertion_point(field_add:org.infinity.idm.Track.effectors)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Effector >&
-Track::effectors() const {
-  // @@protoc_insertion_point(field_list:org.infinity.idm.Track.effectors)
-  return effectors_;
 }
 
 #ifdef __GNUC__

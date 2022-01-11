@@ -188,17 +188,18 @@ class Project final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kAuthorsFieldNumber = 7,
-    kTracksFieldNumber = 8,
-    kPatternsFieldNumber = 9,
-    kEditorFieldNumber = 6,
+    kAuthorsFieldNumber = 8,
+    kTracksFieldNumber = 9,
+    kPatternsFieldNumber = 10,
+    kEditorFieldNumber = 7,
     kTimeFieldNumber = 1,
     kBeatFieldNumber = 2,
     kTempoFieldNumber = 3,
     kSRateFieldNumber = 4,
     kBitFieldNumber = 5,
+    kQuantizeFieldNumber = 6,
   };
-  // repeated string authors = 7;
+  // repeated string authors = 8;
   int authors_size() const;
   private:
   int _internal_authors_size() const;
@@ -222,7 +223,7 @@ class Project final :
   std::string* _internal_add_authors();
   public:
 
-  // repeated .org.infinity.idm.Track tracks = 8;
+  // repeated .org.infinity.idm.Track tracks = 9;
   int tracks_size() const;
   private:
   int _internal_tracks_size() const;
@@ -240,7 +241,7 @@ class Project final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Track >&
       tracks() const;
 
-  // repeated .org.infinity.idm.Pattern patterns = 9;
+  // repeated .org.infinity.idm.Pattern patterns = 10;
   int patterns_size() const;
   private:
   int _internal_patterns_size() const;
@@ -258,7 +259,7 @@ class Project final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Pattern >&
       patterns() const;
 
-  // string editor = 6;
+  // string editor = 7;
   void clear_editor();
   const std::string& editor() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -317,6 +318,15 @@ class Project final :
   void _internal_set_bit(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
+  // uint32 quantize = 6;
+  void clear_quantize();
+  ::PROTOBUF_NAMESPACE_ID::uint32 quantize() const;
+  void set_quantize(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_quantize() const;
+  void _internal_set_quantize(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:org.infinity.idm.Project)
  private:
   class _Internal;
@@ -333,6 +343,7 @@ class Project final :
   double tempo_;
   ::PROTOBUF_NAMESPACE_ID::uint64 srate_;
   ::PROTOBUF_NAMESPACE_ID::uint32 bit_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 quantize_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_project_2eproto;
 };
@@ -447,7 +458,27 @@ inline void Project::set_bit(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   // @@protoc_insertion_point(field_set:org.infinity.idm.Project.bit)
 }
 
-// string editor = 6;
+// uint32 quantize = 6;
+inline void Project::clear_quantize() {
+  quantize_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Project::_internal_quantize() const {
+  return quantize_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Project::quantize() const {
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Project.quantize)
+  return _internal_quantize();
+}
+inline void Project::_internal_set_quantize(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  quantize_ = value;
+}
+inline void Project::set_quantize(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_quantize(value);
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Project.quantize)
+}
+
+// string editor = 7;
 inline void Project::clear_editor() {
   editor_.ClearToEmpty();
 }
@@ -493,7 +524,7 @@ inline void Project::set_allocated_editor(std::string* editor) {
   // @@protoc_insertion_point(field_set_allocated:org.infinity.idm.Project.editor)
 }
 
-// repeated string authors = 7;
+// repeated string authors = 8;
 inline int Project::_internal_authors_size() const {
   return authors_.size();
 }
@@ -568,7 +599,7 @@ Project::mutable_authors() {
   return &authors_;
 }
 
-// repeated .org.infinity.idm.Track tracks = 8;
+// repeated .org.infinity.idm.Track tracks = 9;
 inline int Project::_internal_tracks_size() const {
   return tracks_.size();
 }
@@ -605,7 +636,7 @@ Project::tracks() const {
   return tracks_;
 }
 
-// repeated .org.infinity.idm.Pattern patterns = 9;
+// repeated .org.infinity.idm.Pattern patterns = 10;
 inline int Project::_internal_patterns_size() const {
   return patterns_.size();
 }

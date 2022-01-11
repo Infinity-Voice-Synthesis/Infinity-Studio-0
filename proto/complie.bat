@@ -10,6 +10,5 @@ protoc --cpp_out=..\Pb ppatt.proto
 protoc --cpp_out=..\Pb tparam.proto
 protoc --cpp_out=..\Pb pattern.proto
 protoc --cpp_out=..\Pb container.proto
-protoc --cpp_out=..\Pb effect.proto
 protoc --cpp_out=..\Pb track.proto
 protoc --cpp_out=..\Pb project.proto
