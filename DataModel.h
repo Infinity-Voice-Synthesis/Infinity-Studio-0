@@ -31,6 +31,8 @@ public:
 	uint64_t getProjectSRate();
 	void setProjectBit(uint32_t bit);
 	uint32_t getProjectBit();
+	void setProjectQuantize(uint32_t quantize);
+	uint32_t getProjectQuantize();
 	void setProjectEditor(std::string editor);
 	std::string getProjectEditor();
 	void addProjectAuthor(std::string author);
@@ -50,6 +52,12 @@ public:
 	bool getTrackMute(int trackIndex);
 	void setTrackSolo(int trackIndex, bool solo);
 	bool getTrackSolo(int trackIndex);
+	void setTrackGain(int trackIndex, double gain);
+	double getTrackGain(int trackIndex);
+	void setTrackPan(int trackIndex, double pan);
+	double getTrackPan(int trackIndex);
+	void setTrackMix(int trackIndex, double mix);
+	double getTrackMix(int trackIndex);
 	//轨道属性
 
 	void addContainer(int trackIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pattern);

@@ -40,15 +40,6 @@ void DataModel::setProjectTime()
 			std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(p.startbeat(), p.starttick(), p.length());
 			minTime = std::max(minTime, EP.second == 0 ? EP.first : EP.first + 1);
 		}//判断最后pattern
-		for (auto& e : i.effectors()) {
-			for (auto& p : e.params()) {
-				if (p.patterns_size() > 0) {
-					auto& pp = p.patterns().Get(p.patterns_size() - 1);
-					std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(pp.startbeat(), pp.starttick(), pp.length());
-					minTime = std::max(minTime, EP.second == 0 ? EP.first : EP.first + 1);
-				}
-			}//效果器也判断最后片段（同参数不重叠
-		}
 	}
 	if (minTime == this->project->time()) {
 		this->modelMutex.unlock();
@@ -179,6 +170,30 @@ uint32_t DataModel::getProjectBit()
 	return bit;
 }
 
+void DataModel::setProjectQuantize(uint32_t quantize)
+{
+	std::set<uint32_t> avaliableQ = { 480,240,120,60,30,160,80,40,20,1 };//允许的量化
+	if (avaliableQ.count(quantize) > 0) {
+		this->modelMutex.lock();
+		if (quantize == this->project->quantize()) {
+			this->modelMutex.unlock();
+			return;
+		}
+		this->project->set_quantize(quantize);
+
+		this->modelMutex.unlock();
+		this->viewFunc();
+	}
+}
+
+uint32_t DataModel::getProjectQuantize()
+{
+	this->modelMutex.lock();
+	auto&& quantize = this->project->quantize();
+	this->modelMutex.unlock();
+	return quantize;
+}
+
 void DataModel::setProjectEditor(std::string editor)
 {
 	if (!editor.empty()) {
@@ -235,7 +250,7 @@ void DataModel::addTrack(std::string name, std::string color)
 			haveSolo = true;
 			break;
 		}
-	}
+	}//判断solo是否存在
 
 	org::infinity::idm::Track* track = this->project->add_tracks();
 	track->set_name(name);
@@ -460,6 +475,108 @@ bool DataModel::getTrackSolo(int trackIndex)
 	}
 	this->modelMutex.unlock();
 	return false;
+}
+
+void DataModel::setTrackGain(int trackIndex, double gain)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (gain < -20.0 || gain > 20.0) {
+			this->modelMutex.unlock();
+			return;
+		}
+		if (gain == this->project->tracks(trackIndex).gain()) {
+			this->modelMutex.unlock();
+			return;
+		}//未作改动
+
+		this->project->mutable_tracks(trackIndex)->set_gain(gain);
+
+		this->modelMutex.unlock();
+		this->viewFunc();
+		return;
+	}
+	this->modelMutex.unlock();
+}
+
+double DataModel::getTrackGain(int trackIndex)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		auto&& gain = this->project->tracks(trackIndex).gain();
+		this->modelMutex.unlock();
+		return gain;
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
+void DataModel::setTrackPan(int trackIndex, double pan)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (pan < -64.0 || pan > 64.0) {
+			this->modelMutex.unlock();
+			return;
+		}
+		if (pan == this->project->tracks(trackIndex).pan()) {
+			this->modelMutex.unlock();
+			return;
+		}//未作改动
+
+		this->project->mutable_tracks(trackIndex)->set_pan(pan);
+
+		this->modelMutex.unlock();
+		this->viewFunc();
+		return;
+	}
+	this->modelMutex.unlock();
+}
+
+double DataModel::getTrackPan(int trackIndex)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		auto&& pan = this->project->tracks(trackIndex).pan();
+		this->modelMutex.unlock();
+		return pan;
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
+void DataModel::setTrackMix(int trackIndex, double mix)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		if (mix < -90.0 || mix > 6.0) {
+			this->modelMutex.unlock();
+			return;
+		}
+		if (mix == this->project->tracks(trackIndex).mix()) {
+			this->modelMutex.unlock();
+			return;
+		}//未作改动
+
+		this->project->mutable_tracks(trackIndex)->set_mix(mix);
+
+		this->modelMutex.unlock();
+		this->viewFunc();
+		return;
+	}
+	this->modelMutex.unlock();
+}
+
+double DataModel::getTrackMix(int trackIndex)
+{
+	this->modelMutex.lock();
+	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
+		auto&& mix = this->project->tracks(trackIndex).mix();
+		this->modelMutex.unlock();
+		return mix;
+	}
+	this->modelMutex.unlock();
+	return 0;
 }
 
 void DataModel::addContainer(int trackIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pattern)
