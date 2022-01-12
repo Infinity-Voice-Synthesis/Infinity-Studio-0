@@ -85,20 +85,16 @@ public:
 	void clearPatternFile(int patternIndex);
 	void setPatternDeviation(int patternIndex, uint64_t deviation);
 	uint64_t getPatternDeviation(int patternIndex);
-
+	void setPatternLibrary(int patternIndex, std::string library);
+	std::string getPatternLibrary(int patternIndex);
+	void setPatternDictionary(int patternIndex, std::string dictionary);
+	std::string getPatternDictionary(int patternIndex);
+	void setPatternTimbreA(int patternIndex, std::string timbre);
+	std::string getPatternTimbreA(int patternIndex);
+	void setPatternTimbreB(int patternIndex, std::string timbre);
+	std::string getPatternTimbreB(int patternIndex);
 	//样式属性
 	
-	//void setTrackLibrary(int trackIndex, std::string library);
-	//std::string getTrackLibrary(int trackIndex);
-	//void setTrackDictionary(int trackIndex, std::string dictionary);
-	//std::string getTrackDictionary(int trackIndex);
-	//void setTrackTimbreA(int trackIndex, std::string timbre);
-	//std::string getTrackTimbreA(int trackIndex);
-	//void setTrackTimbreB(int trackIndex, std::string timbre);
-	//std::string getTrackTimbreB(int trackIndex);
-	
-	////轨道属性
-
 	//void addNote(int trackIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pitch, std::string name);
 	//void removeNote(int trackIndex, int noteIndex);
 	//int countNote(int trackIndex);
