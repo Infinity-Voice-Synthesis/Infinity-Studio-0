@@ -186,11 +186,25 @@ class Container final :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kPatternFieldNumber = 4,
     kStartBeatFieldNumber = 1,
     kStartTickFieldNumber = 2,
     kLengthFieldNumber = 3,
-    kPatternFieldNumber = 4,
   };
+  // string pattern = 4;
+  void clear_pattern();
+  const std::string& pattern() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_pattern(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_pattern();
+  PROTOBUF_MUST_USE_RESULT std::string* release_pattern();
+  void set_allocated_pattern(std::string* pattern);
+  private:
+  const std::string& _internal_pattern() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_pattern(const std::string& value);
+  std::string* _internal_mutable_pattern();
+  public:
+
   // uint32 startBeat = 1;
   void clear_startbeat();
   ::PROTOBUF_NAMESPACE_ID::uint32 startbeat() const;
@@ -218,15 +232,6 @@ class Container final :
   void _internal_set_length(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
-  // uint32 pattern = 4;
-  void clear_pattern();
-  ::PROTOBUF_NAMESPACE_ID::uint32 pattern() const;
-  void set_pattern(::PROTOBUF_NAMESPACE_ID::uint32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_pattern() const;
-  void _internal_set_pattern(::PROTOBUF_NAMESPACE_ID::uint32 value);
-  public:
-
   // @@protoc_insertion_point(class_scope:org.infinity.idm.Container)
  private:
   class _Internal;
@@ -234,10 +239,10 @@ class Container final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr pattern_;
   ::PROTOBUF_NAMESPACE_ID::uint32 startbeat_;
   ::PROTOBUF_NAMESPACE_ID::uint32 starttick_;
   ::PROTOBUF_NAMESPACE_ID::uint64 length_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 pattern_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_container_2eproto;
 };
@@ -312,24 +317,50 @@ inline void Container::set_length(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   // @@protoc_insertion_point(field_set:org.infinity.idm.Container.length)
 }
 
-// uint32 pattern = 4;
+// string pattern = 4;
 inline void Container::clear_pattern() {
-  pattern_ = 0u;
+  pattern_.ClearToEmpty();
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 Container::_internal_pattern() const {
-  return pattern_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint32 Container::pattern() const {
+inline const std::string& Container::pattern() const {
   // @@protoc_insertion_point(field_get:org.infinity.idm.Container.pattern)
   return _internal_pattern();
 }
-inline void Container::_internal_set_pattern(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  
-  pattern_ = value;
-}
-inline void Container::set_pattern(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _internal_set_pattern(value);
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void Container::set_pattern(ArgT0&& arg0, ArgT... args) {
+ 
+ pattern_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:org.infinity.idm.Container.pattern)
+}
+inline std::string* Container::mutable_pattern() {
+  std::string* _s = _internal_mutable_pattern();
+  // @@protoc_insertion_point(field_mutable:org.infinity.idm.Container.pattern)
+  return _s;
+}
+inline const std::string& Container::_internal_pattern() const {
+  return pattern_.Get();
+}
+inline void Container::_internal_set_pattern(const std::string& value) {
+  
+  pattern_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* Container::_internal_mutable_pattern() {
+  
+  return pattern_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* Container::release_pattern() {
+  // @@protoc_insertion_point(field_release:org.infinity.idm.Container.pattern)
+  return pattern_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void Container::set_allocated_pattern(std::string* pattern) {
+  if (pattern != nullptr) {
+    
+  } else {
+    
+  }
+  pattern_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), pattern,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:org.infinity.idm.Container.pattern)
 }
 
 #ifdef __GNUC__

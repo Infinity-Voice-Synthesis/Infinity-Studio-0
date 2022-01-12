@@ -23,6 +23,7 @@ constexpr Pattern::Pattern(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : notes_()
   , params_()
+  , name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , file_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , library_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , dictionary_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
@@ -53,6 +54,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_pattern_2eproto::offsets[] PRO
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Pattern, name_),
   PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Pattern, type_),
   PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Pattern, file_),
   PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Pattern, deviation_),
@@ -73,14 +75,15 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_pattern_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\rpattern.proto\022\020org.infinity.idm\032\nnote."
-  "proto\032\014tparam.proto\"\233\002\n\007Pattern\022,\n\004type\030"
-  "\001 \001(\0162\036.org.infinity.idm.Pattern.Type\022\014\n"
-  "\004file\030\002 \001(\t\022\021\n\tdeviation\030\003 \001(\004\022\017\n\007librar"
-  "y\030\004 \001(\t\022\022\n\ndictionary\030\005 \001(\t\022\017\n\007timbreA\030\006"
-  " \001(\t\022\017\n\007timbreB\030\007 \001(\t\022%\n\005notes\030\010 \003(\0132\026.o"
-  "rg.infinity.idm.Note\022,\n\006params\030\t \003(\0132\034.o"
-  "rg.infinity.idm.TrackParam\"%\n\004Type\022\t\n\005EM"
-  "PTY\020\000\022\010\n\004MIDI\020\001\022\010\n\004WAVE\020\002b\006proto3"
+  "proto\032\014tparam.proto\"\251\002\n\007Pattern\022\014\n\004name\030"
+  "\001 \001(\t\022,\n\004type\030\002 \001(\0162\036.org.infinity.idm.P"
+  "attern.Type\022\014\n\004file\030\003 \001(\t\022\021\n\tdeviation\030\004"
+  " \001(\004\022\017\n\007library\030\005 \001(\t\022\022\n\ndictionary\030\006 \001("
+  "\t\022\017\n\007timbreA\030\007 \001(\t\022\017\n\007timbreB\030\010 \001(\t\022%\n\005n"
+  "otes\030\t \003(\0132\026.org.infinity.idm.Note\022,\n\006pa"
+  "rams\030\n \003(\0132\034.org.infinity.idm.TrackParam"
+  "\"%\n\004Type\022\t\n\005EMPTY\020\000\022\010\n\004MIDI\020\001\022\010\n\004WAVE\020\002b"
+  "\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_pattern_2eproto_deps[2] = {
   &::descriptor_table_note_2eproto,
@@ -88,7 +91,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_pattern_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_pattern_2eproto = {
-  false, false, 353, descriptor_table_protodef_pattern_2eproto, "pattern.proto", 
+  false, false, 367, descriptor_table_protodef_pattern_2eproto, "pattern.proto", 
   &descriptor_table_pattern_2eproto_once, descriptor_table_pattern_2eproto_deps, 2, 1,
   schemas, file_default_instances, TableStruct_pattern_2eproto::offsets,
   file_level_metadata_pattern_2eproto, file_level_enum_descriptors_pattern_2eproto, file_level_service_descriptors_pattern_2eproto,
@@ -154,6 +157,11 @@ Pattern::Pattern(const Pattern& from)
       notes_(from.notes_),
       params_(from.params_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_name().empty()) {
+    name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_name(), 
+      GetArenaForAllocation());
+  }
   file_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_file().empty()) {
     file_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_file(), 
@@ -186,6 +194,7 @@ Pattern::Pattern(const Pattern& from)
 }
 
 inline void Pattern::SharedCtor() {
+name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 file_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 library_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 dictionary_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -206,6 +215,7 @@ Pattern::~Pattern() {
 
 inline void Pattern::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   file_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   library_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   dictionary_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -231,6 +241,7 @@ void Pattern::Clear() {
 
   notes_.Clear();
   params_.Clear();
+  name_.ClearToEmpty();
   file_.ClearToEmpty();
   library_.ClearToEmpty();
   dictionary_.ClearToEmpty();
@@ -248,88 +259,97 @@ const char* Pattern::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // .org.infinity.idm.Pattern.Type type = 1;
+      // string name = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          auto str = _internal_mutable_name();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "org.infinity.idm.Pattern.name"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .org.infinity.idm.Pattern.Type type = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           _internal_set_type(static_cast<::org::infinity::idm::Pattern_Type>(val));
         } else goto handle_unusual;
         continue;
-      // string file = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+      // string file = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
           auto str = _internal_mutable_file();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "org.infinity.idm.Pattern.file"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // uint64 deviation = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+      // uint64 deviation = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
           deviation_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string library = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+      // string library = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
           auto str = _internal_mutable_library();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "org.infinity.idm.Pattern.library"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string dictionary = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
+      // string dictionary = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
           auto str = _internal_mutable_dictionary();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "org.infinity.idm.Pattern.dictionary"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string timbreA = 6;
-      case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
+      // string timbreA = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
           auto str = _internal_mutable_timbrea();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "org.infinity.idm.Pattern.timbreA"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string timbreB = 7;
-      case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
+      // string timbreB = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 66)) {
           auto str = _internal_mutable_timbreb();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "org.infinity.idm.Pattern.timbreB"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // repeated .org.infinity.idm.Note notes = 8;
-      case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 66)) {
+      // repeated .org.infinity.idm.Note notes = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 74)) {
           ptr -= 1;
           do {
             ptr += 1;
             ptr = ctx->ParseMessage(_internal_add_notes(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<66>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<74>(ptr));
         } else goto handle_unusual;
         continue;
-      // repeated .org.infinity.idm.TrackParam params = 9;
-      case 9:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 74)) {
+      // repeated .org.infinity.idm.TrackParam params = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 82)) {
           ptr -= 1;
           do {
             ptr += 1;
             ptr = ctx->ParseMessage(_internal_add_params(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<74>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<82>(ptr));
         } else goto handle_unusual;
         continue;
       default: {
@@ -361,83 +381,93 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .org.infinity.idm.Pattern.Type type = 1;
+  // string name = 1;
+  if (!this->_internal_name().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "org.infinity.idm.Pattern.name");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_name(), target);
+  }
+
+  // .org.infinity.idm.Pattern.Type type = 2;
   if (this->_internal_type() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      1, this->_internal_type(), target);
+      2, this->_internal_type(), target);
   }
 
-  // string file = 2;
+  // string file = 3;
   if (!this->_internal_file().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_file().data(), static_cast<int>(this->_internal_file().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "org.infinity.idm.Pattern.file");
     target = stream->WriteStringMaybeAliased(
-        2, this->_internal_file(), target);
+        3, this->_internal_file(), target);
   }
 
-  // uint64 deviation = 3;
+  // uint64 deviation = 4;
   if (this->_internal_deviation() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(3, this->_internal_deviation(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(4, this->_internal_deviation(), target);
   }
 
-  // string library = 4;
+  // string library = 5;
   if (!this->_internal_library().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_library().data(), static_cast<int>(this->_internal_library().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "org.infinity.idm.Pattern.library");
     target = stream->WriteStringMaybeAliased(
-        4, this->_internal_library(), target);
+        5, this->_internal_library(), target);
   }
 
-  // string dictionary = 5;
+  // string dictionary = 6;
   if (!this->_internal_dictionary().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_dictionary().data(), static_cast<int>(this->_internal_dictionary().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "org.infinity.idm.Pattern.dictionary");
     target = stream->WriteStringMaybeAliased(
-        5, this->_internal_dictionary(), target);
+        6, this->_internal_dictionary(), target);
   }
 
-  // string timbreA = 6;
+  // string timbreA = 7;
   if (!this->_internal_timbrea().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_timbrea().data(), static_cast<int>(this->_internal_timbrea().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "org.infinity.idm.Pattern.timbreA");
     target = stream->WriteStringMaybeAliased(
-        6, this->_internal_timbrea(), target);
+        7, this->_internal_timbrea(), target);
   }
 
-  // string timbreB = 7;
+  // string timbreB = 8;
   if (!this->_internal_timbreb().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_timbreb().data(), static_cast<int>(this->_internal_timbreb().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "org.infinity.idm.Pattern.timbreB");
     target = stream->WriteStringMaybeAliased(
-        7, this->_internal_timbreb(), target);
+        8, this->_internal_timbreb(), target);
   }
 
-  // repeated .org.infinity.idm.Note notes = 8;
+  // repeated .org.infinity.idm.Note notes = 9;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_notes_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(8, this->_internal_notes(i), target, stream);
+      InternalWriteMessage(9, this->_internal_notes(i), target, stream);
   }
 
-  // repeated .org.infinity.idm.TrackParam params = 9;
+  // repeated .org.infinity.idm.TrackParam params = 10;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_params_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(9, this->_internal_params(i), target, stream);
+      InternalWriteMessage(10, this->_internal_params(i), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -456,63 +486,70 @@ size_t Pattern::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .org.infinity.idm.Note notes = 8;
+  // repeated .org.infinity.idm.Note notes = 9;
   total_size += 1UL * this->_internal_notes_size();
   for (const auto& msg : this->notes_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // repeated .org.infinity.idm.TrackParam params = 9;
+  // repeated .org.infinity.idm.TrackParam params = 10;
   total_size += 1UL * this->_internal_params_size();
   for (const auto& msg : this->params_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // string file = 2;
+  // string name = 1;
+  if (!this->_internal_name().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_name());
+  }
+
+  // string file = 3;
   if (!this->_internal_file().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_file());
   }
 
-  // string library = 4;
+  // string library = 5;
   if (!this->_internal_library().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_library());
   }
 
-  // string dictionary = 5;
+  // string dictionary = 6;
   if (!this->_internal_dictionary().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_dictionary());
   }
 
-  // string timbreA = 6;
+  // string timbreA = 7;
   if (!this->_internal_timbrea().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_timbrea());
   }
 
-  // string timbreB = 7;
+  // string timbreB = 8;
   if (!this->_internal_timbreb().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_timbreb());
   }
 
-  // uint64 deviation = 3;
+  // uint64 deviation = 4;
   if (this->_internal_deviation() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
         this->_internal_deviation());
   }
 
-  // .org.infinity.idm.Pattern.Type type = 1;
+  // .org.infinity.idm.Pattern.Type type = 2;
   if (this->_internal_type() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_type());
@@ -548,6 +585,9 @@ void Pattern::MergeFrom(const Pattern& from) {
 
   notes_.MergeFrom(from.notes_);
   params_.MergeFrom(from.params_);
+  if (!from._internal_name().empty()) {
+    _internal_set_name(from._internal_name());
+  }
   if (!from._internal_file().empty()) {
     _internal_set_file(from._internal_file());
   }
@@ -588,6 +628,11 @@ void Pattern::InternalSwap(Pattern* other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   notes_.InternalSwap(&other->notes_);
   params_.InternalSwap(&other->params_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &name_, GetArenaForAllocation(),
+      &other->name_, other->GetArenaForAllocation()
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       &file_, GetArenaForAllocation(),

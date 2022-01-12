@@ -7,5 +7,5 @@ message Container {
     uint32 startTick = 2;//每拍480ticks
     uint64 length = 3;//by ticks
 
-    uint32 pattern = 4;//关联样式
+    string pattern = 4;//关联样式
 }

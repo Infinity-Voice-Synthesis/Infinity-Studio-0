@@ -472,9 +472,6 @@
     <ClCompile Include="Pb\container.pb.cc">
       <Filter>Pb</Filter>
     </ClCompile>
-    <ClCompile Include="Pb\effect.pb.cc">
-      <Filter>Pb</Filter>
-    </ClCompile>
     <ClCompile Include="Pb\note.pb.cc">
       <Filter>Pb</Filter>
     </ClCompile>
@@ -1068,9 +1065,6 @@
       <Filter>Header Files\data</Filter>
     </ClInclude>
     <ClInclude Include="Pb\container.pb.h">
-      <Filter>Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="Pb\effect.pb.h">
       <Filter>Pb</Filter>
     </ClInclude>
     <ClInclude Include="Pb\note.pb.h">

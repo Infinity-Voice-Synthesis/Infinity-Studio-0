@@ -60,7 +60,7 @@ public:
 	double getTrackMix(int trackIndex);
 	//轨道属性
 
-	void addContainer(int trackIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pattern);
+	void addContainer(int trackIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, std::string pattern);
 	void removeContainer(int trackIndex, int containerIndex);
 	int countContainer(int trackIndex);
 	//容器数量
@@ -69,9 +69,24 @@ public:
 	uint32_t getContainerStartBeat(int trackIndex, int containerIndex);
 	uint32_t getContainerStartTick(int trackIndex, int containerIndex);
 	uint64_t getContainerLength(int trackIndex, int containerIndex);
-	void setContainerPattern(int trackIndex, int containerIndex, uint32_t pattern);
-	uint32_t getContainerPattern(int trackIndex, int containerIndex);
+	void setContainerPattern(int trackIndex, int containerIndex, std::string pattern);
+	std::string getContainerPattern(int trackIndex, int containerIndex);
 	//容器属性
+
+	void addPattern(std::string name);
+	void removePattern(int patternIndex);
+	int countPattern();
+	//样式数量
+
+	void setPatternName(int patternIndex, std::string name);
+	std::string getPatternName(int patternIndex);
+	void setPatternFile(int patternIndex, std::string file, uint64_t deviation);
+	std::string getPatternFile(int patternIndex);
+	void clearPatternFile(int patternIndex);
+	void setPatternDeviation(int patternIndex, uint64_t deviation);
+	uint64_t getPatternDeviation(int patternIndex);
+
+	//样式属性
 	
 	//void setTrackLibrary(int trackIndex, std::string library);
 	//std::string getTrackLibrary(int trackIndex);
@@ -122,7 +137,7 @@ private:
 	};
 
 	//std::function<void(int, uint32_t, uint32_t)> renderFunc;//渲染
-	std::function<void(int)> renderFunc;//渲染
+	std::function<void(std::string)> renderFunc;//渲染
 	std::function<void(void)> viewFunc;//刷新界面
 
 	std::function<std::pair<std::map<std::string, int64_t>, bool>(std::string, std::string, std::string)> eSplitFunc;//调用引擎分词

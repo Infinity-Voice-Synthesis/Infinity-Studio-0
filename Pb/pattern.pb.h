@@ -247,17 +247,18 @@ class Pattern final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kNotesFieldNumber = 8,
-    kParamsFieldNumber = 9,
-    kFileFieldNumber = 2,
-    kLibraryFieldNumber = 4,
-    kDictionaryFieldNumber = 5,
-    kTimbreAFieldNumber = 6,
-    kTimbreBFieldNumber = 7,
-    kDeviationFieldNumber = 3,
-    kTypeFieldNumber = 1,
+    kNotesFieldNumber = 9,
+    kParamsFieldNumber = 10,
+    kNameFieldNumber = 1,
+    kFileFieldNumber = 3,
+    kLibraryFieldNumber = 5,
+    kDictionaryFieldNumber = 6,
+    kTimbreAFieldNumber = 7,
+    kTimbreBFieldNumber = 8,
+    kDeviationFieldNumber = 4,
+    kTypeFieldNumber = 2,
   };
-  // repeated .org.infinity.idm.Note notes = 8;
+  // repeated .org.infinity.idm.Note notes = 9;
   int notes_size() const;
   private:
   int _internal_notes_size() const;
@@ -275,7 +276,7 @@ class Pattern final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Note >&
       notes() const;
 
-  // repeated .org.infinity.idm.TrackParam params = 9;
+  // repeated .org.infinity.idm.TrackParam params = 10;
   int params_size() const;
   private:
   int _internal_params_size() const;
@@ -293,7 +294,21 @@ class Pattern final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::TrackParam >&
       params() const;
 
-  // string file = 2;
+  // string name = 1;
+  void clear_name();
+  const std::string& name() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_name(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_name();
+  PROTOBUF_MUST_USE_RESULT std::string* release_name();
+  void set_allocated_name(std::string* name);
+  private:
+  const std::string& _internal_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_name(const std::string& value);
+  std::string* _internal_mutable_name();
+  public:
+
+  // string file = 3;
   void clear_file();
   const std::string& file() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -307,7 +322,7 @@ class Pattern final :
   std::string* _internal_mutable_file();
   public:
 
-  // string library = 4;
+  // string library = 5;
   void clear_library();
   const std::string& library() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -321,7 +336,7 @@ class Pattern final :
   std::string* _internal_mutable_library();
   public:
 
-  // string dictionary = 5;
+  // string dictionary = 6;
   void clear_dictionary();
   const std::string& dictionary() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -335,7 +350,7 @@ class Pattern final :
   std::string* _internal_mutable_dictionary();
   public:
 
-  // string timbreA = 6;
+  // string timbreA = 7;
   void clear_timbrea();
   const std::string& timbrea() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -349,7 +364,7 @@ class Pattern final :
   std::string* _internal_mutable_timbrea();
   public:
 
-  // string timbreB = 7;
+  // string timbreB = 8;
   void clear_timbreb();
   const std::string& timbreb() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -363,7 +378,7 @@ class Pattern final :
   std::string* _internal_mutable_timbreb();
   public:
 
-  // uint64 deviation = 3;
+  // uint64 deviation = 4;
   void clear_deviation();
   ::PROTOBUF_NAMESPACE_ID::uint64 deviation() const;
   void set_deviation(::PROTOBUF_NAMESPACE_ID::uint64 value);
@@ -372,7 +387,7 @@ class Pattern final :
   void _internal_set_deviation(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
-  // .org.infinity.idm.Pattern.Type type = 1;
+  // .org.infinity.idm.Pattern.Type type = 2;
   void clear_type();
   ::org::infinity::idm::Pattern_Type type() const;
   void set_type(::org::infinity::idm::Pattern_Type value);
@@ -390,6 +405,7 @@ class Pattern final :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::Note > notes_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::org::infinity::idm::TrackParam > params_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr file_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr library_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr dictionary_;
@@ -411,7 +427,53 @@ class Pattern final :
 #endif  // __GNUC__
 // Pattern
 
-// .org.infinity.idm.Pattern.Type type = 1;
+// string name = 1;
+inline void Pattern::clear_name() {
+  name_.ClearToEmpty();
+}
+inline const std::string& Pattern::name() const {
+  // @@protoc_insertion_point(field_get:org.infinity.idm.Pattern.name)
+  return _internal_name();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void Pattern::set_name(ArgT0&& arg0, ArgT... args) {
+ 
+ name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:org.infinity.idm.Pattern.name)
+}
+inline std::string* Pattern::mutable_name() {
+  std::string* _s = _internal_mutable_name();
+  // @@protoc_insertion_point(field_mutable:org.infinity.idm.Pattern.name)
+  return _s;
+}
+inline const std::string& Pattern::_internal_name() const {
+  return name_.Get();
+}
+inline void Pattern::_internal_set_name(const std::string& value) {
+  
+  name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* Pattern::_internal_mutable_name() {
+  
+  return name_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* Pattern::release_name() {
+  // @@protoc_insertion_point(field_release:org.infinity.idm.Pattern.name)
+  return name_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void Pattern::set_allocated_name(std::string* name) {
+  if (name != nullptr) {
+    
+  } else {
+    
+  }
+  name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), name,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:org.infinity.idm.Pattern.name)
+}
+
+// .org.infinity.idm.Pattern.Type type = 2;
 inline void Pattern::clear_type() {
   type_ = 0;
 }
@@ -431,7 +493,7 @@ inline void Pattern::set_type(::org::infinity::idm::Pattern_Type value) {
   // @@protoc_insertion_point(field_set:org.infinity.idm.Pattern.type)
 }
 
-// string file = 2;
+// string file = 3;
 inline void Pattern::clear_file() {
   file_.ClearToEmpty();
 }
@@ -477,7 +539,7 @@ inline void Pattern::set_allocated_file(std::string* file) {
   // @@protoc_insertion_point(field_set_allocated:org.infinity.idm.Pattern.file)
 }
 
-// uint64 deviation = 3;
+// uint64 deviation = 4;
 inline void Pattern::clear_deviation() {
   deviation_ = uint64_t{0u};
 }
@@ -497,7 +559,7 @@ inline void Pattern::set_deviation(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   // @@protoc_insertion_point(field_set:org.infinity.idm.Pattern.deviation)
 }
 
-// string library = 4;
+// string library = 5;
 inline void Pattern::clear_library() {
   library_.ClearToEmpty();
 }
@@ -543,7 +605,7 @@ inline void Pattern::set_allocated_library(std::string* library) {
   // @@protoc_insertion_point(field_set_allocated:org.infinity.idm.Pattern.library)
 }
 
-// string dictionary = 5;
+// string dictionary = 6;
 inline void Pattern::clear_dictionary() {
   dictionary_.ClearToEmpty();
 }
@@ -589,7 +651,7 @@ inline void Pattern::set_allocated_dictionary(std::string* dictionary) {
   // @@protoc_insertion_point(field_set_allocated:org.infinity.idm.Pattern.dictionary)
 }
 
-// string timbreA = 6;
+// string timbreA = 7;
 inline void Pattern::clear_timbrea() {
   timbrea_.ClearToEmpty();
 }
@@ -635,7 +697,7 @@ inline void Pattern::set_allocated_timbrea(std::string* timbrea) {
   // @@protoc_insertion_point(field_set_allocated:org.infinity.idm.Pattern.timbreA)
 }
 
-// string timbreB = 7;
+// string timbreB = 8;
 inline void Pattern::clear_timbreb() {
   timbreb_.ClearToEmpty();
 }
@@ -681,7 +743,7 @@ inline void Pattern::set_allocated_timbreb(std::string* timbreb) {
   // @@protoc_insertion_point(field_set_allocated:org.infinity.idm.Pattern.timbreB)
 }
 
-// repeated .org.infinity.idm.Note notes = 8;
+// repeated .org.infinity.idm.Note notes = 9;
 inline int Pattern::_internal_notes_size() const {
   return notes_.size();
 }
@@ -718,7 +780,7 @@ Pattern::notes() const {
   return notes_;
 }
 
-// repeated .org.infinity.idm.TrackParam params = 9;
+// repeated .org.infinity.idm.TrackParam params = 10;
 inline int Pattern::_internal_params_size() const {
   return params_.size();
 }

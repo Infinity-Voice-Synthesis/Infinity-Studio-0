@@ -21,10 +21,10 @@ namespace infinity {
 namespace idm {
 constexpr Container::Container(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : startbeat_(0u)
+  : pattern_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , startbeat_(0u)
   , starttick_(0u)
-  , length_(uint64_t{0u})
-  , pattern_(0u){}
+  , length_(uint64_t{0u}){}
 struct ContainerDefaultTypeInternal {
   constexpr ContainerDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -63,7 +63,7 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 const char descriptor_table_protodef_container_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\017container.proto\022\020org.infinity.idm\"R\n\tC"
   "ontainer\022\021\n\tstartBeat\030\001 \001(\r\022\021\n\tstartTick"
-  "\030\002 \001(\r\022\016\n\006length\030\003 \001(\004\022\017\n\007pattern\030\004 \001(\rb"
+  "\030\002 \001(\r\022\016\n\006length\030\003 \001(\004\022\017\n\007pattern\030\004 \001(\tb"
   "\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_container_2eproto_once;
@@ -101,17 +101,23 @@ Container::Container(::PROTOBUF_NAMESPACE_ID::Arena* arena,
 Container::Container(const Container& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  pattern_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_pattern().empty()) {
+    pattern_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_pattern(), 
+      GetArenaForAllocation());
+  }
   ::memcpy(&startbeat_, &from.startbeat_,
-    static_cast<size_t>(reinterpret_cast<char*>(&pattern_) -
-    reinterpret_cast<char*>(&startbeat_)) + sizeof(pattern_));
+    static_cast<size_t>(reinterpret_cast<char*>(&length_) -
+    reinterpret_cast<char*>(&startbeat_)) + sizeof(length_));
   // @@protoc_insertion_point(copy_constructor:org.infinity.idm.Container)
 }
 
 inline void Container::SharedCtor() {
+pattern_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&startbeat_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&pattern_) -
-    reinterpret_cast<char*>(&startbeat_)) + sizeof(pattern_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&length_) -
+    reinterpret_cast<char*>(&startbeat_)) + sizeof(length_));
 }
 
 Container::~Container() {
@@ -123,6 +129,7 @@ Container::~Container() {
 
 inline void Container::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  pattern_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void Container::ArenaDtor(void* object) {
@@ -141,9 +148,10 @@ void Container::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  pattern_.ClearToEmpty();
   ::memset(&startbeat_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&pattern_) -
-      reinterpret_cast<char*>(&startbeat_)) + sizeof(pattern_));
+      reinterpret_cast<char*>(&length_) -
+      reinterpret_cast<char*>(&startbeat_)) + sizeof(length_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -174,10 +182,12 @@ const char* Container::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // uint32 pattern = 4;
+      // string pattern = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
-          pattern_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+          auto str = _internal_mutable_pattern();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "org.infinity.idm.Container.pattern"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -228,10 +238,14 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(3, this->_internal_length(), target);
   }
 
-  // uint32 pattern = 4;
-  if (this->_internal_pattern() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(4, this->_internal_pattern(), target);
+  // string pattern = 4;
+  if (!this->_internal_pattern().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_pattern().data(), static_cast<int>(this->_internal_pattern().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "org.infinity.idm.Container.pattern");
+    target = stream->WriteStringMaybeAliased(
+        4, this->_internal_pattern(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -249,6 +263,13 @@ size_t Container::ByteSizeLong() const {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
+
+  // string pattern = 4;
+  if (!this->_internal_pattern().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_pattern());
+  }
 
   // uint32 startBeat = 1;
   if (this->_internal_startbeat() != 0) {
@@ -269,13 +290,6 @@ size_t Container::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
         this->_internal_length());
-  }
-
-  // uint32 pattern = 4;
-  if (this->_internal_pattern() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_pattern());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -306,6 +320,9 @@ void Container::MergeFrom(const Container& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (!from._internal_pattern().empty()) {
+    _internal_set_pattern(from._internal_pattern());
+  }
   if (from._internal_startbeat() != 0) {
     _internal_set_startbeat(from._internal_startbeat());
   }
@@ -314,9 +331,6 @@ void Container::MergeFrom(const Container& from) {
   }
   if (from._internal_length() != 0) {
     _internal_set_length(from._internal_length());
-  }
-  if (from._internal_pattern() != 0) {
-    _internal_set_pattern(from._internal_pattern());
   }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -335,9 +349,14 @@ bool Container::IsInitialized() const {
 void Container::InternalSwap(Container* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &pattern_, GetArenaForAllocation(),
+      &other->pattern_, other->GetArenaForAllocation()
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Container, pattern_)
-      + sizeof(Container::pattern_)
+      PROTOBUF_FIELD_OFFSET(Container, length_)
+      + sizeof(Container::length_)
       - PROTOBUF_FIELD_OFFSET(Container, startbeat_)>(
           reinterpret_cast<char*>(&startbeat_),
           reinterpret_cast<char*>(&other->startbeat_));
