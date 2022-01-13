@@ -1078,6 +1078,7 @@ void DataModel::setPatternDeviation(int patternIndex, uint64_t deviation)
 		this->modelMutex.unlock();
 
 		this->viewFunc();
+		return;
 	}
 	this->modelMutex.unlock();
 }
@@ -1101,6 +1102,10 @@ void DataModel::setPatternLibrary(int patternIndex, std::string library)
 	}
 	this->modelMutex.lock();
 	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_WAVE) {
+			this->modelMutex.unlock();
+			return;
+		}//不接受对WAVE样式的声库修改
 		std::string libraryCurrent = this->project->patterns(patternIndex).library();
 		if (library == libraryCurrent) {
 			this->modelMutex.unlock();
@@ -1260,6 +1265,7 @@ void DataModel::setPatternLibrary(int patternIndex, std::string library)
 
 		this->renderFunc(this->project->patterns(patternIndex).name());
 		this->viewFunc();
+		return;
 	}
 	this->modelMutex.unlock();
 }
@@ -1283,6 +1289,10 @@ void DataModel::setPatternDictionary(int patternIndex, std::string dictionary)
 	}
 	this->modelMutex.lock();
 	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_WAVE) {
+			this->modelMutex.unlock();
+			return;
+		}//不接受对WAVE样式的字典修改
 		if (dictionary == this->project->patterns(patternIndex).dictionary()) {
 			this->modelMutex.unlock();
 			return;
@@ -1348,6 +1358,7 @@ void DataModel::setPatternDictionary(int patternIndex, std::string dictionary)
 
 		this->renderFunc(this->project->patterns(patternIndex).name());
 		this->viewFunc();
+		return;
 	}
 	this->modelMutex.unlock();
 }
@@ -1372,6 +1383,10 @@ void DataModel::setPatternTimbreA(int patternIndex, std::string timbre)
 	}
 	this->modelMutex.lock();
 	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_WAVE) {
+			this->modelMutex.unlock();
+			return;
+		}//不接受对WAVE样式的音色修改
 		std::string timbreNow = this->project->patterns(patternIndex).timbrea();
 		if (timbre == timbreNow) {
 			this->modelMutex.unlock();
@@ -1403,6 +1418,7 @@ void DataModel::setPatternTimbreA(int patternIndex, std::string timbre)
 
 		this->renderFunc(this->project->patterns(patternIndex).name());
 		this->viewFunc();
+		return;
 	}
 	this->modelMutex.unlock();
 }
@@ -1426,6 +1442,10 @@ void DataModel::setPatternTimbreB(int patternIndex, std::string timbre)
 	}
 	this->modelMutex.lock();
 	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_WAVE) {
+			this->modelMutex.unlock();
+			return;
+		}//不接受对WAVE样式的音色修改
 		if (timbre == this->project->patterns(patternIndex).timbreb()) {
 			this->modelMutex.unlock();
 			return;
@@ -1449,6 +1469,7 @@ void DataModel::setPatternTimbreB(int patternIndex, std::string timbre)
 
 		this->renderFunc(this->project->patterns(patternIndex).name());
 		this->viewFunc();
+		return;
 	}
 	this->modelMutex.unlock();
 }
@@ -1465,564 +1486,742 @@ std::string DataModel::getPatternTimbreB(int patternIndex)
 	return std::string();
 }
 
-//void DataModel::addNote(int trackIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pitch, std::string name)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (length == 0) {
-//			return;
-//		}
-//		if (startTick >= 480) {
-//			startBeat += startTick / 480;
-//			startTick %= 480;
-//		}
-//		std::string dictionary = Package::getPackage().getLibraryDictionaryDefault(this->project->tracks(trackIndex).library());
-//		{
-//			bool flag = false;
-//			for (auto& i : Package::getPackage().getDictionaryAvailable()) {
-//				if (i == dictionary) {
-//					flag = true;
-//					break;
-//				}
-//			}
-//			if (!flag) {
-//				return;
-//			}
-//		}
-//		std::string engine = Package::getPackage().getEngineName(this->project->tracks(trackIndex).library());
-//		{
-//			bool flag = false;
-//			for (auto& i : Package::getPackage().getEngineAvailable()) {
-//				if (i == engine) {
-//					flag = true;
-//					break;
-//				}
-//			}
-//			if (!flag) {
-//				return;
-//			}
-//		}
-//
-//		org::infinity::idm::Note* note = nullptr;
-//		if (this->project->tracks(trackIndex).notes_size() > 0) {
-//			if (DataModel::Utils::getTick(startBeat, startTick) < DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(0).startbeat(), this->project->tracks(trackIndex).notes(0).starttick())) {
-//				this->project->mutable_tracks(trackIndex)->mutable_notes()->Add();//末尾建立空element
-//				for (int i = this->project->tracks(trackIndex).notes_size() - 2; i >= 0 ; i--) {
-//					this->project->mutable_tracks(trackIndex)->mutable_notes(i + 1)->CopyFrom(this->project->tracks(trackIndex).notes(i));
-//				}//element集体后移
-//				note = this->project->mutable_tracks(trackIndex)->mutable_notes(0);//腾出头element
-//			}
-//			else if (DataModel::Utils::getTick(startBeat, startTick) >= DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(this->project->tracks(trackIndex).notes_size() - 1).startbeat(), this->project->tracks(trackIndex).notes(this->project->tracks(trackIndex).notes_size() - 1).starttick())) {
-//				note = this->project->mutable_tracks(trackIndex)->mutable_notes()->Add();//末尾
-//			}
-//			else {
-//				this->project->mutable_tracks(trackIndex)->mutable_notes()->Add();//末尾建立空element
-//				for (int i = this->project->tracks(trackIndex).notes_size() - 2; i > 0; i--) {
-//					this->project->mutable_tracks(trackIndex)->mutable_notes(i + 1)->CopyFrom(this->project->tracks(trackIndex).notes(i));//element后移
-//					if (
-//						DataModel::Utils::getTick(startBeat, startTick) >= DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(i - 1).startbeat(), this->project->tracks(trackIndex).notes(i - 1).starttick()) &&
-//						DataModel::Utils::getTick(startBeat, startTick) < DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(i + 1).startbeat(), this->project->tracks(trackIndex).notes(i + 1).starttick())
-//						) {//如果当前element符合要求
-//						note = this->project->mutable_tracks(trackIndex)->mutable_notes(i);//移动element空出位置即是插入位置
-//					}
-//				}
-//			}
-//		}
-//		else {
-//			note = this->project->mutable_tracks(trackIndex)->mutable_notes()->Add();//唯一一个
-//		}
-//
-//		note->set_startbeat(startBeat);
-//		note->set_starttick(startTick);
-//		note->set_length(length);
-//		note->set_pitch(pitch);
-//
-//		note->set_name(name);
-//		note->set_timbre(this->project->tracks(trackIndex).timbrea());
-//
-//		if (Package::getPackage().getEngineSplit(engine)) {
-//			std::pair<std::map<std::string, int64_t>, bool> phonemeM = this->eSplitFunc(engine, dictionary, name);
-//			for (auto& p : phonemeM.first) {
-//				org::infinity::idm::utils::Pair* pair = note->add_phonemes();
-//				pair->set_key(p.first);
-//				pair->set_value(p.second);
-//			}
-//			note->set_consonant(phonemeM.second);
-//		}//调用引擎分词器
-//		else {
-//			std::pair<std::map<std::string, int64_t>, bool> phonemeM = Package::getPackage().getDictionaryPhoneme(dictionary, name);
-//			for (auto& p : phonemeM.first) {
-//				org::infinity::idm::utils::Pair* pair = note->add_phonemes();
-//				pair->set_key(p.first);
-//				pair->set_value(p.second);
-//			}
-//			note->set_consonant(phonemeM.second);
-//		}//使用字典分词
-//
-//		auto epl = Package::getPackage().getEngineNoteParam(engine);//获取引擎参数表
-//		for (auto& p : epl) {
-//			org::infinity::idm::NoteParam* param = note->add_params();
-//			param->set_name(p.name);
-//			param->set_vmax(p.vMax);
-//			param->set_vmin(p.vMin);
-//			param->set_vdefault(p.vDefault);
-//			param->set_value(p.vDefault);
-//		}//添加参数
-//
-//		std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, length);
-//		this->renderFunc(trackIndex, startTick > 0 ? startBeat + 1 : startBeat, EP.second > 0 ? EP.first + 1 : EP.first);
-//		this->viewFunc();
-//	}
-//}
-//
-//void DataModel::removeNote(int trackIndex, int noteIndex)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
-//			auto it = this->project->mutable_tracks(trackIndex)->mutable_notes()->begin() + noteIndex;
-//			uint32_t startBeat = (*it).startbeat();
-//			uint32_t startTick = (*it).starttick();
-//			std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, (*it).length());
-//			this->project->mutable_tracks(trackIndex)->mutable_notes()->erase(it);
-//
-//			this->setProjectTime();//调整时长
-//
-//			this->renderFunc(trackIndex, startTick > 0 ? startBeat + 1 : startBeat, EP.second > 0 ? EP.first + 1 : EP.first);
-//			this->viewFunc();
-//		}
-//	}
-//}
-//
-//int DataModel::countNote(int trackIndex)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		return this->project->tracks(trackIndex).notes_size();
-//	}
-//	return -1;
-//}
-//
-//void DataModel::setNotePlace(int trackIndex, int noteIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pitch)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
-//			if (length == 0) {
-//				return;
-//			}
-//			if (startTick >= 480) {
-//				startBeat += startTick / 480;
-//				startTick %= 480;
-//			}
-//			uint32_t currentStartBeat = this->project->tracks(trackIndex).notes(noteIndex).startbeat();
-//			uint32_t currentStartTick = this->project->tracks(trackIndex).notes(noteIndex).starttick();
-//			uint64_t currentLength = this->project->tracks(trackIndex).notes(noteIndex).length();
-//
-//			if (
-//				currentStartBeat == startBeat &&
-//				currentStartTick == startTick &&
-//				currentLength == length
-//				) {
-//				return;
-//			}
-//
-//			std::pair<uint32_t, uint32_t> currentEP = DataModel::Utils::getEP(currentStartBeat, currentStartTick, currentLength);
-//			std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, length);
-//
-//			this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->set_startbeat(startBeat);
-//			this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->set_starttick(startTick);
-//			this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->set_length(length);
-//			this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->set_pitch(pitch);
-//
-//			if (noteIndex > 0) {
-//				for (int i = noteIndex; i > 0; i--)
-//				{
-//					if (DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(i).startbeat(), this->project->tracks(trackIndex).notes(i).starttick()) < DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(i - 1).startbeat(), this->project->tracks(trackIndex).notes(i - 1).starttick())) {
-//						org::infinity::idm::Note temp(this->project->tracks(trackIndex).notes(i));
-//						this->project->mutable_tracks(trackIndex)->mutable_notes(i)->CopyFrom(this->project->tracks(trackIndex).notes(i - 1));
-//						this->project->mutable_tracks(trackIndex)->mutable_notes(i - 1)->CopyFrom(temp);
-//					}
-//					else {
-//						break;
-//					}
-//				}
-//			}
-//			if (noteIndex < this->project->tracks(trackIndex).notes_size() - 1) {
-//				for (int i = noteIndex; i < this->project->tracks(trackIndex).notes_size(); i++)
-//				{
-//					if (DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(i).startbeat(), this->project->tracks(trackIndex).notes(i).starttick()) > DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(i + 1).startbeat(), this->project->tracks(trackIndex).notes(i + 1).starttick())) {
-//						org::infinity::idm::Note temp(this->project->tracks(trackIndex).notes(i));
-//						this->project->mutable_tracks(trackIndex)->mutable_notes(i)->CopyFrom(this->project->tracks(trackIndex).notes(i + 1));
-//						this->project->mutable_tracks(trackIndex)->mutable_notes(i + 1)->CopyFrom(temp);
-//					}
-//					else {
-//						break;
-//					}
-//				}
-//			}//排序
-//
-//			this->setProjectTime();//调整时长
-//
-//			uint64_t CST = DataModel::Utils::getTick(currentStartBeat, currentStartTick);
-//			uint64_t CET = DataModel::Utils::getTick(currentEP.first, currentEP.second);
-//			uint64_t ST = DataModel::Utils::getTick(startBeat, startTick);
-//			uint64_t ET = DataModel::Utils::getTick(EP.first, EP.second);
-//
-//			if (CST <= ET && ST <= CET) {
-//				uint64_t MST = std::min(CST, ST);
-//				uint64_t MET = std::max(CET, ET);
-//				std::pair<uint32_t, uint32_t> SB = DataModel::Utils::getBeat(MST);
-//				std::pair<uint32_t, uint32_t> EB = DataModel::Utils::getBeat(MET);
-//
-//				this->renderFunc(trackIndex, SB.second > 0 ? SB.first + 1 : SB.first, EB.second > 0 ? EB.first + 1 : EB.first);
-//			}//前后变化区段重叠
-//			else {
-//				this->renderFunc(trackIndex, currentStartTick > 0 ? currentStartBeat + 1 : currentStartBeat, currentEP.second > 0 ? currentEP.first + 1 : currentEP.first);
-//				this->renderFunc(trackIndex, startTick > 0 ? startBeat + 1 : startBeat, EP.second > 0 ? EP.first + 1 : EP.first);
-//			}//前后变化区段分离
-//
-//			this->viewFunc();
-//		}
-//	}
-//}
-//
-//uint32_t DataModel::getNoteStartBeat(int trackIndex, int noteIndex)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
-//			return this->project->tracks(trackIndex).notes(noteIndex).startbeat();
-//		}
-//	}
-//	return 0;
-//}
-//
-//uint32_t DataModel::getNoteStartTick(int trackIndex, int noteIndex)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
-//			return this->project->tracks(trackIndex).notes(noteIndex).starttick();
-//		}
-//	}
-//	return 0;
-//}
-//
-//uint64_t DataModel::getNoteLength(int trackIndex, int noteIndex)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
-//			return this->project->tracks(trackIndex).notes(noteIndex).length();
-//		}
-//	}
-//	return 0;
-//}
-//
-//uint32_t DataModel::getNotePitch(int trackIndex, int noteIndex)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
-//			return this->project->tracks(trackIndex).notes(noteIndex).pitch();
-//		}
-//	}
-//	return 0;
-//}
-//
-//void DataModel::setNoteName(int trackIndex, int noteIndex, std::string name)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
-//			if (name.empty()) {
-//				return;
-//			}
-//
-//			if (name == this->project->tracks(trackIndex).notes(noteIndex).name()) {
-//				return;
-//			}
-//
-//			std::string dictionary = this->project->tracks(trackIndex).dictionary();
-//			{
-//				bool flag = false;
-//				for (auto& i : Package::getPackage().getDictionaryAvailable()) {
-//					if (i == dictionary) {
-//						flag = true;
-//						break;
-//					}
-//				}
-//				if (!flag) {
-//					return;
-//				}
-//			}
-//			std::string engine = Package::getPackage().getEngineName(this->project->tracks(trackIndex).library());
-//			{
-//				bool flag = false;
-//				for (auto& i : Package::getPackage().getEngineAvailable()) {
-//					if (i == engine) {
-//						flag = true;
-//						break;
-//					}
-//				}
-//				if (!flag) {
-//					return;
-//				}
-//			}
-//
-//			this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->set_name(name);
-//
-//			if (Package::getPackage().getEngineSplit(engine)) {
-//				org::infinity::idm::Note* note = this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex);
-//				std::pair<std::map<std::string, int64_t>, bool> phonemeM = this->eSplitFunc(engine, dictionary, note->name());
-//				note->clear_phonemes();
-//				for (auto& p : phonemeM.first) {
-//					org::infinity::idm::utils::Pair* pair = note->add_phonemes();
-//					pair->set_key(p.first);
-//					pair->set_value(p.second);
-//				}
-//				note->set_consonant(phonemeM.second);
-//			}//调用引擎分词器
-//			else {
-//				org::infinity::idm::Note* note = this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex);
-//				std::pair<std::map<std::string, int64_t>, bool> phonemeM = Package::getPackage().getDictionaryPhoneme(dictionary, note->name());
-//				note->clear_phonemes();
-//				for (auto& p : phonemeM.first) {
-//					org::infinity::idm::utils::Pair* pair = note->add_phonemes();
-//					pair->set_key(p.first);
-//					pair->set_value(p.second);
-//				}
-//				note->set_consonant(phonemeM.second);
-//			}//使用字典分词
-//
-//			uint32_t startBeat = this->project->tracks(trackIndex).notes(noteIndex).startbeat();
-//			uint32_t startTick = this->project->tracks(trackIndex).notes(noteIndex).starttick();
-//			uint64_t length = this->project->tracks(trackIndex).notes(noteIndex).length();
-//
-//			std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, length);
-//			this->renderFunc(trackIndex, startTick > 0 ? startBeat + 1 : startBeat, EP.second > 0 ? EP.first + 1 : EP.first);
-//			this->viewFunc();
-//		}
-//	}
-//}
-//
-//std::string DataModel::getNoteName(int trackIndex, int noteIndex)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
-//			return this->project->tracks(trackIndex).notes(noteIndex).name();
-//		}
-//	}
-//	return std::string();
-//}
-//
-//void DataModel::setNoteTimbre(int trackIndex, int noteIndex, std::string timbre)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
-//			if (timbre.empty()) {
-//				return;
-//			}
-//			if (timbre == this->project->tracks(trackIndex).notes(noteIndex).timbre()) {
-//				return;
-//			}
-//			{
-//				bool flag = false;
-//				for (auto& i : Package::getPackage().getLibraryTimbre(this->project->tracks(trackIndex).library())) {
-//					if (i == timbre) {
-//						flag = true;
-//						break;
-//					}
-//				}
-//				if (!flag) {
-//					return;
-//				}
-//			}
-//
-//			this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->set_timbre(timbre);
-//
-//			uint32_t startBeat = this->project->tracks(trackIndex).notes(noteIndex).startbeat();
-//			uint32_t startTick = this->project->tracks(trackIndex).notes(noteIndex).starttick();
-//			uint64_t length = this->project->tracks(trackIndex).notes(noteIndex).length();
-//
-//			std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, length);
-//			this->renderFunc(trackIndex, startTick > 0 ? startBeat + 1 : startBeat, EP.second > 0 ? EP.first + 1 : EP.first);
-//			this->viewFunc();
-//		}
-//	}
-//}
-//
-//std::string DataModel::getNoteTimbre(int trackIndex, int noteIndex)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
-//			return this->project->tracks(trackIndex).notes(noteIndex).timbre();
-//		}
-//	}
-//	return std::string();
-//}
-//
-//void DataModel::setNotePhonemes(int trackIndex, int noteIndex, std::vector<int64_t>& phonemes)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
-//			if (phonemes.empty()) {
-//				return;
-//			}
-//
-//			std::vector<std::pair<std::string, int64_t>> currentPhonemes;
-//			for (auto& p : this->project->tracks(trackIndex).notes(noteIndex).phonemes()) {
-//				currentPhonemes.push_back(std::make_pair(p.key(), p.value()));
-//			}
-//
-//			bool consonant = this->project->tracks(trackIndex).notes(noteIndex).consonant();
-//
-//			if (phonemes.size() != currentPhonemes.size()) {
-//				return;
-//			}
-//
-//			if (consonant) {
-//				if (phonemes.at(0) > 0) {
-//					return;
-//				}
-//			}
-//			else {
-//				if (phonemes.at(0) == 0) {
-//					return;
-//				}
-//			}//检查头辅音
-//
-//			{
-//				int64_t minTemp = phonemes.at(0);
-//				for (int i = 1; i < phonemes.size(); i++) {
-//					if (phonemes.at(i) < minTemp || phonemes.at(i) < 0) {
-//						return;
-//					}
-//					minTemp = phonemes.at(i);
-//				}
-//			}//递增检查
-//
-//			{
-//				int64_t endMax = this->project->tracks(trackIndex).notes(noteIndex).length();
-//				if (noteIndex < this->project->tracks(trackIndex).notes_size() - 1) {
-//					uint64_t endTick = DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(noteIndex + 1).startbeat(), this->project->tracks(trackIndex).notes(noteIndex + 1).starttick()) - this->project->tracks(trackIndex).notes(noteIndex + 1).phonemes(0).value();
-//					int64_t endLength = endTick - DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(noteIndex).startbeat(), this->project->tracks(trackIndex).notes(noteIndex).starttick());
-//					endMax = std::min(endMax, endLength);
-//				}
-//				if (phonemes.at(phonemes.size() - 1) > endMax) {
-//					return;
-//				}
-//			}//检查尾音出界
-//
-//			this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->mutable_phonemes()->Clear();
-//			for (int i = 0; i < phonemes.size(); i++) {
-//				org::infinity::idm::utils::Pair* pair = this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->mutable_phonemes()->Add();
-//				pair->set_key(currentPhonemes.at(i).first);
-//				pair->set_value(phonemes.at(i));
-//			}
-//
-//			bool overlap = false;
-//			if (consonant) {
-//				if (noteIndex > 0) {
-//					if (phonemes.at(0) != currentPhonemes.at(0).second) {
-//						uint64_t TST = DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(noteIndex).startbeat(), this->project->tracks(trackIndex).notes(noteIndex).starttick());
-//						uint64_t LET = DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(noteIndex - 1).startbeat(), this->project->tracks(trackIndex).notes(noteIndex - 1).starttick()) + this->project->tracks(trackIndex).notes(noteIndex - 1).length();
-//						if (
-//							TST - currentPhonemes.at(0).second < LET ||
-//							TST - phonemes.at(0) < LET
-//							) {
-//							overlap = true;
-//						}
-//					}
-//				}
-//			}//检查与前音符重叠
-//
-//			if (overlap) {
-//				uint32_t startBeat = this->project->tracks(trackIndex).notes(noteIndex - 1).startbeat();
-//				uint32_t startTick = this->project->tracks(trackIndex).notes(noteIndex - 1).starttick();
-//				uint64_t lengthAll = DataModel::Utils::getTick(this->project->tracks(trackIndex).notes(noteIndex).startbeat(), this->project->tracks(trackIndex).notes(noteIndex).starttick()) - DataModel::Utils::getTick(startBeat, startTick) + this->project->tracks(trackIndex).notes(noteIndex).length();
-//
-//				std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, lengthAll);
-//				this->renderFunc(trackIndex, startTick > 0 ? startBeat + 1 : startBeat, EP.second > 0 ? EP.first + 1 : EP.first);
-//			}
-//			else {
-//				uint32_t startBeat = this->project->tracks(trackIndex).notes(noteIndex).startbeat();
-//				uint32_t startTick = this->project->tracks(trackIndex).notes(noteIndex).starttick();
-//				uint64_t length = this->project->tracks(trackIndex).notes(noteIndex).length();
-//
-//				std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, length);
-//				this->renderFunc(trackIndex, startTick > 0 ? startBeat + 1 : startBeat, EP.second > 0 ? EP.first + 1 : EP.first);
-//			}
-//
-//			this->viewFunc();
-//		}
-//	}
-//}
-//
-//std::vector<std::pair<std::string, int64_t>> DataModel::getNotePhonemes(int trackIndex, int noteIndex)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
-//			std::vector<std::pair<std::string, int64_t>> phonemes;
-//			for (auto& p : this->project->tracks(trackIndex).notes(noteIndex).phonemes()) {
-//				phonemes.push_back(std::make_pair(p.key(), p.value()));
-//			}
-//			return phonemes;
-//		}
-//	}
-//	return std::vector<std::pair<std::string, int64_t>>();
-//}
-//
-//void DataModel::setNoteFlags(int trackIndex, int noteIndex, std::string flags)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
-//			if (flags == this->project->tracks(trackIndex).notes(noteIndex).flags()) {
-//				return;
-//			}
-//			this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->set_flags(flags);
-//
-//			uint32_t startBeat = this->project->tracks(trackIndex).notes(noteIndex).startbeat();
-//			uint32_t startTick = this->project->tracks(trackIndex).notes(noteIndex).starttick();
-//			uint64_t length = this->project->tracks(trackIndex).notes(noteIndex).length();
-//
-//			std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, length);
-//			this->renderFunc(trackIndex, startTick > 0 ? startBeat + 1 : startBeat, EP.second > 0 ? EP.first + 1 : EP.first);
-//			this->viewFunc();
-//		}
-//	}
-//}
-//
-//std::string DataModel::getNoteFlags(int trackIndex, int noteIndex)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
-//			return this->project->tracks(trackIndex).notes(noteIndex).flags();
-//		}
-//	}
-//	return std::string();
-//}
-//
-//bool DataModel::getNoteConsonant(int trackIndex, int noteIndex)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
-//			return this->project->tracks(trackIndex).notes(noteIndex).consonant();
-//		}
-//	}
-//	return false;
-//}
-//
-//void DataModel::setNoteGroup(int trackIndex, int noteIndex, int32_t group)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
-//			this->project->mutable_tracks(trackIndex)->mutable_notes(noteIndex)->set_group(group);
-//		}
-//	}
-//}
-//
-//int32_t DataModel::getNoteGroup(int trackIndex, int noteIndex)
-//{
-//	if (trackIndex >= 0 && trackIndex < this->project->tracks_size()) {
-//		if (noteIndex >= 0 && noteIndex < this->project->tracks(trackIndex).notes_size()) {
-//			return this->project->tracks(trackIndex).notes(noteIndex).group();
-//		}
-//	}
-//	return -1;
-//}
+void DataModel::addNote(int patternIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pitch, std::string name)
+{
+	if (length == 0) {
+		return;
+	}
+	if (name.empty()) {
+		return;
+	}
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_WAVE) {
+			this->modelMutex.unlock();
+			return;
+		}//不接受对WAVE样式的音符修改
+		if (startTick >= 480) {
+			startBeat += startTick / 480;
+			startTick %= 480;
+		}
+		if (this->project->patterns(patternIndex).library().empty()) {
+			std::string library = Package::getPackage().getLibraryDefault();
+			std::string dictionary = Package::getPackage().getLibraryDictionaryDefault(library);
+			{
+				bool flag = false;
+				for (auto& i : Package::getPackage().getDictionaryAvailable()) {
+					if (i == dictionary) {
+						flag = true;
+						break;
+					}
+				}
+				if (!flag) {
+					this->modelMutex.unlock();
+					return;
+				}
+			}//判断字典是否存在
+			std::string engine = Package::getPackage().getEngineName(library);
+			{
+				bool flag = false;
+				for (auto& i : Package::getPackage().getEngineAvailable()) {
+					if (i == engine) {
+						flag = true;
+						break;
+					}
+				}
+				if (!flag) {
+					this->modelMutex.unlock();
+					return;
+				}
+			}//判断引擎是否存在
+
+			std::string timbre = Package::getPackage().getLibraryTimbreDefault(library);
+
+			this->project->mutable_patterns(patternIndex)->set_library(library);
+			this->project->mutable_patterns(patternIndex)->set_dictionary(dictionary);
+			this->project->mutable_patterns(patternIndex)->set_timbrea(timbre);
+			this->project->mutable_patterns(patternIndex)->set_timbreb(timbre);
+
+			{
+				auto epl = Package::getPackage().getEngineParam(engine);//获取新引擎参数表
+				auto ckF = [epl](std::string name)->bool {
+					bool flag = false;
+					for (auto& i : epl) {
+						if (i.name == name) {
+							flag = true;
+							break;
+						}
+					}
+					return flag;
+				};//检查参数是否存在于引擎的列表中
+				std::set<std::string> paramL;//已存在的参数
+				for (auto it = this->project->mutable_patterns(patternIndex)->mutable_params()->begin(); it != this->project->mutable_patterns(patternIndex)->mutable_params()->end(); ) {
+					if ((*it).patterns_size() == 0) {
+						if (!ckF((*it).name())) {
+							it = this->project->mutable_patterns(patternIndex)->mutable_params()->erase(it);
+							continue;
+						}
+					}
+					paramL.insert((*it).name());
+					it++;
+				}//后侧迭代器在移除元素时会失效
+				for (auto& p : epl) {
+					if (paramL.count(p.name) == 0) {
+						org::infinity::idm::TrackParam* param = this->project->mutable_patterns(patternIndex)->add_params();
+						param->set_name(p.name);
+						param->set_vmax(p.vMax);
+						param->set_vmin(p.vMin);
+						param->set_vdefault(p.vDefault);
+
+						param->set_color("0fabff");
+					}
+				}//添加参数
+			}//调整轨道参数
+
+			{
+				auto epl = Package::getPackage().getEngineNoteParam(engine);//获取新引擎参数表
+				auto ckF = [epl](std::string name)->bool {
+					bool flag = false;
+					for (auto& i : epl) {
+						if (i.name == name) {
+							flag = true;
+							break;
+						}
+					}
+					return flag;
+				};//检查参数是否存在于引擎的列表中
+				for (int i = 0; i < this->project->patterns(patternIndex).notes_size(); i++) {
+					org::infinity::idm::Note* note = this->project->mutable_patterns(patternIndex)->mutable_notes(i);
+
+					std::set<std::string> paramL;//已存在的参数
+					for (auto it = note->mutable_params()->begin(); it != note->mutable_params()->end(); ) {
+						if (!ckF((*it).name())) {
+							it = note->mutable_params()->erase(it);
+							continue;
+						}
+						paramL.insert((*it).name());
+						it++;
+					}//后侧迭代器在移除元素时会失效
+					for (auto& p : epl) {
+						if (paramL.count(p.name) == 0) {
+							org::infinity::idm::NoteParam* param = note->add_params();
+							param->set_name(p.name);
+							param->set_vmax(p.vMax);
+							param->set_vmin(p.vMin);
+							param->set_vdefault(p.vDefault);
+							param->set_value(p.vDefault);
+						}
+					}//添加参数
+				}
+			}//调整音符参数
+
+			if (Package::getPackage().getEngineSplit(engine)) {
+				for (int i = 0; i < this->project->patterns(patternIndex).notes_size(); i++) {
+					org::infinity::idm::Note* note = this->project->mutable_patterns(patternIndex)->mutable_notes(i);
+					std::pair<std::map<std::string, int64_t>, bool> phonemeM = this->eSplitFunc(engine, dictionary, note->name());
+					note->clear_phonemes();
+					for (auto& p : phonemeM.first) {
+						org::infinity::idm::utils::Pair* pair = note->add_phonemes();
+						pair->set_key(p.first);
+						pair->set_value(p.second);
+					}
+					note->set_consonant(phonemeM.second);
+				}
+			}//调用引擎分词器
+			else {
+				for (int i = 0; i < this->project->patterns(patternIndex).notes_size(); i++) {
+					org::infinity::idm::Note* note = this->project->mutable_patterns(patternIndex)->mutable_notes(i);
+					std::pair<std::map<std::string, int64_t>, bool> phonemeM = Package::getPackage().getDictionaryPhoneme(dictionary, note->name());
+					note->clear_phonemes();
+					for (auto& p : phonemeM.first) {
+						org::infinity::idm::utils::Pair* pair = note->add_phonemes();
+						pair->set_key(p.first);
+						pair->set_value(p.second);
+					}
+					note->set_consonant(phonemeM.second);
+				}
+			}//使用字典分词
+		}//轨道未设置声库
+		std::string dictionary = Package::getPackage().getLibraryDictionaryDefault(this->project->patterns(patternIndex).library());
+		{
+			bool flag = false;
+			for (auto& i : Package::getPackage().getDictionaryAvailable()) {
+				if (i == dictionary) {
+					flag = true;
+					break;
+				}
+			}
+			if (!flag) {
+				this->modelMutex.unlock();
+				return;
+			}
+		}//判断字典存在
+		std::string engine = Package::getPackage().getEngineName(this->project->patterns(patternIndex).library());
+		{
+			bool flag = false;
+			for (auto& i : Package::getPackage().getEngineAvailable()) {
+				if (i == engine) {
+					flag = true;
+					break;
+				}
+			}
+			if (!flag) {
+				this->modelMutex.unlock();
+				return;
+			}
+		}
+
+		org::infinity::idm::Note* note = nullptr;
+		if (this->project->patterns(patternIndex).notes_size() > 0) {
+			if (DataModel::Utils::getTick(startBeat, startTick) < DataModel::Utils::getTick(this->project->patterns(patternIndex).notes(0).startbeat(), this->project->patterns(patternIndex).notes(0).starttick())) {
+				this->project->mutable_patterns(patternIndex)->mutable_notes()->Add();//末尾建立空element
+				for (int i = this->project->patterns(patternIndex).notes_size() - 2; i >= 0 ; i--) {
+					this->project->mutable_patterns(patternIndex)->mutable_notes(i + 1)->CopyFrom(this->project->patterns(patternIndex).notes(i));
+				}//element集体后移
+				note = this->project->mutable_patterns(patternIndex)->mutable_notes(0);//腾出头element
+				note->Clear();
+			}
+			else if (DataModel::Utils::getTick(startBeat, startTick) >= DataModel::Utils::getTick(this->project->patterns(patternIndex).notes(this->project->patterns(patternIndex).notes_size() - 1).startbeat(), this->project->patterns(patternIndex).notes(this->project->patterns(patternIndex).notes_size() - 1).starttick())) {
+				note = this->project->mutable_patterns(patternIndex)->mutable_notes()->Add();//末尾
+			}
+			else {
+				this->project->mutable_patterns(patternIndex)->mutable_notes()->Add();//末尾建立空element
+				for (int i = this->project->patterns(patternIndex).notes_size() - 2; i > 0; i--) {
+					this->project->mutable_patterns(patternIndex)->mutable_notes(i + 1)->CopyFrom(this->project->patterns(patternIndex).notes(i));//element后移
+					if (
+						DataModel::Utils::getTick(startBeat, startTick) >= DataModel::Utils::getTick(this->project->patterns(patternIndex).notes(i - 1).startbeat(), this->project->patterns(patternIndex).notes(i - 1).starttick()) &&
+						DataModel::Utils::getTick(startBeat, startTick) < DataModel::Utils::getTick(this->project->patterns(patternIndex).notes(i + 1).startbeat(), this->project->patterns(patternIndex).notes(i + 1).starttick())
+						) {//如果当前element符合要求
+						note = this->project->mutable_patterns(patternIndex)->mutable_notes(i);//移动element空出位置即是插入位置
+						note->Clear();
+					}
+				}
+			}
+		}
+		else {
+			note = this->project->mutable_patterns(patternIndex)->mutable_notes()->Add();//唯一一个
+		}
+
+		note->set_startbeat(startBeat);
+		note->set_starttick(startTick);
+		note->set_length(length);
+		note->set_pitch(pitch);
+
+		note->set_name(name);
+		note->set_timbre(this->project->patterns(patternIndex).timbrea());
+
+		if (Package::getPackage().getEngineSplit(engine)) {
+			std::pair<std::map<std::string, int64_t>, bool> phonemeM = this->eSplitFunc(engine, dictionary, name);
+			for (auto& p : phonemeM.first) {
+				org::infinity::idm::utils::Pair* pair = note->add_phonemes();
+				pair->set_key(p.first);
+				pair->set_value(p.second);
+			}
+			note->set_consonant(phonemeM.second);
+		}//调用引擎分词器
+		else {
+			std::pair<std::map<std::string, int64_t>, bool> phonemeM = Package::getPackage().getDictionaryPhoneme(dictionary, name);
+			for (auto& p : phonemeM.first) {
+				org::infinity::idm::utils::Pair* pair = note->add_phonemes();
+				pair->set_key(p.first);
+				pair->set_value(p.second);
+			}
+			note->set_consonant(phonemeM.second);
+		}//使用字典分词
+
+		auto epl = Package::getPackage().getEngineNoteParam(engine);//获取引擎参数表
+		for (auto& p : epl) {
+			org::infinity::idm::NoteParam* param = note->add_params();
+			param->set_name(p.name);
+			param->set_vmax(p.vMax);
+			param->set_vmin(p.vMin);
+			param->set_vdefault(p.vDefault);
+			param->set_value(p.vDefault);
+		}//添加参数
+
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_EMPTY) {
+			this->project->mutable_patterns(patternIndex)->set_type(org::infinity::idm::Pattern::Type::Pattern_Type_MIDI);
+		}//设置样式类型为MIDI
+
+		this->modelMutex.unlock();
+
+		this->renderFunc(this->project->patterns(patternIndex).name());
+		this->viewFunc();
+		return;
+	}
+	this->modelMutex.unlock();
+}
+
+void DataModel::removeNote(int patternIndex, int noteIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_WAVE) {
+			this->modelMutex.unlock();
+			return;
+		}//不接受对WAVE样式的音符修改
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			auto it = this->project->mutable_patterns(patternIndex)->mutable_notes()->begin() + noteIndex;
+			this->project->mutable_patterns(patternIndex)->mutable_notes()->erase(it);
+
+			if (this->project->patterns(patternIndex).notes_size() == 0) {
+				this->project->mutable_patterns(patternIndex)->set_type(org::infinity::idm::Pattern::Type::Pattern_Type_EMPTY);
+			}//如果无音符则样式类型为EMPTY
+
+			this->modelMutex.unlock();
+
+			this->renderFunc(this->project->patterns(patternIndex).name());
+			this->viewFunc();
+			return;
+		}
+	}
+	this->modelMutex.unlock();
+}
+
+int DataModel::countNote(int patternIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		auto&& notes_size = this->project->patterns(patternIndex).notes_size();
+		this->modelMutex.unlock();
+		return notes_size;
+	}
+	this->modelMutex.unlock();
+	return -1;
+}
+
+void DataModel::setNotePlace(int patternIndex, int noteIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pitch)
+{
+	if (length == 0) {
+		return;
+	}
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_WAVE) {
+			this->modelMutex.unlock();
+			return;
+		}//不接受对WAVE样式的音符修改
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			if (startTick >= 480) {
+				startBeat += startTick / 480;
+				startTick %= 480;
+			}
+			uint32_t currentStartBeat = this->project->patterns(patternIndex).notes(noteIndex).startbeat();
+			uint32_t currentStartTick = this->project->patterns(patternIndex).notes(noteIndex).starttick();
+			uint64_t currentLength = this->project->patterns(patternIndex).notes(noteIndex).length();
+			if (
+				currentStartBeat == startBeat &&
+				currentStartTick == startTick &&
+				currentLength == length
+				) {
+				this->modelMutex.unlock();
+				return;
+			}//未作修改
+
+			this->project->mutable_patterns(patternIndex)->mutable_notes(noteIndex)->set_startbeat(startBeat);
+			this->project->mutable_patterns(patternIndex)->mutable_notes(noteIndex)->set_starttick(startTick);
+			this->project->mutable_patterns(patternIndex)->mutable_notes(noteIndex)->set_length(length);
+			this->project->mutable_patterns(patternIndex)->mutable_notes(noteIndex)->set_pitch(pitch);
+
+			if (noteIndex > 0) {
+				for (int i = noteIndex; i > 0; i--)
+				{
+					if (DataModel::Utils::getTick(this->project->patterns(patternIndex).notes(i).startbeat(), this->project->patterns(patternIndex).notes(i).starttick()) < DataModel::Utils::getTick(this->project->patterns(patternIndex).notes(i - 1).startbeat(), this->project->patterns(patternIndex).notes(i - 1).starttick())) {
+						this->project->mutable_patterns(patternIndex)->mutable_notes()->SwapElements(i, i - 1);
+					}
+					else {
+						break;
+					}
+				}
+			}
+			if (noteIndex < this->project->patterns(patternIndex).notes_size() - 1) {
+				for (int i = noteIndex; i < this->project->patterns(patternIndex).notes_size(); i++)
+				{
+					if (DataModel::Utils::getTick(this->project->patterns(patternIndex).notes(i).startbeat(), this->project->patterns(patternIndex).notes(i).starttick()) > DataModel::Utils::getTick(this->project->patterns(patternIndex).notes(i + 1).startbeat(), this->project->patterns(patternIndex).notes(i + 1).starttick())) {
+						this->project->mutable_patterns(patternIndex)->mutable_notes()->SwapElements(i, i + 1);
+					}
+					else {
+						break;
+					}
+				}
+			}//排序
+
+			this->modelMutex.unlock();
+
+			this->renderFunc(this->project->patterns(patternIndex).name());
+			this->viewFunc();
+			return;
+		}
+	}
+	this->modelMutex.unlock();
+}
+
+uint32_t DataModel::getNoteStartBeat(int patternIndex, int noteIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			auto&& startbeat = this->project->patterns(patternIndex).notes(noteIndex).startbeat();
+			this->modelMutex.unlock();
+			return startbeat;
+		}
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
+uint32_t DataModel::getNoteStartTick(int patternIndex, int noteIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			auto&& starttick = this->project->patterns(patternIndex).notes(noteIndex).starttick();
+			this->modelMutex.unlock();
+			return starttick;
+		}
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
+uint64_t DataModel::getNoteLength(int patternIndex, int noteIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			auto&& length = this->project->patterns(patternIndex).notes(noteIndex).length();
+			this->modelMutex.unlock();
+			return length;
+		}
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
+uint32_t DataModel::getNotePitch(int patternIndex, int noteIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			auto&& pitch = this->project->patterns(patternIndex).notes(noteIndex).pitch();
+			this->modelMutex.unlock();
+			return pitch;
+		}
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
+void DataModel::setNoteName(int patternIndex, int noteIndex, std::string name)
+{
+	if (name.empty()) {
+		return;
+	}
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_WAVE) {
+			this->modelMutex.unlock();
+			return;
+		}//不接受对WAVE样式的音符修改
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			if (name == this->project->patterns(patternIndex).notes(noteIndex).name()) {
+				this->modelMutex.unlock();
+				return;
+			}
+
+			std::string dictionary = this->project->patterns(patternIndex).dictionary();
+			{
+				bool flag = false;
+				for (auto& i : Package::getPackage().getDictionaryAvailable()) {
+					if (i == dictionary) {
+						flag = true;
+						break;
+					}
+				}
+				if (!flag) {
+					this->modelMutex.unlock();
+					return;
+				}
+			}//判断字典存在
+			std::string engine = Package::getPackage().getEngineName(this->project->patterns(patternIndex).library());
+			{
+				bool flag = false;
+				for (auto& i : Package::getPackage().getEngineAvailable()) {
+					if (i == engine) {
+						flag = true;
+						break;
+					}
+				}
+				if (!flag) {
+					this->modelMutex.unlock();
+					return;
+				}
+			}//判断引擎存在
+
+			this->project->mutable_patterns(patternIndex)->mutable_notes(noteIndex)->set_name(name);
+
+			if (Package::getPackage().getEngineSplit(engine)) {
+				org::infinity::idm::Note* note = this->project->mutable_patterns(patternIndex)->mutable_notes(noteIndex);
+				std::pair<std::map<std::string, int64_t>, bool> phonemeM = this->eSplitFunc(engine, dictionary, note->name());
+				note->clear_phonemes();
+				for (auto& p : phonemeM.first) {
+					org::infinity::idm::utils::Pair* pair = note->add_phonemes();
+					pair->set_key(p.first);
+					pair->set_value(p.second);
+				}
+				note->set_consonant(phonemeM.second);
+			}//调用引擎分词器
+			else {
+				org::infinity::idm::Note* note = this->project->mutable_patterns(patternIndex)->mutable_notes(noteIndex);
+				std::pair<std::map<std::string, int64_t>, bool> phonemeM = Package::getPackage().getDictionaryPhoneme(dictionary, note->name());
+				note->clear_phonemes();
+				for (auto& p : phonemeM.first) {
+					org::infinity::idm::utils::Pair* pair = note->add_phonemes();
+					pair->set_key(p.first);
+					pair->set_value(p.second);
+				}
+				note->set_consonant(phonemeM.second);
+			}//使用字典分词
+
+			uint32_t startBeat = this->project->patterns(patternIndex).notes(noteIndex).startbeat();
+			uint32_t startTick = this->project->patterns(patternIndex).notes(noteIndex).starttick();
+			uint64_t length = this->project->patterns(patternIndex).notes(noteIndex).length();
+
+			this->modelMutex.unlock();
+
+			this->renderFunc(this->project->patterns(patternIndex).name());
+			this->viewFunc();
+			return;
+		}
+	}
+	this->modelMutex.unlock();
+}
+
+std::string DataModel::getNoteName(int patternIndex, int noteIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			auto&& name = this->project->patterns(patternIndex).notes(noteIndex).name();
+			this->modelMutex.unlock();
+			return name;
+		}
+	}
+	this->modelMutex.unlock();
+	return std::string();
+}
+
+void DataModel::setNoteTimbre(int patternIndex, int noteIndex, std::string timbre)
+{
+	if (timbre.empty()) {
+		return;
+	}
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_WAVE) {
+			this->modelMutex.unlock();
+			return;
+		}//不接受对WAVE样式的音符修改
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			if (timbre == this->project->patterns(patternIndex).notes(noteIndex).timbre()) {
+				this->modelMutex.unlock();
+				return;
+			}
+			{
+				bool flag = false;
+				for (auto& i : Package::getPackage().getLibraryTimbre(this->project->patterns(patternIndex).library())) {
+					if (i == timbre) {
+						flag = true;
+						break;
+					}
+				}
+				if (!flag) {
+					this->modelMutex.unlock();
+					return;
+				}
+			}//判断音色存在
+
+			this->project->mutable_patterns(patternIndex)->mutable_notes(noteIndex)->set_timbre(timbre);
+
+			uint32_t startBeat = this->project->patterns(patternIndex).notes(noteIndex).startbeat();
+			uint32_t startTick = this->project->patterns(patternIndex).notes(noteIndex).starttick();
+			uint64_t length = this->project->patterns(patternIndex).notes(noteIndex).length();
+
+			this->modelMutex.unlock();
+
+			this->renderFunc(this->project->patterns(patternIndex).name());
+			this->viewFunc();
+			return;
+		}
+	}
+	this->modelMutex.unlock();
+}
+
+std::string DataModel::getNoteTimbre(int patternIndex, int noteIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			auto&& timbre = this->project->patterns(patternIndex).notes(noteIndex).timbre();
+			this->modelMutex.unlock();
+			return timbre;
+		}
+	}
+	this->modelMutex.unlock();
+	return std::string();
+}
+
+void DataModel::setNotePhonemes(int patternIndex, int noteIndex, std::vector<int64_t>& phonemes)
+{
+	if (phonemes.empty()) {
+		return;
+	}
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_WAVE) {
+			this->modelMutex.unlock();
+			return;
+		}//不接受对WAVE样式的音符修改
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			std::vector<std::pair<std::string, int64_t>> currentPhonemes;
+			for (auto& p : this->project->patterns(patternIndex).notes(noteIndex).phonemes()) {
+				currentPhonemes.push_back(std::make_pair(p.key(), p.value()));
+			}//获取当前状态
+
+			bool consonant = this->project->patterns(patternIndex).notes(noteIndex).consonant();
+
+			if (phonemes.size() != currentPhonemes.size()) {
+				this->modelMutex.unlock();
+				return;
+			}//数量不匹配
+
+			if (consonant) {
+				if (phonemes.at(0) > 0) {
+					this->modelMutex.unlock();
+					return;
+				}
+			}
+			else {
+				if (phonemes.at(0) == 0) {
+					this->modelMutex.unlock();
+					return;
+				}
+			}//检查头辅音
+
+			{
+				int64_t minTemp = phonemes.at(0);
+				for (int i = 1; i < phonemes.size(); i++) {
+					if (phonemes.at(i) < minTemp || phonemes.at(i) < 0) {
+						this->modelMutex.unlock();
+						return;
+					}
+					minTemp = phonemes.at(i);
+				}
+			}//递增检查
+
+			{
+				int64_t endMax = this->project->patterns(patternIndex).notes(noteIndex).length();
+				if (noteIndex < this->project->patterns(patternIndex).notes_size() - 1) {
+					uint64_t endTick = DataModel::Utils::getTick(this->project->patterns(patternIndex).notes(noteIndex + 1).startbeat(), this->project->patterns(patternIndex).notes(noteIndex + 1).starttick()) - this->project->patterns(patternIndex).notes(noteIndex + 1).phonemes(0).value();
+					int64_t endLength = endTick - DataModel::Utils::getTick(this->project->patterns(patternIndex).notes(noteIndex).startbeat(), this->project->patterns(patternIndex).notes(noteIndex).starttick());
+					endMax = std::min(endMax, endLength);
+				}
+				if (phonemes.at(phonemes.size() - 1) > endMax) {
+					this->modelMutex.unlock();
+					return;
+				}
+			}//检查尾音出界
+
+			this->project->mutable_patterns(patternIndex)->mutable_notes(noteIndex)->mutable_phonemes()->Clear();
+			for (int i = 0; i < phonemes.size(); i++) {
+				org::infinity::idm::utils::Pair* pair = this->project->mutable_patterns(patternIndex)->mutable_notes(noteIndex)->mutable_phonemes()->Add();
+				pair->set_key(currentPhonemes.at(i).first);
+				pair->set_value(phonemes.at(i));
+			}//更改
+
+			this->modelMutex.unlock();
+
+			this->renderFunc(this->project->patterns(patternIndex).name());
+			this->viewFunc();
+			return;
+		}
+	}
+	this->modelMutex.unlock();
+}
+
+std::vector<std::pair<std::string, int64_t>> DataModel::getNotePhonemes(int patternIndex, int noteIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			std::vector<std::pair<std::string, int64_t>> phonemes;
+			for (auto& p : this->project->patterns(patternIndex).notes(noteIndex).phonemes()) {
+				phonemes.push_back(std::make_pair(p.key(), p.value()));
+			}
+			this->modelMutex.unlock();
+			return phonemes;
+		}
+	}
+	this->modelMutex.unlock();
+	return std::vector<std::pair<std::string, int64_t>>();
+}
+
+void DataModel::setNoteFlags(int patternIndex, int noteIndex, std::string flags)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_WAVE) {
+			this->modelMutex.unlock();
+			return;
+		}//不接受对WAVE样式的音符修改
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			if (flags == this->project->patterns(patternIndex).notes(noteIndex).flags()) {
+				this->modelMutex.unlock();
+				return;
+			}
+			this->project->mutable_patterns(patternIndex)->mutable_notes(noteIndex)->set_flags(flags);
+
+			uint32_t startBeat = this->project->patterns(patternIndex).notes(noteIndex).startbeat();
+			uint32_t startTick = this->project->patterns(patternIndex).notes(noteIndex).starttick();
+			uint64_t length = this->project->patterns(patternIndex).notes(noteIndex).length();
+
+			this->modelMutex.unlock();
+
+			this->renderFunc(this->project->patterns(patternIndex).name());
+			this->viewFunc();
+			return;
+		}
+	}
+	this->modelMutex.unlock();
+}
+
+std::string DataModel::getNoteFlags(int patternIndex, int noteIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			auto&& flags = this->project->patterns(patternIndex).notes(noteIndex).flags();
+			this->modelMutex.unlock();
+			return flags;
+		}
+	}
+	this->modelMutex.unlock();
+	return std::string();
+}
+
+bool DataModel::getNoteConsonant(int patternIndex, int noteIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			auto&& consonant = this->project->patterns(patternIndex).notes(noteIndex).consonant();
+			this->modelMutex.unlock();
+			return consonant;
+		}
+	}
+	this->modelMutex.unlock();
+	return false;
+}
 
 //Utils
 

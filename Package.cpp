@@ -22,6 +22,11 @@ std::list<std::string> Package::getLibraryAvailable()
 	return std::list<std::string>();
 }
 
+std::string Package::getLibraryDefault()
+{
+	return std::string();
+}
+
 std::string Package::getEngineName(std::string library)
 {
 	return std::string();

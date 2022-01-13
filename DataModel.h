@@ -95,28 +95,26 @@ public:
 	std::string getPatternTimbreB(int patternIndex);
 	//样式属性
 	
-	//void addNote(int trackIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pitch, std::string name);
-	//void removeNote(int trackIndex, int noteIndex);
-	//int countNote(int trackIndex);
-	////音符数量
+	void addNote(int patternIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pitch, std::string name);
+	void removeNote(int patternIndex, int noteIndex);
+	int countNote(int patternIndex);
+	//音符数量
 
-	//void setNotePlace(int trackIndex, int noteIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pitch);
-	//uint32_t getNoteStartBeat(int trackIndex, int noteIndex);
-	//uint32_t getNoteStartTick(int trackIndex, int noteIndex);
-	//uint64_t getNoteLength(int trackIndex, int noteIndex);
-	//uint32_t getNotePitch(int trackIndex, int noteIndex);
-	//void setNoteName(int trackIndex, int noteIndex, std::string name);
-	//std::string getNoteName(int trackIndex, int noteIndex);
-	//void setNoteTimbre(int trackIndex, int noteIndex, std::string timbre);
-	//std::string getNoteTimbre(int trackIndex, int noteIndex);
-	//void setNotePhonemes(int trackIndex, int noteIndex, std::vector<int64_t>& phonemes);
-	//std::vector<std::pair<std::string, int64_t>> getNotePhonemes(int trackIndex, int noteIndex);
-	//void setNoteFlags(int trackIndex, int noteIndex, std::string flags);
-	//std::string getNoteFlags(int trackIndex, int noteIndex);
-	//bool getNoteConsonant(int trackIndex, int noteIndex);
-	//void setNoteGroup(int trackIndex, int noteIndex, int32_t group);//inside port
-	//int32_t getNoteGroup(int trackIndex, int noteIndex);
-	////音符属性
+	void setNotePlace(int patternIndex, int noteIndex, uint32_t startBeat, uint32_t startTick, uint64_t length, uint32_t pitch);
+	uint32_t getNoteStartBeat(int patternIndex, int noteIndex);
+	uint32_t getNoteStartTick(int patternIndex, int noteIndex);
+	uint64_t getNoteLength(int patternIndex, int noteIndex);
+	uint32_t getNotePitch(int patternIndex, int noteIndex);
+	void setNoteName(int patternIndex, int noteIndex, std::string name);
+	std::string getNoteName(int patternIndex, int noteIndex);
+	void setNoteTimbre(int patternIndex, int noteIndex, std::string timbre);
+	std::string getNoteTimbre(int patternIndex, int noteIndex);
+	void setNotePhonemes(int patternIndex, int noteIndex, std::vector<int64_t>& phonemes);
+	std::vector<std::pair<std::string, int64_t>> getNotePhonemes(int patternIndex, int noteIndex);
+	void setNoteFlags(int patternIndex, int noteIndex, std::string flags);
+	std::string getNoteFlags(int patternIndex, int noteIndex);
+	bool getNoteConsonant(int patternIndex, int noteIndex);
+	//音符属性
 	
 	//音符参数数量
 	

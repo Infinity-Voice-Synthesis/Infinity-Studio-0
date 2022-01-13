@@ -24,6 +24,7 @@ public:
 
 	//声库
 	std::list<std::string> getLibraryAvailable();
+	std::string getLibraryDefault();
 	std::string getEngineName(std::string library);
 	std::list<std::string> getLibraryTimbre(std::string library);
 	std::string getLibraryTimbreDefault(std::string library);
