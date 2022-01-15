@@ -189,11 +189,7 @@ class Point final :
     kXFieldNumber = 1,
     kYFieldNumber = 2,
   };
-  // optional double x = 1;
-  bool has_x() const;
-  private:
-  bool _internal_has_x() const;
-  public:
+  // double x = 1;
   void clear_x();
   double x() const;
   void set_x(double value);
@@ -202,11 +198,7 @@ class Point final :
   void _internal_set_x(double value);
   public:
 
-  // optional double y = 2;
-  bool has_y() const;
-  private:
-  bool _internal_has_y() const;
-  public:
+  // double y = 2;
   void clear_y();
   double y() const;
   void set_y(double value);
@@ -222,10 +214,9 @@ class Point final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   double x_;
   double y_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_point_2eproto;
 };
 // ===================================================================
@@ -239,17 +230,9 @@ class Point final :
 #endif  // __GNUC__
 // Point
 
-// optional double x = 1;
-inline bool Point::_internal_has_x() const {
-  bool value = (_has_bits_[0] & 0x00000001u) != 0;
-  return value;
-}
-inline bool Point::has_x() const {
-  return _internal_has_x();
-}
+// double x = 1;
 inline void Point::clear_x() {
   x_ = 0;
-  _has_bits_[0] &= ~0x00000001u;
 }
 inline double Point::_internal_x() const {
   return x_;
@@ -259,7 +242,7 @@ inline double Point::x() const {
   return _internal_x();
 }
 inline void Point::_internal_set_x(double value) {
-  _has_bits_[0] |= 0x00000001u;
+  
   x_ = value;
 }
 inline void Point::set_x(double value) {
@@ -267,17 +250,9 @@ inline void Point::set_x(double value) {
   // @@protoc_insertion_point(field_set:org.infinity.idm.Point.x)
 }
 
-// optional double y = 2;
-inline bool Point::_internal_has_y() const {
-  bool value = (_has_bits_[0] & 0x00000002u) != 0;
-  return value;
-}
-inline bool Point::has_y() const {
-  return _internal_has_y();
-}
+// double y = 2;
 inline void Point::clear_y() {
   y_ = 0;
-  _has_bits_[0] &= ~0x00000002u;
 }
 inline double Point::_internal_y() const {
   return y_;
@@ -287,7 +262,7 @@ inline double Point::y() const {
   return _internal_y();
 }
 inline void Point::_internal_set_y(double value) {
-  _has_bits_[0] |= 0x00000002u;
+  
   y_ = value;
 }
 inline void Point::set_y(double value) {

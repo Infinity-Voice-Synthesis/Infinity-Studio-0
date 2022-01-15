@@ -611,7 +611,7 @@ void DataModel::addContainer(int trackIndex, uint32_t startBeat, uint32_t startT
 				this->modelMutex.unlock();
 				return;
 			}
-		}
+		}//判断重叠
 
 		org::infinity::idm::Container* container = nullptr;
 		if (this->project->tracks(trackIndex).containers_size() > 0) {
@@ -914,6 +914,7 @@ void DataModel::removePattern(int patternIndex)
 
 		this->modelMutex.unlock();
 
+		this->renderFunc(name);
 		this->viewFunc();
 		return;
 	}
@@ -1669,7 +1670,7 @@ void DataModel::addNote(int patternIndex, uint32_t startBeat, uint32_t startTick
 				this->modelMutex.unlock();
 				return;
 			}
-		}
+		}//判断引擎存在
 
 		org::infinity::idm::Note* note = nullptr;
 		if (this->project->patterns(patternIndex).notes_size() > 0) {
@@ -2221,6 +2222,890 @@ bool DataModel::getNoteConsonant(int patternIndex, int noteIndex)
 	}
 	this->modelMutex.unlock();
 	return false;
+}
+
+int DataModel::countNoteParam(int patternIndex, int noteIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			auto&& params_size = this->project->patterns(patternIndex).notes(noteIndex).params_size();
+			this->modelMutex.unlock();
+			return params_size;
+		}
+	}
+	this->modelMutex.unlock();
+	return -1;
+}
+
+std::string DataModel::getNoteParamName(int patternIndex, int noteIndex, int paramIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).notes(noteIndex).params_size()) {
+				auto&& name = this->project->patterns(patternIndex).notes(noteIndex).params(paramIndex).name();
+				this->modelMutex.unlock();
+				return name;
+			}
+		}
+	}
+	this->modelMutex.unlock();
+	return std::string();
+}
+
+double DataModel::getNoteParamMax(int patternIndex, int noteIndex, int paramIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).notes(noteIndex).params_size()) {
+				auto&& vmax = this->project->patterns(patternIndex).notes(noteIndex).params(paramIndex).vmax();
+				this->modelMutex.unlock();
+				return vmax;
+			}
+		}
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
+double DataModel::getNoteParamMin(int patternIndex, int noteIndex, int paramIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).notes(noteIndex).params_size()) {
+				auto&& vmin = this->project->patterns(patternIndex).notes(noteIndex).params(paramIndex).vmin();
+				this->modelMutex.unlock();
+				return vmin;
+			}
+		}
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
+double DataModel::getNoteParamDefault(int patternIndex, int noteIndex, int paramIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).notes(noteIndex).params_size()) {
+				auto&& vdefault = this->project->patterns(patternIndex).notes(noteIndex).params(paramIndex).vdefault();
+				this->modelMutex.unlock();
+				return vdefault;
+			}
+		}
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
+void DataModel::setNoteParamValue(int patternIndex, int noteIndex, int paramIndex, double value)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_WAVE) {
+			this->modelMutex.unlock();
+			return;
+		}//不接受对WAVE样式的参数修改
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).notes(noteIndex).params_size()) {
+				if (value == this->project->patterns(patternIndex).notes(noteIndex).params(paramIndex).value()) {
+					this->modelMutex.unlock();
+					return;
+				}
+				if (
+					value< this->project->patterns(patternIndex).notes(noteIndex).params(paramIndex).vmin() ||
+					value>this->project->patterns(patternIndex).notes(noteIndex).params(paramIndex).vmax()
+					) {
+					this->modelMutex.unlock();
+					return;
+				}
+				this->project->mutable_patterns(patternIndex)->mutable_notes(noteIndex)->mutable_params(paramIndex)->set_value(value);
+
+				this->modelMutex.unlock();
+
+				this->renderFunc(this->project->patterns(patternIndex).name());
+				this->viewFunc();
+				return;
+			}
+		}
+	}
+	this->modelMutex.unlock();
+}
+
+double DataModel::getNoteParamValue(int patternIndex, int noteIndex, int paramIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (noteIndex >= 0 && noteIndex < this->project->patterns(patternIndex).notes_size()) {
+			if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).notes(noteIndex).params_size()) {
+				auto&& value = this->project->patterns(patternIndex).notes(noteIndex).params(paramIndex).value();
+				this->modelMutex.unlock();
+				return value;
+			}
+		}
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
+int DataModel::countParam(int patternIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		auto&& params_size = this->project->patterns(patternIndex).params_size();
+		this->modelMutex.unlock();
+		return params_size;
+	}
+	this->modelMutex.unlock();
+	return -1;
+}
+
+std::string DataModel::getParamName(int patternIndex, int paramIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).params_size()) {
+			auto&& name = this->project->patterns(patternIndex).params(paramIndex).name();
+			this->modelMutex.unlock();
+			return name;
+		}
+	}
+	this->modelMutex.unlock();
+	return std::string();
+}
+
+double DataModel::getParamMax(int patternIndex, int paramIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).params_size()) {
+			auto&& vmax = this->project->patterns(patternIndex).params(paramIndex).vmax();
+			this->modelMutex.unlock();
+			return vmax;
+		}
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
+double DataModel::getParamMin(int patternIndex, int paramIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).params_size()) {
+			auto&& vmin = this->project->patterns(patternIndex).params(paramIndex).vmin();
+			this->modelMutex.unlock();
+			return vmin;
+		}
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
+double DataModel::getParamDefault(int patternIndex, int paramIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).params_size()) {
+			auto&& vdefault = this->project->patterns(patternIndex).params(paramIndex).vdefault();
+			this->modelMutex.unlock();
+			return vdefault;
+		}
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
+void DataModel::setParamColor(int patternIndex, int paramIndex, std::string color)
+{
+	if (color.empty()) {
+		return;
+	}
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_WAVE) {
+			this->modelMutex.unlock();
+			return;
+		}//不接受对WAVE样式的参数修改
+		if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).params_size()) {
+			if (color == this->project->patterns(patternIndex).params(paramIndex).color()) {
+				this->modelMutex.unlock();
+				return;
+			}
+
+			this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->set_color(color);
+
+			this->modelMutex.unlock();
+
+			this->viewFunc();
+			return;
+		}
+	}
+	this->modelMutex.unlock();
+}
+
+std::string DataModel::getParamColor(int patternIndex, int paramIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).params_size()) {
+			auto&& color = this->project->patterns(patternIndex).params(paramIndex).color();
+			this->modelMutex.unlock();
+			return color;
+		}
+	}
+	this->modelMutex.unlock();
+	return std::string();
+}
+
+void DataModel::addParamPattern(int patternIndex, int paramIndex, uint32_t startBeat, uint32_t startTick, uint64_t length)
+{
+	if (length == 0) {
+		return;
+	}
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_WAVE) {
+			this->modelMutex.unlock();
+			return;
+		}//不接受对WAVE样式的参数修改
+		if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).params_size()) {
+			if (startTick >= 480) {
+				startBeat += startTick / 480;
+				startTick %= 480;
+			}
+
+			uint64_t ST = DataModel::Utils::getTick(startBeat, startTick);
+			std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, length);
+			uint64_t ET = DataModel::Utils::getTick(EP.first, EP.second);
+
+			for (auto& c : this->project->patterns(patternIndex).params(paramIndex).patterns()) {
+				uint64_t STC = DataModel::Utils::getTick(c.startbeat(), c.starttick());
+				std::pair<uint32_t, uint32_t> EPC = DataModel::Utils::getEP(c.startbeat(), c.starttick(), c.length());
+				uint64_t ETC = DataModel::Utils::getTick(EPC.first, EPC.second);
+				if (ET > STC && ETC > ST) {
+					this->modelMutex.unlock();
+					return;
+				}
+			}//判断重叠
+
+			if (this->project->patterns(patternIndex).library().empty()) {
+				std::string library = Package::getPackage().getLibraryDefault();
+				std::string dictionary = Package::getPackage().getLibraryDictionaryDefault(library);
+				{
+					bool flag = false;
+					for (auto& i : Package::getPackage().getDictionaryAvailable()) {
+						if (i == dictionary) {
+							flag = true;
+							break;
+						}
+					}
+					if (!flag) {
+						this->modelMutex.unlock();
+						return;
+					}
+				}//判断字典是否存在
+				std::string engine = Package::getPackage().getEngineName(library);
+				{
+					bool flag = false;
+					for (auto& i : Package::getPackage().getEngineAvailable()) {
+						if (i == engine) {
+							flag = true;
+							break;
+						}
+					}
+					if (!flag) {
+						this->modelMutex.unlock();
+						return;
+					}
+				}//判断引擎是否存在
+
+				std::string timbre = Package::getPackage().getLibraryTimbreDefault(library);
+
+				this->project->mutable_patterns(patternIndex)->set_library(library);
+				this->project->mutable_patterns(patternIndex)->set_dictionary(dictionary);
+				this->project->mutable_patterns(patternIndex)->set_timbrea(timbre);
+				this->project->mutable_patterns(patternIndex)->set_timbreb(timbre);
+
+				{
+					auto epl = Package::getPackage().getEngineParam(engine);//获取新引擎参数表
+					auto ckF = [epl](std::string name)->bool {
+						bool flag = false;
+						for (auto& i : epl) {
+							if (i.name == name) {
+								flag = true;
+								break;
+							}
+						}
+						return flag;
+					};//检查参数是否存在于引擎的列表中
+					std::set<std::string> paramL;//已存在的参数
+					for (auto it = this->project->mutable_patterns(patternIndex)->mutable_params()->begin(); it != this->project->mutable_patterns(patternIndex)->mutable_params()->end(); ) {
+						if ((*it).patterns_size() == 0) {
+							if (!ckF((*it).name())) {
+								it = this->project->mutable_patterns(patternIndex)->mutable_params()->erase(it);
+								continue;
+							}
+						}
+						paramL.insert((*it).name());
+						it++;
+					}//后侧迭代器在移除元素时会失效
+					for (auto& p : epl) {
+						if (paramL.count(p.name) == 0) {
+							org::infinity::idm::TrackParam* param = this->project->mutable_patterns(patternIndex)->add_params();
+							param->set_name(p.name);
+							param->set_vmax(p.vMax);
+							param->set_vmin(p.vMin);
+							param->set_vdefault(p.vDefault);
+
+							param->set_color("0fabff");
+						}
+					}//添加参数
+				}//调整轨道参数
+
+				{
+					auto epl = Package::getPackage().getEngineNoteParam(engine);//获取新引擎参数表
+					auto ckF = [epl](std::string name)->bool {
+						bool flag = false;
+						for (auto& i : epl) {
+							if (i.name == name) {
+								flag = true;
+								break;
+							}
+						}
+						return flag;
+					};//检查参数是否存在于引擎的列表中
+					for (int i = 0; i < this->project->patterns(patternIndex).notes_size(); i++) {
+						org::infinity::idm::Note* note = this->project->mutable_patterns(patternIndex)->mutable_notes(i);
+
+						std::set<std::string> paramL;//已存在的参数
+						for (auto it = note->mutable_params()->begin(); it != note->mutable_params()->end(); ) {
+							if (!ckF((*it).name())) {
+								it = note->mutable_params()->erase(it);
+								continue;
+							}
+							paramL.insert((*it).name());
+							it++;
+						}//后侧迭代器在移除元素时会失效
+						for (auto& p : epl) {
+							if (paramL.count(p.name) == 0) {
+								org::infinity::idm::NoteParam* param = note->add_params();
+								param->set_name(p.name);
+								param->set_vmax(p.vMax);
+								param->set_vmin(p.vMin);
+								param->set_vdefault(p.vDefault);
+								param->set_value(p.vDefault);
+							}
+						}//添加参数
+					}
+				}//调整音符参数
+
+				if (Package::getPackage().getEngineSplit(engine)) {
+					for (int i = 0; i < this->project->patterns(patternIndex).notes_size(); i++) {
+						org::infinity::idm::Note* note = this->project->mutable_patterns(patternIndex)->mutable_notes(i);
+						std::pair<std::map<std::string, int64_t>, bool> phonemeM = this->eSplitFunc(engine, dictionary, note->name());
+						note->clear_phonemes();
+						for (auto& p : phonemeM.first) {
+							org::infinity::idm::utils::Pair* pair = note->add_phonemes();
+							pair->set_key(p.first);
+							pair->set_value(p.second);
+						}
+						note->set_consonant(phonemeM.second);
+					}
+				}//调用引擎分词器
+				else {
+					for (int i = 0; i < this->project->patterns(patternIndex).notes_size(); i++) {
+						org::infinity::idm::Note* note = this->project->mutable_patterns(patternIndex)->mutable_notes(i);
+						std::pair<std::map<std::string, int64_t>, bool> phonemeM = Package::getPackage().getDictionaryPhoneme(dictionary, note->name());
+						note->clear_phonemes();
+						for (auto& p : phonemeM.first) {
+							org::infinity::idm::utils::Pair* pair = note->add_phonemes();
+							pair->set_key(p.first);
+							pair->set_value(p.second);
+						}
+						note->set_consonant(phonemeM.second);
+					}
+				}//使用字典分词
+			}//轨道未设置声库
+
+			std::string engine = Package::getPackage().getEngineName(this->project->patterns(patternIndex).library());
+			{
+				bool flag = false;
+				for (auto& i : Package::getPackage().getEngineAvailable()) {
+					if (i == engine) {
+						flag = true;
+						break;
+					}
+				}
+				if (!flag) {
+					this->modelMutex.unlock();
+					return;
+				}
+			}//判断引擎存在
+
+			{
+				auto epl = Package::getPackage().getEngineParam(engine);//获取新引擎参数表
+				auto ckF = [epl](std::string name)->bool {
+					bool flag = false;
+					for (auto& i : epl) {
+						if (i.name == name) {
+							flag = true;
+							break;
+						}
+					}
+					return flag;
+				};//检查参数是否存在于引擎的列表中
+				if (!ckF(this->project->patterns(patternIndex).params(paramIndex).name())) {
+					this->modelMutex.unlock();
+					return;
+				}
+			}//检查参数存在
+
+			org::infinity::idm::ParamPattern* pattern = nullptr;
+			double dvalue = (this->project->patterns(patternIndex).params(paramIndex).vdefault() - this->project->patterns(patternIndex).params(paramIndex).vmin()) / (this->project->patterns(patternIndex).params(paramIndex).vmax() - this->project->patterns(patternIndex).params(paramIndex).vmin());
+			if (this->project->patterns(patternIndex).params(paramIndex).patterns_size() > 0) {
+				if (DataModel::Utils::getTick(startBeat, startTick) < DataModel::Utils::getTick(this->project->patterns(patternIndex).params(paramIndex).patterns(0).startbeat(), this->project->patterns(patternIndex).params(paramIndex).patterns(0).starttick())) {
+					this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns()->Add();//末尾建立空element
+					for (int i = this->project->patterns(patternIndex).params(paramIndex).patterns_size() - 2; i >= 0; i--) {
+						this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns(i + 1)->CopyFrom(this->project->patterns(patternIndex).params(paramIndex).patterns(i));
+					}//element集体后移
+					pattern = this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns(0);//腾出头element
+					pattern->Clear();
+				}
+				else if (DataModel::Utils::getTick(startBeat, startTick) >= DataModel::Utils::getTick(this->project->patterns(patternIndex).params(paramIndex).patterns(this->project->patterns(patternIndex).params(paramIndex).patterns_size() - 1).startbeat(), this->project->patterns(patternIndex).params(paramIndex).patterns(this->project->patterns(patternIndex).params(paramIndex).patterns_size() - 1).starttick())) {
+					pattern = this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns()->Add();//末尾
+					dvalue = this->project->patterns(patternIndex).params(paramIndex).patterns(this->project->patterns(patternIndex).params(paramIndex).patterns_size() - 1).points(this->project->patterns(patternIndex).params(paramIndex).patterns(this->project->patterns(patternIndex).params(paramIndex).patterns_size() - 1).points_size() - 1).y();
+				}
+				else {
+					this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns()->Add();//末尾建立空element
+					for (int i = this->project->patterns(patternIndex).params(paramIndex).patterns_size() - 2; i > 0; i--) {
+						this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns(i + 1)->CopyFrom(this->project->patterns(patternIndex).params(paramIndex).patterns(i));//element后移
+						if (
+							DataModel::Utils::getTick(startBeat, startTick) >= DataModel::Utils::getTick(this->project->patterns(patternIndex).params(paramIndex).patterns(i - 1).startbeat(), this->project->patterns(patternIndex).params(paramIndex).patterns(i - 1).starttick()) &&
+							DataModel::Utils::getTick(startBeat, startTick) < DataModel::Utils::getTick(this->project->patterns(patternIndex).params(paramIndex).patterns(i + 1).startbeat(), this->project->patterns(patternIndex).params(paramIndex).patterns(i + 1).starttick())
+							) {//如果当前element符合要求
+							pattern = this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns(i);//移动element空出位置即是插入位置
+							pattern->Clear();
+							dvalue = this->project->patterns(patternIndex).params(paramIndex).patterns(i - 1).points(this->project->patterns(patternIndex).params(paramIndex).patterns(i - 1).points_size() - 1).y();
+						}
+					}
+				}
+			}
+			else {
+				pattern = this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns()->Add();//唯一一个
+			}
+
+			pattern->set_startbeat(startBeat);
+			pattern->set_starttick(startTick);
+			pattern->set_length(length);
+
+			org::infinity::idm::Point* pointS = pattern->add_points();
+			org::infinity::idm::Point* pointE = pattern->add_points();
+			pointS->set_x(0);
+			pointS->set_y(dvalue);
+			pointS->set_x(1);
+			pointS->set_y(dvalue);
+
+			this->modelMutex.unlock();
+
+			this->renderFunc(this->project->patterns(patternIndex).name());
+			this->viewFunc();
+			return;
+		}
+	}
+	this->modelMutex.unlock();
+}
+
+void DataModel::removeParamPattern(int patternIndex, int paramIndex, int ppatternIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_WAVE) {
+			this->modelMutex.unlock();
+			return;
+		}//不接受对WAVE样式的参数修改
+		if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).params_size()) {
+			if (ppatternIndex >= 0 && ppatternIndex < this->project->patterns(patternIndex).params(paramIndex).patterns_size()) {
+				std::string engine = Package::getPackage().getEngineName(this->project->patterns(patternIndex).library());
+				{
+					bool flag = false;
+					for (auto& i : Package::getPackage().getEngineAvailable()) {
+						if (i == engine) {
+							flag = true;
+							break;
+						}
+					}
+					if (!flag) {
+						this->modelMutex.unlock();
+						return;
+					}
+				}//判断引擎存在
+
+				{
+					auto it = this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns()->begin() + ppatternIndex;
+					this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns()->erase(it);
+				}
+
+				{
+					auto epl = Package::getPackage().getEngineParam(engine);//获取新引擎参数表
+					auto ckF = [epl](std::string name)->bool {
+						bool flag = false;
+						for (auto& i : epl) {
+							if (i.name == name) {
+								flag = true;
+								break;
+							}
+						}
+						return flag;
+					};//检查参数是否存在于引擎的列表中
+					if (!ckF(this->project->patterns(patternIndex).params(paramIndex).name())) {
+						if (this->project->patterns(patternIndex).params(paramIndex).patterns_size() == 0) {
+							auto it = this->project->mutable_patterns(patternIndex)->mutable_params()->begin() + paramIndex;
+							this->project->mutable_patterns(patternIndex)->mutable_params()->erase(it);
+						}
+					}
+				}//如果参数不存在，可以删除参数
+
+				this->modelMutex.unlock();
+
+				this->renderFunc(this->project->patterns(patternIndex).name());
+				this->viewFunc();
+				return;
+			}
+		}
+	}
+	this->modelMutex.unlock();
+}
+
+int DataModel::countParamPattern(int patternIndex, int paramIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).params_size()) {
+			auto&& patterns_size = this->project->patterns(patternIndex).params(paramIndex).patterns_size();
+			this->modelMutex.unlock();
+			return patterns_size;
+		}
+	}
+	this->modelMutex.unlock();
+	return -1;
+}
+
+void DataModel::setParamPatternPlace(int patternIndex, int paramIndex, int ppatternIndex, uint32_t startBeat, uint32_t startTick, uint64_t length)
+{
+	if (length == 0) {
+		return;
+	}
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_WAVE) {
+			this->modelMutex.unlock();
+			return;
+		}//不接受对WAVE样式的参数修改
+		if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).params_size()) {
+			if (ppatternIndex >= 0 && ppatternIndex < this->project->patterns(patternIndex).params(paramIndex).patterns_size()) {
+				if (startTick >= 480) {
+					startBeat += startTick / 480;
+					startTick %= 480;
+				}
+
+				uint64_t ST = DataModel::Utils::getTick(startBeat, startTick);
+				std::pair<uint32_t, uint32_t> EP = DataModel::Utils::getEP(startBeat, startTick, length);
+				uint64_t ET = DataModel::Utils::getTick(EP.first, EP.second);
+
+				for (auto& c : this->project->patterns(patternIndex).params(paramIndex).patterns()) {
+					uint64_t STC = DataModel::Utils::getTick(c.startbeat(), c.starttick());
+					std::pair<uint32_t, uint32_t> EPC = DataModel::Utils::getEP(c.startbeat(), c.starttick(), c.length());
+					uint64_t ETC = DataModel::Utils::getTick(EPC.first, EPC.second);
+					if (ET > STC && ETC > ST) {
+						this->modelMutex.unlock();
+						return;
+					}
+				}//判断重叠
+
+				org::infinity::idm::ParamPattern pTemp(this->project->patterns(patternIndex).params(paramIndex).patterns(ppatternIndex));
+				auto it = this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns()->begin() + ppatternIndex;
+				this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns()->erase(it);//抽取当前样式
+
+				org::infinity::idm::ParamPattern* pattern = nullptr;
+				if (this->project->patterns(patternIndex).params(paramIndex).patterns_size() > 0) {
+					if (DataModel::Utils::getTick(startBeat, startTick) < DataModel::Utils::getTick(this->project->patterns(patternIndex).params(paramIndex).patterns(0).startbeat(), this->project->patterns(patternIndex).params(paramIndex).patterns(0).starttick())) {
+						this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns()->Add();//末尾建立空element
+						for (int i = this->project->patterns(patternIndex).params(paramIndex).patterns_size() - 2; i >= 0; i--) {
+							this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns(i + 1)->CopyFrom(this->project->patterns(patternIndex).params(paramIndex).patterns(i));
+						}//element集体后移
+						pattern = this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns(0);//腾出头element
+						pattern->Clear();
+					}
+					else if (DataModel::Utils::getTick(startBeat, startTick) >= DataModel::Utils::getTick(this->project->patterns(patternIndex).params(paramIndex).patterns(this->project->patterns(patternIndex).params(paramIndex).patterns_size() - 1).startbeat(), this->project->patterns(patternIndex).params(paramIndex).patterns(this->project->patterns(patternIndex).params(paramIndex).patterns_size() - 1).starttick())) {
+						pattern = this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns()->Add();//末尾
+					}
+					else {
+						this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns()->Add();//末尾建立空element
+						for (int i = this->project->patterns(patternIndex).params(paramIndex).patterns_size() - 2; i > 0; i--) {
+							this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns(i + 1)->CopyFrom(this->project->patterns(patternIndex).params(paramIndex).patterns(i));//element后移
+							if (
+								DataModel::Utils::getTick(startBeat, startTick) >= DataModel::Utils::getTick(this->project->patterns(patternIndex).params(paramIndex).patterns(i - 1).startbeat(), this->project->patterns(patternIndex).params(paramIndex).patterns(i - 1).starttick()) &&
+								DataModel::Utils::getTick(startBeat, startTick) < DataModel::Utils::getTick(this->project->patterns(patternIndex).params(paramIndex).patterns(i + 1).startbeat(), this->project->patterns(patternIndex).params(paramIndex).patterns(i + 1).starttick())
+								) {//如果当前element符合要求
+								pattern = this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns(i);//移动element空出位置即是插入位置
+								pattern->Clear();
+							}
+						}
+					}
+				}
+				else {
+					pattern = this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns()->Add();//唯一一个
+				}
+
+				pTemp.set_startbeat(startBeat);
+				pTemp.set_starttick(startTick);
+				pTemp.set_length(length);
+				pattern->CopyFrom(pTemp);
+
+				this->modelMutex.unlock();
+
+				this->renderFunc(this->project->patterns(patternIndex).name());
+				this->viewFunc();
+				return;
+			}
+		}
+	}
+	this->modelMutex.unlock();
+}
+
+uint32_t DataModel::getParamPatternStartBeat(int patternIndex, int paramIndex, int ppatternIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).params_size()) {
+			if (ppatternIndex >= 0 && ppatternIndex < this->project->patterns(patternIndex).params(paramIndex).patterns_size()) {
+				auto&& startbeat = this->project->patterns(patternIndex).params(paramIndex).patterns(ppatternIndex).startbeat();
+				this->modelMutex.unlock();
+				return startbeat;
+			}
+		}
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
+uint32_t DataModel::getParamPatternStartTick(int patternIndex, int paramIndex, int ppatternIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).params_size()) {
+			if (ppatternIndex >= 0 && ppatternIndex < this->project->patterns(patternIndex).params(paramIndex).patterns_size()) {
+				auto&& starttick = this->project->patterns(patternIndex).params(paramIndex).patterns(ppatternIndex).starttick();
+				this->modelMutex.unlock();
+				return starttick;
+			}
+		}
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
+uint64_t DataModel::getParamPatternLength(int patternIndex, int paramIndex, int ppatternIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).params_size()) {
+			if (ppatternIndex >= 0 && ppatternIndex < this->project->patterns(patternIndex).params(paramIndex).patterns_size()) {
+				auto&& length = this->project->patterns(patternIndex).params(paramIndex).patterns(ppatternIndex).length();
+				this->modelMutex.unlock();
+				return length;
+			}
+		}
+	}
+	this->modelMutex.unlock();
+	return 0;
+}
+
+void DataModel::addPoint(int patternIndex, int paramIndex, int ppatternIndex, double x, double y)
+{
+	if (y < 0 || y>1) {
+		return;
+	}
+	this->addPointUnsafe(patternIndex, paramIndex, ppatternIndex, x, y);
+}
+
+void DataModel::addPointUnsafe(int patternIndex, int paramIndex, int ppatternIndex, double x, double y)
+{
+	if (x <= 0 || x >= 1) {
+		return;
+	}
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_WAVE) {
+			this->modelMutex.unlock();
+			return;
+		}//不接受对WAVE样式的参数修改
+		if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).params_size()) {
+			if (ppatternIndex >= 0 && ppatternIndex < this->project->patterns(patternIndex).params(paramIndex).patterns_size()) {
+				org::infinity::idm::Point* point = nullptr;
+				this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns(ppatternIndex)->mutable_points()->Add();//末尾建立空element
+				for (int i = this->project->patterns(patternIndex).params(paramIndex).patterns(ppatternIndex).points_size() - 2; i > 0; i--) {
+					this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns(ppatternIndex)->mutable_points(i + 1)->CopyFrom(this->project->patterns(patternIndex).params(paramIndex).patterns(ppatternIndex).points(i));//element后移
+					if (
+						x >= this->project->patterns(patternIndex).params(paramIndex).patterns(ppatternIndex).points(i - 1).x() &&
+						x < this->project->patterns(patternIndex).params(paramIndex).patterns(ppatternIndex).points(i + 1).x()
+						) {//如果当前element符合要求
+						point = this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns(ppatternIndex)->mutable_points(i);//移动element空出位置即是插入位置
+						point->Clear();
+					}
+				}//确认插入点
+
+				point->set_x(x);
+				point->set_y(y);
+
+				this->modelMutex.unlock();
+
+				this->renderFunc(this->project->patterns(patternIndex).name());
+				this->viewFunc();
+				return;
+			}
+		}
+	}
+	this->modelMutex.unlock();
+}
+
+void DataModel::removePoint(int patternIndex, int paramIndex, int ppatternIndex, int pointIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_WAVE) {
+			this->modelMutex.unlock();
+			return;
+		}//不接受对WAVE样式的参数修改
+		if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).params_size()) {
+			if (ppatternIndex >= 0 && ppatternIndex < this->project->patterns(patternIndex).params(paramIndex).patterns_size()) {
+				if (pointIndex > 0 && pointIndex < this->project->patterns(patternIndex).params(paramIndex).patterns(ppatternIndex).points_size() - 1) {
+
+					auto it = this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns(ppatternIndex)->mutable_points()->begin() + pointIndex;
+					this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns(ppatternIndex)->mutable_points()->erase(it);
+
+					this->modelMutex.unlock();
+
+					this->renderFunc(this->project->patterns(patternIndex).name());
+					this->viewFunc();
+					return;
+				}
+			}
+		}
+	}
+	this->modelMutex.unlock();
+}
+
+int DataModel::countPoint(int patternIndex, int paramIndex, int ppatternIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).params_size()) {
+			if (ppatternIndex >= 0 && ppatternIndex < this->project->patterns(patternIndex).params(paramIndex).patterns_size()) {
+				auto&& points_size = this->project->patterns(patternIndex).params(paramIndex).patterns(ppatternIndex).points_size();
+				this->modelMutex.unlock();
+				return points_size;
+			}
+		}
+	}
+	this->modelMutex.unlock();
+	return -1;
+}
+
+void DataModel::setPointPlace(int patternIndex, int paramIndex, int ppatternIndex, int pointIndex, double x, double y)
+{
+	if (y < 0 || y>1) {
+		return;
+	}
+	this->setPointPlaceUnsafe(patternIndex, paramIndex, ppatternIndex, pointIndex, x, y);
+}
+
+void DataModel::setPointPlaceUnsafe(int patternIndex, int paramIndex, int ppatternIndex, int pointIndex, double x, double y)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (this->project->patterns(patternIndex).type() == org::infinity::idm::Pattern::Type::Pattern_Type_WAVE) {
+			this->modelMutex.unlock();
+			return;
+		}//不接受对WAVE样式的参数修改
+		if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).params_size()) {
+			if (ppatternIndex >= 0 && ppatternIndex < this->project->patterns(patternIndex).params(paramIndex).patterns_size()) {
+				if (pointIndex >= 0 && pointIndex < this->project->patterns(patternIndex).params(paramIndex).patterns(ppatternIndex).points_size()) {
+
+					if (pointIndex == 0) {
+						x = 0;
+					}
+					if (pointIndex == this->project->patterns(patternIndex).params(paramIndex).patterns(ppatternIndex).points_size() - 1) {
+						x = 1;
+					}//首尾控制点横坐标锁定
+
+					if (pointIndex > 0) {
+						if (x < this->project->patterns(patternIndex).params(paramIndex).patterns(ppatternIndex).points(pointIndex - 1).x()) {
+							this->modelMutex.unlock();
+							return;
+						}
+					}
+					if (pointIndex < this->project->patterns(patternIndex).params(paramIndex).patterns(ppatternIndex).points_size() - 1) {
+						if (x > this->project->patterns(patternIndex).params(paramIndex).patterns(ppatternIndex).points(pointIndex + 1).x()) {
+							this->modelMutex.unlock();
+							return;
+						}
+					}//控制点作用域
+
+					this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns(ppatternIndex)->mutable_points(pointIndex)->set_x(x);
+					this->project->mutable_patterns(patternIndex)->mutable_params(paramIndex)->mutable_patterns(ppatternIndex)->mutable_points(pointIndex)->set_y(y);
+
+					this->modelMutex.unlock();
+
+					this->renderFunc(this->project->patterns(patternIndex).name());
+					this->viewFunc();
+					return;
+				}
+			}
+		}
+	}
+	this->modelMutex.unlock();
+}
+
+double DataModel::getPointX(int patternIndex, int paramIndex, int ppatternIndex, int pointIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).params_size()) {
+			if (ppatternIndex >= 0 && ppatternIndex < this->project->patterns(patternIndex).params(paramIndex).patterns_size()) {
+				if (pointIndex >= 0 && pointIndex < this->project->patterns(patternIndex).params(paramIndex).patterns(ppatternIndex).points_size()) {
+					auto&& x = this->project->patterns(patternIndex).params(paramIndex).patterns(ppatternIndex).points(pointIndex).x();
+					this->modelMutex.unlock();
+					return x;
+				}
+			}
+		}
+	}
+	this->modelMutex.unlock();
+	return -1;
+}
+
+double DataModel::getPointY(int patternIndex, int paramIndex, int ppatternIndex, int pointIndex)
+{
+	this->modelMutex.lock();
+	if (patternIndex >= 0 && patternIndex < this->project->patterns_size()) {
+		if (paramIndex >= 0 && paramIndex < this->project->patterns(patternIndex).params_size()) {
+			if (ppatternIndex >= 0 && ppatternIndex < this->project->patterns(patternIndex).params(paramIndex).patterns_size()) {
+				if (pointIndex >= 0 && pointIndex < this->project->patterns(patternIndex).params(paramIndex).patterns(ppatternIndex).points_size()) {
+					auto&& y = this->project->patterns(patternIndex).params(paramIndex).patterns(ppatternIndex).points(pointIndex).y();
+					this->modelMutex.unlock();
+					return y;
+				}
+			}
+		}
+	}
+	this->modelMutex.unlock();
+	return -1;
 }
 
 //Utils

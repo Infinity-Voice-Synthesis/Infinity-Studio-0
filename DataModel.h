@@ -20,6 +20,7 @@ class DataModel
 	
 public:
 	static DataModel& getModel();
+	//单例接口
 
 	void setProjectTime();
 	uint32_t getProjectTime();
@@ -116,9 +117,50 @@ public:
 	bool getNoteConsonant(int patternIndex, int noteIndex);
 	//音符属性
 	
+	int countNoteParam(int patternIndex, int noteIndex);
 	//音符参数数量
-	
-	//删除参数样式时需检查当前参数是否属于当前引擎，如不属于，则删除参数且该参数不渲染
+
+	std::string getNoteParamName(int patternIndex, int noteIndex, int paramIndex);
+	double getNoteParamMax(int patternIndex, int noteIndex, int paramIndex);
+	double getNoteParamMin(int patternIndex, int noteIndex, int paramIndex);
+	double getNoteParamDefault(int patternIndex, int noteIndex, int paramIndex);
+	void setNoteParamValue(int patternIndex, int noteIndex, int paramIndex, double value);
+	double getNoteParamValue(int patternIndex, int noteIndex, int paramIndex);
+	//音符参数属性
+
+	int countParam(int patternIndex);
+	//参数数量
+
+	std::string getParamName(int patternIndex, int paramIndex);
+	double getParamMax(int patternIndex, int paramIndex);
+	double getParamMin(int patternIndex, int paramIndex);
+	double getParamDefault(int patternIndex, int paramIndex);
+	void setParamColor(int patternIndex, int paramIndex, std::string color);
+	std::string getParamColor(int patternIndex, int paramIndex);
+	//参数属性
+
+	void addParamPattern(int patternIndex, int paramIndex, uint32_t startBeat, uint32_t startTick, uint64_t length);
+	void removeParamPattern(int patternIndex, int paramIndex, int ppatternIndex);
+	int countParamPattern(int patternIndex, int paramIndex);
+	//参数样式数量
+
+	void setParamPatternPlace(int patternIndex, int paramIndex, int ppatternIndex, uint32_t startBeat, uint32_t startTick, uint64_t length);
+	uint32_t getParamPatternStartBeat(int patternIndex, int paramIndex, int ppatternIndex);
+	uint32_t getParamPatternStartTick(int patternIndex, int paramIndex, int ppatternIndex);
+	uint64_t getParamPatternLength(int patternIndex, int paramIndex, int ppatternIndex);
+	//参数样式属性
+
+	void addPoint(int patternIndex, int paramIndex, int ppatternIndex, double x, double y);
+	void addPointUnsafe(int patternIndex, int paramIndex, int ppatternIndex, double x, double y);
+	void removePoint(int patternIndex, int paramIndex, int ppatternIndex, int pointIndex);
+	int countPoint(int patternIndex, int paramIndex, int ppatternIndex);
+	//点数量
+
+	void setPointPlace(int patternIndex, int paramIndex, int ppatternIndex, int pointIndex, double x, double y);
+	void setPointPlaceUnsafe(int patternIndex, int paramIndex, int ppatternIndex, int pointIndex, double x, double y);
+	double getPointX(int patternIndex, int paramIndex, int ppatternIndex, int pointIndex);
+	double getPointY(int patternIndex, int paramIndex, int ppatternIndex, int pointIndex);
+	//点属性
 private:
 	org::infinity::idm::Project* project = nullptr;
 	std::mutex modelMutex;

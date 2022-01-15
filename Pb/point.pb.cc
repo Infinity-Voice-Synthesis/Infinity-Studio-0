@@ -40,18 +40,16 @@ static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_point_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_point_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Point, _has_bits_),
+  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Point, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Point, x_),
   PROTOBUF_FIELD_OFFSET(::org::infinity::idm::Point, y_),
-  0,
-  1,
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 7, sizeof(::org::infinity::idm::Point)},
+  { 0, -1, sizeof(::org::infinity::idm::Point)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -59,13 +57,12 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 };
 
 const char descriptor_table_protodef_point_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\013point.proto\022\020org.infinity.idm\"3\n\005Point"
-  "\022\016\n\001x\030\001 \001(\001H\000\210\001\001\022\016\n\001y\030\002 \001(\001H\001\210\001\001B\004\n\002_xB\004"
-  "\n\002_yb\006proto3"
+  "\n\013point.proto\022\020org.infinity.idm\"\035\n\005Point"
+  "\022\t\n\001x\030\001 \001(\001\022\t\n\001y\030\002 \001(\001b\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_point_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_point_2eproto = {
-  false, false, 92, descriptor_table_protodef_point_2eproto, "point.proto", 
+  false, false, 70, descriptor_table_protodef_point_2eproto, "point.proto", 
   &descriptor_table_point_2eproto_once, nullptr, 0, 1,
   schemas, file_default_instances, TableStruct_point_2eproto::offsets,
   file_level_metadata_point_2eproto, file_level_enum_descriptors_point_2eproto, file_level_service_descriptors_point_2eproto,
@@ -84,13 +81,6 @@ namespace idm {
 
 class Point::_Internal {
  public:
-  using HasBits = decltype(std::declval<Point>()._has_bits_);
-  static void set_has_x(HasBits* has_bits) {
-    (*has_bits)[0] |= 1u;
-  }
-  static void set_has_y(HasBits* has_bits) {
-    (*has_bits)[0] |= 2u;
-  }
 };
 
 Point::Point(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -103,8 +93,7 @@ Point::Point(::PROTOBUF_NAMESPACE_ID::Arena* arena,
   // @@protoc_insertion_point(arena_constructor:org.infinity.idm.Point)
 }
 Point::Point(const Point& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _has_bits_(from._has_bits_) {
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&x_, &from.x_,
     static_cast<size_t>(reinterpret_cast<char*>(&y_) -
@@ -146,35 +135,28 @@ void Point::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
-    ::memset(&x_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&y_) -
-        reinterpret_cast<char*>(&x_)) + sizeof(y_));
-  }
-  _has_bits_.Clear();
+  ::memset(&x_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&y_) -
+      reinterpret_cast<char*>(&x_)) + sizeof(y_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* Point::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // optional double x = 1;
+      // double x = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 9)) {
-          _Internal::set_has_x(&has_bits);
           x_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
           ptr += sizeof(double);
         } else goto handle_unusual;
         continue;
-      // optional double y = 2;
+      // double y = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 17)) {
-          _Internal::set_has_y(&has_bits);
           y_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
           ptr += sizeof(double);
         } else goto handle_unusual;
@@ -195,7 +177,6 @@ const char* Point::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inte
     }  // switch
   }  // while
 success:
-  _has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -209,14 +190,14 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // optional double x = 1;
-  if (_internal_has_x()) {
+  // double x = 1;
+  if (!(this->_internal_x() <= 0 && this->_internal_x() >= 0)) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(1, this->_internal_x(), target);
   }
 
-  // optional double y = 2;
-  if (_internal_has_y()) {
+  // double y = 2;
+  if (!(this->_internal_y() <= 0 && this->_internal_y() >= 0)) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(2, this->_internal_y(), target);
   }
@@ -237,19 +218,16 @@ size_t Point::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
-    // optional double x = 1;
-    if (cached_has_bits & 0x00000001u) {
-      total_size += 1 + 8;
-    }
-
-    // optional double y = 2;
-    if (cached_has_bits & 0x00000002u) {
-      total_size += 1 + 8;
-    }
-
+  // double x = 1;
+  if (!(this->_internal_x() <= 0 && this->_internal_x() >= 0)) {
+    total_size += 1 + 8;
   }
+
+  // double y = 2;
+  if (!(this->_internal_y() <= 0 && this->_internal_y() >= 0)) {
+    total_size += 1 + 8;
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
         _internal_metadata_, total_size, &_cached_size_);
@@ -278,15 +256,11 @@ void Point::MergeFrom(const Point& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
-    if (cached_has_bits & 0x00000001u) {
-      x_ = from.x_;
-    }
-    if (cached_has_bits & 0x00000002u) {
-      y_ = from.y_;
-    }
-    _has_bits_[0] |= cached_has_bits;
+  if (!(from._internal_x() <= 0 && from._internal_x() >= 0)) {
+    _internal_set_x(from._internal_x());
+  }
+  if (!(from._internal_y() <= 0 && from._internal_y() >= 0)) {
+    _internal_set_y(from._internal_y());
   }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -305,7 +279,6 @@ bool Point::IsInitialized() const {
 void Point::InternalSwap(Point* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Point, y_)
       + sizeof(Point::y_)
