@@ -7,6 +7,7 @@
 #include "Infinity_Events.h"
 #include <QMessageBox>
 #include "ILLibs.h"
+#include "DMH.h"
 
 #define ILVM_COPYRIGHT "Infinity Studio Script Interpreter 1.0.0" "  Copyright (C) 2019-2022 Infinity Synthesis Team"
 

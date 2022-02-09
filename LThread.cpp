@@ -35,7 +35,7 @@ LThread::LThread(QObject *parent)
 
 	luaL_openlibs(this->lstate);
 
-	bool error1 = luaL_dostring(this->lstate, QString("package.path = '" + QCoreApplication::applicationDirPath() + "/scripts/?.lua;'").toStdString().c_str());
+	bool error1 = luaL_dostring(this->lstate, QString("package.path = '" + QCoreApplication::applicationDirPath() + "/scripts/?.lua;;"+ QCoreApplication::applicationDirPath() + "/scripts/?/?.lua;'").toStdString().c_str());
 	if (error1) {
 		qDebug("Lua Error:%s", qPrintable(lua_tostring(this->lstate, -1)));
 		lua_pop(this->lstate, 1);
@@ -151,6 +151,21 @@ void LThread::addFunction(QString name, lua_CFunction function)
 	lua_pushstring(this->lstate, name.toStdString().c_str());
 	lua_pushcfunction(this->lstate, function);
 	lua_settable(this->lstate, -3);
+}
+
+void LThread::loadUtils()
+{
+	std::string comm("IUtils = require(\"utils\")");
+	bool error = luaL_dostring(this->lstate, comm.c_str());
+	if (error) {
+		emit this->errorMessage(QString::fromStdString(lua_tostring(this->lstate, -1)));
+		lua_pop(this->lstate, 1);
+	}
+	error = luaL_dostring(this->lstate, "Infinity.Console.print = print");
+	if (error) {
+		emit this->errorMessage(QString::fromStdString(lua_tostring(this->lstate, -1)));
+		lua_pop(this->lstate, 1);
+	}
 }
 
 bool LThread::destory(QString id)

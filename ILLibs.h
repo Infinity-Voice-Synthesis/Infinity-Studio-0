@@ -11,7 +11,7 @@
 class ILLibs
 {
 	static std::function<void(QString&)> console_mesFunction;
-	static std::function<void(QString&)> console_assFunction;
+	static std::function<void(QString&)> console_errFunction;
 	static std::function<void()> console_clsFunction;
 
 	static std::function<bool(QString&)> thread_finFunction;
@@ -37,7 +37,7 @@ class ILLibs
 public:
 	static void reg_mesFunctions(
 		std::function<void(QString&)> console_mesFunction,
-		std::function<void(QString&)> console_assFunction,
+		std::function<void(QString&)> console_errFunction,
 		std::function<void()> cconsole_lsFunction
 	);
 	static void reg_thrFunctions(
@@ -70,7 +70,7 @@ public:
 	static int infinity_runtime_msleep(lua_State* state);
 
 	static int infinity_console_println(lua_State* state);
-	static int infinity_console_assert(lua_State* state);
+	static int infinity_console_error(lua_State* state);
 	static int infinity_console_cls(lua_State* state);
 
 	static int infinity_thread_current(lua_State* state);

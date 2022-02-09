@@ -58,6 +58,12 @@ ILVM::ILVM(QObject *parent)
 		[this](QString& id) {this->lockShare(id); },
 		[this](QString& id) {this->unlockShare(id); }
 	);
+
+	DMH::reg_mesFunctions(
+		[this](QString& message) {emit this->normalMessage(message); },
+		[this](QString& message) {emit this->errorMessage(message); },
+		[this] {emit this->clearMessage(); }
+	);
 }
 
 ILVM::~ILVM()
@@ -187,7 +193,7 @@ void ILVM::VMPushAllFunctions(LThread* thread)
 
 	thread->beginTable("Console");
 	thread->addFunction("println", ILLibs::infinity_console_println);
-	thread->addFunction("assert", ILLibs::infinity_console_assert);
+	thread->addFunction("error", ILLibs::infinity_console_error);
 	thread->addFunction("cls", ILLibs::infinity_console_cls);
 	thread->endTable();//Console
 
@@ -218,10 +224,12 @@ void ILVM::VMPushAllFunctions(LThread* thread)
 	thread->endTable();//Thread
 
 	thread->beginTable("Synth");
-
+	thread->addFunction("test", DMH::test);
 	thread->endTable();//Synth
 
 	thread->endGlobalTable("Infinity");
+
+	thread->loadUtils();
 }
 
 bool ILVM::findThread(QString id)

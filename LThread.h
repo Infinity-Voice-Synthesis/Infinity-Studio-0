@@ -34,6 +34,8 @@ public:
 
 	void addFunction(QString name, lua_CFunction function);
 
+	void loadUtils();
+
 	static void set_destory(QString destoryId);
 
 	bool checkShare(QString key);

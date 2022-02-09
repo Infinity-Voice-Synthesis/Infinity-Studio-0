@@ -11,7 +11,7 @@
 
 #include "Pb/project.pb.h"
 
-class DataModel
+class DataModel final
 {
 	DataModel();
 	~DataModel();

@@ -58,8 +58,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <OutDir>D:\develop\Infinity\packages\org.infinity.infinitystudio\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutDir>D:\develop\Infinity\packages\org.infinity.infinitystudio\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -128,6 +130,7 @@
     <ClCompile Include="ConsoleScollBar.cpp" />
     <ClCompile Include="ConsoleWidget.cpp" />
     <ClCompile Include="DataModel.cpp" />
+    <ClCompile Include="DMH.cpp" />
     <ClCompile Include="FloatButton.cpp" />
     <ClCompile Include="GetTrans.cpp" />
     <ClCompile Include="google\protobuf\any.cc" />
@@ -309,6 +312,7 @@
     <QtMoc Include="ConsoleWidget.h" />
     <QtMoc Include="ConsoleScollBar.h" />
     <ClInclude Include="DataModel.h" />
+    <ClInclude Include="DMH.h" />
     <ClInclude Include="GetTrans.h" />
     <QtMoc Include="StatusBar.h" />
     <QtMoc Include="StyleContainer.h" />

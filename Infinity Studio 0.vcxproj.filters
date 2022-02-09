@@ -496,6 +496,9 @@
     <ClCompile Include="Pb\track.pb.cc">
       <Filter>Pb</Filter>
     </ClCompile>
+    <ClCompile Include="DMH.cpp">
+      <Filter>Source Files\llibs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="InfinityStudio0.qrc" />
@@ -1090,6 +1093,9 @@
     </ClInclude>
     <ClInclude Include="Pb\track.pb.h">
       <Filter>Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="DMH.h">
+      <Filter>Header Files\llibs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

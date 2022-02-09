@@ -5,7 +5,7 @@ extern "C" {
 }
 
 std::function<void(QString&)> ILLibs::console_mesFunction;
-std::function<void(QString&)> ILLibs::console_assFunction;
+std::function<void(QString&)> ILLibs::console_errFunction;
 std::function<void()> ILLibs::console_clsFunction;
 
 std::function<bool(QString&)> ILLibs::thread_finFunction;
@@ -30,12 +30,12 @@ std::function<void(QString&)> ILLibs::share_ulkFunction;
 
 void ILLibs::reg_mesFunctions(
 	std::function<void(QString&)> console_mesFunction,
-	std::function<void(QString&)> console_assFunction,
+	std::function<void(QString&)> console_errFunction,
 	std::function<void()> console_clsFunction
 )
 {
 	ILLibs::console_mesFunction = console_mesFunction;
-	ILLibs::console_assFunction = console_assFunction;
+	ILLibs::console_errFunction = console_errFunction;
 	ILLibs::console_clsFunction = console_clsFunction;
 }
 
@@ -127,11 +127,11 @@ int ILLibs::infinity_console_println(lua_State* state)
 	return 0;
 }
 
-int ILLibs::infinity_console_assert(lua_State* state)
+int ILLibs::infinity_console_error(lua_State* state)
 {
 	QString message = QString::fromStdString(luaL_checkstring(state, 1));
 	if (!message.isEmpty()) {
-		ILLibs::console_assFunction(message);
+		ILLibs::console_errFunction(message);
 	}
 	return 0;
 }
@@ -179,7 +179,7 @@ int ILLibs::infinity_thread_create(lua_State* state)
 	bool ok = ILLibs::thread_creFunction(id);
 	if (!ok) {
 		QString error = QString::asprintf("Can't create thread:%s", qPrintable(id));
-		ILLibs::console_assFunction(error);
+		ILLibs::console_errFunction(error);
 	}
 	lua_pushboolean(state, ok);
 	return 1;
@@ -191,7 +191,7 @@ int ILLibs::infinity_thread_remove(lua_State* state)
 	bool ok = ILLibs::thread_rmvFunction(id);
 	if (!ok) {
 		QString error = QString::asprintf("Can't remove thread:%s", qPrintable(id));
-		ILLibs::console_assFunction(error);
+		ILLibs::console_errFunction(error);
 	}
 	lua_pushboolean(state, ok);
 	return 1;
@@ -207,13 +207,13 @@ int ILLibs::infinity_thread_destory(lua_State* state)
 	mutex->unlock();
 	if (id == tName) {
 		QString error = "The thread can't destory itself!";
-		ILLibs::console_assFunction(error);
+		ILLibs::console_errFunction(error);
 		return 0;
 	}
 	bool ok = ILLibs::thread_desFunction(id);
 	if (!ok) {
 		QString error = QString::asprintf("Can't destory thread:%s", qPrintable(id));
-		ILLibs::console_assFunction(error);
+		ILLibs::console_errFunction(error);
 	}
 	lua_pushboolean(state, ok);
 	return 1;
@@ -233,7 +233,7 @@ int ILLibs::infinity_thread_run(lua_State* state)
 	bool ok = ILLibs::thread_runFunction(id, str);
 	if (!ok) {
 		QString error = QString::asprintf("Can't run \"%s\" on thread:%s", qPrintable(str), qPrintable(id));
-		ILLibs::console_assFunction(error);
+		ILLibs::console_errFunction(error);
 	}
 	lua_pushboolean(state, ok);
 	return 1;
@@ -246,7 +246,7 @@ int ILLibs::infinity_thread_exec(lua_State* state)
 	bool ok = ILLibs::thread_execFunction(id, str);
 	if (!ok) {
 		QString error = QString::asprintf("Can't execute \"%s\" on thread:%s", qPrintable(str), qPrintable(id));
-		ILLibs::console_assFunction(error);
+		ILLibs::console_errFunction(error);
 	}
 	lua_pushboolean(state, ok);
 	return 1;
@@ -266,7 +266,7 @@ int ILLibs::infinity_thread_share_create(lua_State* state)
 	void* result = ILLibs::share_creFunction(id, key, size);
 	if (result == nullptr) {
 		QString error = QString::asprintf("Can't create share data \"%s\" on thread:%s", qPrintable(key), qPrintable(id));
-		ILLibs::console_assFunction(error);
+		ILLibs::console_errFunction(error);
 	}
 	lua_pushlightuserdata(state, result);
 	return 1;
@@ -287,7 +287,7 @@ int ILLibs::infinity_thread_share_remove(lua_State* state)
 	bool ok = ILLibs::share_rmvFunction(id, key);
 	if (!ok) {
 		QString error = QString::asprintf("Can't remove share data \"%s\" on thread:%s", qPrintable(key), qPrintable(id));
-		ILLibs::console_assFunction(error);
+		ILLibs::console_errFunction(error);
 	}
 	lua_pushboolean(state, ok);
 	return 1;
@@ -308,7 +308,7 @@ int ILLibs::infinity_thread_share_get(lua_State* state)
 	void* result = ILLibs::share_getFunction(id, key);
 	if (result == nullptr) {
 		QString error = QString::asprintf("Can't get share data \"%s\" on thread:%s", qPrintable(key), qPrintable(id));
-		ILLibs::console_assFunction(error);
+		ILLibs::console_errFunction(error);
 	}
 	lua_pushlightuserdata(state, result);
 	return 1;
@@ -320,7 +320,7 @@ int ILLibs::infinity_thread_share_clear(lua_State* state)
 	bool ok = ILLibs::share_cleFunction(id);
 	if (!ok) {
 		QString error = QString::asprintf("Can't clear share data on thread:%s", qPrintable(id));
-		ILLibs::console_assFunction(error);
+		ILLibs::console_errFunction(error);
 	}
 	lua_pushboolean(state, ok);
 	return 1;
