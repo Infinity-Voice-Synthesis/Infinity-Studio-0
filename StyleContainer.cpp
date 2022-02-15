@@ -68,7 +68,6 @@ void StyleContainer::refreshPix()
 		return QString(
 			QCoreApplication::applicationDirPath() +
 			QString("/themes/") +
-			Infinity_global::projectName + "/" +
 			path
 		);
 	};
@@ -91,7 +90,6 @@ void StyleContainer::loadPix(QString name, QString path)
 		return QString(
 			QCoreApplication::applicationDirPath() +
 			QString("/themes/") +
-			Infinity_global::projectName + "/" +
 			path
 		);
 	};

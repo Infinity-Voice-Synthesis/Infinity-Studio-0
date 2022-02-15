@@ -184,7 +184,6 @@ void InfinityStudio0::paintEvent(QPaintEvent* event)
 		return QString(
 			QCoreApplication::applicationDirPath() +
 			QString("/themes/") +
-			Infinity_global::projectName + "/" +
 			QString::fromStdString(StyleContainer::getContainer().getStyleObject()(key.toStdString()))
 		);
 	};

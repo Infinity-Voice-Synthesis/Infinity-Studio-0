@@ -10,7 +10,7 @@ GetConfig::~GetConfig()
 
 QString GetConfig::getConfigFilePath(QString group)
 {
-	return QString(QCoreApplication::applicationDirPath() + "/configs/" + Infinity_global::projectName + "/" + group + ".json");
+	return QString(QCoreApplication::applicationDirPath() + "/configs/" + group + ".json");
 }
 
 QString GetConfig::getConfigFileData(QString filename)

@@ -13,6 +13,7 @@
 //#include "StringQueueThread.h"
 #include <QMutex>
 #include <QFontMetrics>
+#include <QSet>
 
 class ConsoleWidget : public RefreshableWidget
 {
@@ -55,8 +56,11 @@ private:
 	QTimer refreshTimer;
 
 	const QString inputMask = ">> ";
+	const QString outputMask = "<< ";
 
 	bool haveChange = false;
+
+	QSet<int> lineSet;
 
 protected:
 	void paintEvent(QPaintEvent* event)override;

@@ -86,6 +86,7 @@ void ConsoleWidget::paintEvent(QPaintEvent* event)
 	QColor color_message = GetStyle::parseStringToColor(QString::fromStdString(StyleContainer::getContainer().getStyleObject()["console"]("color-message")));
 	QColor color_error = GetStyle::parseStringToColor(QString::fromStdString(StyleContainer::getContainer().getStyleObject()["console"]("color-error")));
 	QColor color_cursor = GetStyle::parseStringToColor(QString::fromStdString(StyleContainer::getContainer().getStyleObject()["console"]("color-cursor")));
+	QColor color_split = GetStyle::parseStringToColor(QString::fromStdString(StyleContainer::getContainer().getStyleObject()["console"]("color-split")));
 
 	bool pic_background_diy = false;
 	StyleContainer::getContainer().getStyleObject().Get("pic-background-diy", pic_background_diy);
@@ -99,6 +100,13 @@ void ConsoleWidget::paintEvent(QPaintEvent* event)
 	StyleContainer::getContainer().getStyleObject()["console"].Get("margin", margin);
 	double cursor_height = 0.8;
 	StyleContainer::getContainer().getStyleObject()["console"].Get("cursor-height", cursor_height);
+	int split_width = 2;
+	StyleContainer::getContainer().getStyleObject()["console"].Get("split-width", split_width);
+	double background_error_transparency = 0.3;
+	StyleContainer::getContainer().getStyleObject()["console"].Get("background-error-transparency", background_error_transparency);
+
+	QColor color_background_error(color_error);
+	color_background_error.setAlpha(background_error_transparency * 255);
 
 	int scoll_width_i = screenSize.width() * scoll_width;
 
@@ -144,7 +152,31 @@ void ConsoleWidget::paintEvent(QPaintEvent* event)
 
 	int lTop = this->currentTopLine;
 	lTop = qMax(lTop, 0);
-	int lBottom = lTop + line_size;
+	int lBottom = lTop + line_size;//获取显示位置
+
+	QString strnow = this->strInput;
+	strnow.prepend(this->inputMask);
+
+	QStringList strNS;
+	QString strtemp;
+	while (strnow.length() > 0) {
+		if (strnow.at(0) == '\n') {
+			strNS.append(strtemp);
+			strtemp.clear();
+			strtemp.append(' ');
+			strnow.remove(0, 1);
+			continue;
+		}
+		if (painter.fontMetrics().horizontalAdvance(strtemp + strnow.at(0)) > paintableWidth) {
+			strNS.append(strtemp);
+			strtemp.clear();
+		}
+		strtemp.append(strnow.at(0));
+		strnow.remove(0, 1);
+	}
+	if (!strtemp.isEmpty()) {
+		strNS.append(strtemp);
+	}
 
 	for (int i = lTop; i < this->lineSplit.size() && i < lBottom; i++) {
 		auto& p = this->lineSplit.at(i);
@@ -165,26 +197,25 @@ void ConsoleWidget::paintEvent(QPaintEvent* event)
 			break;
 		}
 
+		if (p.second == LineState::Error) {
+			QRect fillErrorRect(0, (i * lineHeight) - (lTop * lineHeight), this->width(), lineHeight);
+			painter.fillRect(fillErrorRect, color_background_error);
+		}
+
+		pen.setWidth(1);
 		painter.setPen(pen);
 
 		painter.drawText(paintPoint, p.first);
-	}
 
-	QString strnow = this->strInput;
-	strnow.prepend(this->inputMask);
+		if (this->lineSet.contains(i)) {
+			QLine lineSplit(0, (i * lineHeight) - (lTop * lineHeight) + lineHeight, this->width(), (i * lineHeight) - (lTop * lineHeight) + lineHeight);
 
-	QStringList strNS;
-	QString strtemp;
-	while (strnow.length() > 0) {
-		if (painter.fontMetrics().horizontalAdvance(strtemp + strnow.at(0)) > paintableWidth) {
-			strNS.append(strtemp);
-			strtemp.clear();
+			pen.setColor(color_split);
+			pen.setWidth(split_width);
+			painter.setPen(pen);
+
+			painter.drawLine(lineSplit);
 		}
-		strtemp.append(strnow.at(0));
-		strnow.remove(0, 1);
-	}
-	if (!strtemp.isEmpty()) {
-		strNS.append(strtemp);
 	}
 
 	for (int i = 0; i < strNS.size(); i++) {
@@ -192,6 +223,7 @@ void ConsoleWidget::paintEvent(QPaintEvent* event)
 		QPoint paintPoint(lineRect.left(), (double)(lineRect.top() + lineRect.bottom()) / (double)2 + (double)fontTrueHeight / (double)2);
 
 		pen.setColor(color_normal);
+		pen.setWidth(1);
 		painter.setPen(pen);
 
 		painter.drawText(paintPoint, strNS.at(i));
@@ -209,6 +241,7 @@ void ConsoleWidget::paintEvent(QPaintEvent* event)
 		}
 
 		pen.setColor(color_cursor);
+		pen.setWidth(1);
 		painter.setPen(pen);
 
 		int curLinex = paintMarginLeft + painter.fontMetrics().horizontalAdvance(strNS.at(lineNum).left(curCountTemp));
@@ -294,13 +327,18 @@ void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 				this->currentTemp = -1;
 				break;
 			case Qt::Key_Tab:
-				this->strInput.insert(this->cursorPlace, QChar('\t'));
-				this->cursorPlace++;
+				this->strInput.insert(this->cursorPlace, QString("    "));
+				this->cursorPlace += 4;
 				this->currentTemp = -1;
 				break;
 			case Qt::Key_Backspace:
 				if (!this->strInput.isEmpty() && this->cursorPlace > 0) {
-					if (this->strInput.size() > this->cursorPlace) {
+					if (this->cursorPlace > 3 && this->strInput.mid(static_cast<qsizetype>(this->cursorPlace) - 4,4) == "    ") {
+						this->strInput.remove(static_cast<qsizetype>(this->cursorPlace) - 4, 4);
+						this->cursorPlace -= 4;
+						this->currentTemp = -1;
+					}
+					else if (this->strInput.size() > this->cursorPlace) {
 						if (this->strInput.at(static_cast<qsizetype>(this->cursorPlace) - 1) == '(' && this->strInput.at(this->cursorPlace) == ')') {
 							this->strInput.remove(static_cast<qsizetype>(this->cursorPlace) - 1, 2);
 						}
@@ -319,21 +357,19 @@ void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 						else {
 							this->strInput.remove(static_cast<qsizetype>(this->cursorPlace) - 1, 1);
 						}
+						this->cursorPlace--;
+						this->currentTemp = -1;
 					}
 					else {
 						this->strInput.remove(static_cast<qsizetype>(this->cursorPlace) - 1, 1);
+						this->cursorPlace--;
+						this->currentTemp = -1;
 					}
-					this->cursorPlace--;
-					this->currentTemp = -1;
 				}
 				break;
 			case Qt::Key_Return:
-				if (!this->strInput.isEmpty()) {
-					if (this->commandTemp.isEmpty() || (this->commandTemp.last() != this->strInput)) {
-						this->commandTemp.append(this->strInput);
-					}
-				}
-				this->doString(this->strInput);
+				this->strInput.insert(this->cursorPlace, QChar('\n'));
+				this->cursorPlace++;
 				this->currentTemp = -1;
 				break;
 			case Qt::Key_QuoteLeft:
@@ -533,6 +569,28 @@ void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 		this->curTimer.start(1000 / cursor_speed);
 		this->update();
 	}
+	else if (event->modifiers() == Qt::KeyboardModifier::ControlModifier) {
+	Qt::Key key = static_cast<Qt::Key>(event->key());
+	switch (key)
+	{
+	case Qt::Key_Return:
+		if (!this->strInput.isEmpty()) {
+			if (this->commandTemp.isEmpty() || (this->commandTemp.last() != this->strInput)) {
+				this->commandTemp.append(this->strInput);
+			}
+		}
+		this->doString(this->strInput);
+		this->currentTemp = -1;
+		break;
+	default:
+		break;
+	}
+	this->goDown();
+	this->curTimer.stop();
+	this->showCursor = true;
+	this->curTimer.start(1000 / cursor_speed);
+	this->update();
+	}
 }
 
 void ConsoleWidget::resizeAll()
@@ -571,7 +629,53 @@ void ConsoleWidget::on_ScollValueChanged(double sp, double ep)
 	int line_size = 25;
 	StyleContainer::getContainer().getStyleObject()["console"].Get("line-size", line_size);
 
-	int lTop = qRound((double)(this->lineSplit.size() + line_size) * sp);
+	QSize screenSize = Infinity_global::getScreenSize();
+
+	double scoll_width = 0.02;
+	StyleContainer::getContainer().getStyleObject()["console"].Get("scoll-width", scoll_width);
+	double margin = 0.02;
+	StyleContainer::getContainer().getStyleObject()["console"].Get("margin", margin);
+	double font_height = 0.6;
+	StyleContainer::getContainer().getStyleObject()["console"].Get("font-height", font_height);
+
+	int scoll_width_i = screenSize.width() * scoll_width;
+
+	int windWidth = this->width() - scoll_width_i;
+
+	int paintableWidth = windWidth * (1 - margin * 2);
+
+	int lineHeight = this->height() / line_size;
+	int fontPixelSize = lineHeight * font_height;
+
+	QFont font;
+	font.setPixelSize(fontPixelSize);
+	QFontMetrics fontM(font);
+
+	QString strnow = this->strInput;
+	strnow.prepend(this->inputMask);
+
+	QStringList strNS;
+	QString strtemp;
+	while (strnow.length() > 0) {
+		if (strnow.at(0) == '\n') {
+			strNS.append(strtemp);
+			strtemp.clear();
+			strtemp.append(' ');
+			strnow.remove(0, 1);
+			continue;
+		}
+		if (fontM.horizontalAdvance(strtemp + strnow.at(0)) > paintableWidth) {
+			strNS.append(strtemp);
+			strtemp.clear();
+		}
+		strtemp.append(strnow.at(0));
+		strnow.remove(0, 1);
+	}
+	if (!strtemp.isEmpty()) {
+		strNS.append(strtemp);
+	}
+
+	int lTop = qRound((double)(this->lineSplit.size() + strNS.size() - 1 + line_size) * sp);
 	lTop = qMax(lTop, 0);
 
 	this->currentTopLine = lTop;
@@ -592,12 +696,9 @@ void ConsoleWidget::doString(QString command)
 
 void ConsoleWidget::on_luaMessage(QString message)
 {
-	QStringList messList = message.split('\n', Qt::KeepEmptyParts);
-	for (auto& s : messList) {
-		this->linesMutex.lock();
-		this->lines.append(qMakePair(s, LineState::Output));
-		this->linesMutex.unlock();
-	}
+	this->linesMutex.lock();
+	this->lines.append(qMakePair(this->outputMask + QString(message), LineState::Output));
+	this->linesMutex.unlock();
 	this->haveChange = true;
 }
 
@@ -657,6 +758,7 @@ void ConsoleWidget::reSplit()
 	
 	this->linesMutex.lock();
 	this->lineSplit.clear();
+	this->lineSet.clear();
 	
 	for (auto& p : this->lines) {
 		LineState state = p.second;
@@ -668,6 +770,13 @@ void ConsoleWidget::reSplit()
 		
 		QString temp;
 		while (str.length() > 0) {
+			if (str.at(0) == '\n') {
+				this->lineSplit.append(qMakePair(temp, state));
+				temp.clear();
+				temp.append(' ');
+				str.remove(0, 1);
+				continue;
+			}
 			if (fontM.horizontalAdvance(temp + str.at(0)) > paintableWidth) {
 				this->lineSplit.append(qMakePair(temp, state));
 				temp.clear();
@@ -678,6 +787,7 @@ void ConsoleWidget::reSplit()
 		if (!temp.isEmpty()) {
 			this->lineSplit.append(qMakePair(temp, state));
 		}
+		this->lineSet.insert(this->lineSplit.size() - 1);
 	}
 	this->linesMutex.unlock();
 }
@@ -697,12 +807,70 @@ void ConsoleWidget::goDown()
 	lTop = qMax(lTop, 0);
 	int lBottom = lTop + line_size;
 
-	if (static_cast<long long>(lBottom) - 1 < this->lineSplit.size()) {
-		lTop = this->lineSplit.size();
+	QSize screenSize = Infinity_global::getScreenSize();
+
+	double scoll_width = 0.02;
+	StyleContainer::getContainer().getStyleObject()["console"].Get("scoll-width", scoll_width);
+	double margin = 0.02;
+	StyleContainer::getContainer().getStyleObject()["console"].Get("margin", margin);
+	double font_height = 0.6;
+	StyleContainer::getContainer().getStyleObject()["console"].Get("font-height", font_height);
+
+	int scoll_width_i = screenSize.width() * scoll_width;
+
+	int windWidth = this->width() - scoll_width_i;
+
+	int paintableWidth = windWidth * (1 - margin * 2);
+
+	int lineHeight = this->height() / line_size;
+	int fontPixelSize = lineHeight * font_height;
+
+	QFont font;
+	font.setPixelSize(fontPixelSize);
+	QFontMetrics fontM(font);
+
+	QString strnow = this->strInput;
+	strnow.prepend(this->inputMask);
+
+	QStringList strNS;
+	QString strtemp;
+	while (strnow.length() > 0) {
+		if (strnow.at(0) == '\n') {
+			strNS.append(strtemp);
+			strtemp.clear();
+			strtemp.append(' ');
+			strnow.remove(0, 1);
+			continue;
+		}
+		if (fontM.horizontalAdvance(strtemp + strnow.at(0)) > paintableWidth) {
+			strNS.append(strtemp);
+			strtemp.clear();
+		}
+		strtemp.append(strnow.at(0));
+		strnow.remove(0, 1);
+	}
+	if (!strtemp.isEmpty()) {
+		strNS.append(strtemp);
+	}
+
+	int curCountTemp = this->cursorPlace + this->inputMask.size();
+	int lineNum = 0;
+	for (int i = 0; i < strNS.size(); i++) {
+		if (curCountTemp <= strNS.at(i).length()) {
+			break;
+		}
+		curCountTemp -= strNS.at(i).length();
+		lineNum++;
+	}
+
+	QPair<double, double> value = this->scoller->setValue((double)lTop / (double)(this->lineSplit.size() + strNS.size() - 1 + line_size), (double)lBottom / (double)(this->lineSplit.size() + strNS.size() - 1 + line_size));
+
+	if (static_cast<long long>(lBottom) - 1 < this->lineSplit.size() + lineNum || static_cast<long long>(lTop) > this->lineSplit.size() + lineNum) {
+		lTop = this->lineSplit.size() + lineNum;
 		lBottom = lTop + line_size;
 
 		this->currentTopLine = lTop;
-		QPair<double, double> value = this->scoller->setValue((double)lTop / (double)(this->lineSplit.size() + line_size), (double)lBottom / (double)(this->lineSplit.size() + line_size));
+		QPair<double, double> value = this->scoller->setValue((double)lTop / (double)(this->lineSplit.size() + strNS.size() - 1 + line_size), (double)lBottom / (double)(this->lineSplit.size() + strNS.size() - 1 + line_size));
 
 		this->update();
 	}
@@ -718,16 +886,62 @@ void ConsoleWidget::on_WheelChanged(int delta)
 	int line_size = 25;
 	StyleContainer::getContainer().getStyleObject()["console"].Get("line-size", line_size);
 
+	QSize screenSize = Infinity_global::getScreenSize();
+
+	double scoll_width = 0.02;
+	StyleContainer::getContainer().getStyleObject()["console"].Get("scoll-width", scoll_width);
+	double margin = 0.02;
+	StyleContainer::getContainer().getStyleObject()["console"].Get("margin", margin);
+	double font_height = 0.6;
+	StyleContainer::getContainer().getStyleObject()["console"].Get("font-height", font_height);
+
+	int scoll_width_i = screenSize.width() * scoll_width;
+
+	int windWidth = this->width() - scoll_width_i;
+
+	int paintableWidth = windWidth * (1 - margin * 2);
+
+	int lineHeight = this->height() / line_size;
+	int fontPixelSize = lineHeight * font_height;
+
+	QFont font;
+	font.setPixelSize(fontPixelSize);
+	QFontMetrics fontM(font);
+
+	QString strnow = this->strInput;
+	strnow.prepend(this->inputMask);
+
+	QStringList strNS;
+	QString strtemp;
+	while (strnow.length() > 0) {
+		if (strnow.at(0) == '\n') {
+			strNS.append(strtemp);
+			strtemp.clear();
+			strtemp.append(' ');
+			strnow.remove(0, 1);
+			continue;
+		}
+		if (fontM.horizontalAdvance(strtemp + strnow.at(0)) > paintableWidth) {
+			strNS.append(strtemp);
+			strtemp.clear();
+		}
+		strtemp.append(strnow.at(0));
+		strnow.remove(0, 1);
+	}
+	if (!strtemp.isEmpty()) {
+		strNS.append(strtemp);
+	}
+
 	int lTop = this->currentTopLine;
 	
 	lTop -= delta / 50;
 
 	lTop = qMax(lTop, 0);
-	lTop = qMin(lTop, this->lineSplit.size());
+	lTop = qMin(lTop, this->lineSplit.size() + strNS.size() - 1);
 	int lBottom = lTop + line_size;
 
 	this->currentTopLine = lTop;
-	QPair<double, double> value = this->scoller->setValue((double)lTop / (double)(this->lineSplit.size() + line_size), (double)lBottom / (double)(this->lineSplit.size() + line_size));
+	QPair<double, double> value = this->scoller->setValue((double)lTop / (double)(this->lineSplit.size() + strNS.size() - 1 + line_size), (double)lBottom / (double)(this->lineSplit.size() + strNS.size() - 1 + line_size));
 
 	this->update();
 }
@@ -742,21 +956,67 @@ void ConsoleWidget::on_refreshTimeOut()
 		int line_size = 25;
 		StyleContainer::getContainer().getStyleObject()["console"].Get("line-size", line_size);
 
+		QSize screenSize = Infinity_global::getScreenSize();
+
+		double scoll_width = 0.02;
+		StyleContainer::getContainer().getStyleObject()["console"].Get("scoll-width", scoll_width);
+		double margin = 0.02;
+		StyleContainer::getContainer().getStyleObject()["console"].Get("margin", margin);
+		double font_height = 0.6;
+		StyleContainer::getContainer().getStyleObject()["console"].Get("font-height", font_height);
+
+		int scoll_width_i = screenSize.width() * scoll_width;
+
+		int windWidth = this->width() - scoll_width_i;
+
+		int paintableWidth = windWidth * (1 - margin * 2);
+
+		int lineHeight = this->height() / line_size;
+		int fontPixelSize = lineHeight * font_height;
+
+		QFont font;
+		font.setPixelSize(fontPixelSize);
+		QFontMetrics fontM(font);
+
+		QString strnow = this->strInput;
+		strnow.prepend(this->inputMask);
+
+		QStringList strNS;
+		QString strtemp;
+		while (strnow.length() > 0) {
+			if (strnow.at(0) == '\n') {
+				strNS.append(strtemp);
+				strtemp.clear();
+				strtemp.append(' ');
+				strnow.remove(0, 1);
+				continue;
+			}
+			if (fontM.horizontalAdvance(strtemp + strnow.at(0)) > paintableWidth) {
+				strNS.append(strtemp);
+				strtemp.clear();
+			}
+			strtemp.append(strnow.at(0));
+			strnow.remove(0, 1);
+		}
+		if (!strtemp.isEmpty()) {
+			strNS.append(strtemp);
+		}
+
 		QVector<double> tipPlace;
 		for (int i = 0; i < this->lineSplit.size(); i++) {
 			if (this->lineSplit.at(i).second == LineState::Error) {
-				tipPlace.append((double)i / (double)(this->lineSplit.size() + line_size));
+				tipPlace.append((double)i / (double)(this->lineSplit.size() + strNS.size() - 1 + line_size));
 			}
 		}
 		this->scoller->setTips(tipPlace);
 
 		QPair<double, double> value = this->scoller->getValue();
-		int lTop = (this->lineSplit.size() + line_size) * value.first;
+		int lTop = (this->lineSplit.size() + strNS.size() - 1 + line_size) * value.first;
 		lTop = qMax(lTop, 0);
 		int lBottom = lTop + line_size;
 
 		this->currentTopLine = lTop;
-		value = this->scoller->setValue((double)lTop / (double)(this->lineSplit.size() + line_size), (double)lBottom / (double)(this->lineSplit.size() + line_size));
+		value = this->scoller->setValue((double)lTop / (double)(this->lineSplit.size() + strNS.size() - 1 + line_size), (double)lBottom / (double)(this->lineSplit.size() + strNS.size() - 1 + line_size));
 		this->update();
 	}
 }

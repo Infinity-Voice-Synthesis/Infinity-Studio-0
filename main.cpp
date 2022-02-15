@@ -15,7 +15,7 @@ void app_init()
 	int fontClass = 0;
 	StyleContainer::getContainer().getStyleObject().Get("font-class", fontClass);
 
-	int fontId = QFontDatabase::addApplicationFont(QCoreApplication::applicationDirPath() + QString("/themes/") + Infinity_global::projectName + "/" + fontFile);
+	int fontId = QFontDatabase::addApplicationFont(QCoreApplication::applicationDirPath() + QString("/themes/") + fontFile);
 	QString fontName = QFontDatabase::applicationFontFamilies(fontId).at(fontClass);
 	QFont font(fontName);
 	QApplication::setFont(font);

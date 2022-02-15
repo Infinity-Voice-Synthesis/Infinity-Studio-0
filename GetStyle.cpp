@@ -10,7 +10,7 @@ GetStyle::~GetStyle()
 
 QString GetStyle::getStyleFilePath(QString style)
 {
-	return QString(QCoreApplication::applicationDirPath() + "/themes/" + Infinity_global::projectName + "/" + style + ".json");
+	return QString(QCoreApplication::applicationDirPath() + "/themes/" + style + ".json");
 }
 
 QString GetStyle::getStyleFileData(QString filename)

@@ -12,7 +12,7 @@ GetTrans::~GetTrans()
 
 QString GetTrans::getTransFilePath(QString trans)
 {
-	return QString(QCoreApplication::applicationDirPath() + "/translates/" + Infinity_global::projectName + "/" + trans + ".json");
+	return QString(QCoreApplication::applicationDirPath() + "/translates/" + trans + ".json");
 }
 
 QString GetTrans::getTransFileData(QString filename)
