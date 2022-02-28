@@ -1,6 +1,9 @@
 # Infinity-Studio-0
 Infinity Studio Development Version
 
+**Paused**
+**此仓库暂停开发**
+
 #### Developer List
 + 無常@FangCunWuChang - Main Developer
 
